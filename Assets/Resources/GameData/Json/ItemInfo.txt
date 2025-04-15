@@ -1,0 +1,115 @@
+{
+	"info": [{
+			"id": 1,
+			"name": "初始武魂",
+			"icon": "weapon_1",
+			"type": 2,
+			"price": 1,
+			"tips": "斗魂大陆新生所配准的初始武魂"
+		},
+		{
+			"id": 2,
+			"name": "初始头盔",
+			"icon": "helmet_1",
+			"type": 2,
+			"price": 1,
+			"tips": "斗魂大陆新生所配准的初始头盔"
+		},
+		{
+			"id": 3,
+			"name": "初始盔甲",
+			"icon": "armor_1",
+			"type": 2,
+			"price": 1,
+			"tips": "斗魂大陆新生所配准的初始盔甲"
+		},
+		{
+			"id": 4,
+			"name": "初始手套",
+			"icon": "glove_1",
+			"type": 2,
+			"price": 1,
+			"tips": "斗魂大陆新生所配准的初始手套"
+		},
+		{
+			"id": 5,
+			"name": "初始腿甲",
+			"icon": "cuish_1",
+			"type": 2,
+			"price": 1,
+			"tips": "斗魂大陆新生所配准的初始腿甲"
+		},
+		{
+			"id": 6,
+			"name": "初始鞋子",
+			"icon": "shoe_1",
+			"type": 2,
+			"price": 1,
+			"tips": "斗魂大陆新生所配准的初始鞋子"
+		},
+		{
+			"id": 7,
+			"name": "小红药水",
+			"icon": "potion_red_1",
+			"type": 3,
+			"price": 5,
+			"tips": "小型回血道具，使用后恢复10%生命值"
+		},
+		{
+			"id": 8,
+			"name": "小蓝药水",
+			"icon": "potion_blue_1",
+			"type": 3,
+			"price": 5,
+			"tips": "小型回蓝道具，使用后恢复10%魔法值"
+		},
+		{
+			"id": 9,
+			"name": "中红药水",
+			"icon": "potion_red_2",
+			"type": 3,
+			"price": 20,
+			"tips": "中型回血道具，使用后恢复30%生命值"
+		},
+		{
+			"id": 10,
+			"name": "中蓝药水",
+			"icon": "potion_blue_2",
+			"type": 3,
+			"price": 20,
+			"tips": "中型回蓝道具，使用后恢复30%魔法值"
+		},
+		{
+			"id": 11,
+			"name": "大红药水",
+			"icon": "potion_red_3",
+			"type": 3,
+			"price": 99,
+			"tips": "大型回血道具，使用后恢复50%生命值"
+		},
+		{
+			"id": 12,
+			"name": "大蓝药水",
+			"icon": "potion_blue_3",
+			"type": 3,
+			"price": 99,
+			"tips": "大型回蓝道具，使用后恢复50%魔法值"
+		},
+		{
+			"id": 13,
+			"name": "新生神环",
+			"icon": "soul_ring_1000000",
+			"type": 1,
+			"price": 0,
+			"tips": "斗魂大陆新生所配准的神环，可养成"
+		},
+		{
+			"id": 14,
+			"name": "白狒狒魂环",
+			"icon": "soul_ring_10",
+			"type": 1,
+			"price": 1,
+			"tips": "十年魂兽白狒狒的魂环"
+		}
+	]
+}
