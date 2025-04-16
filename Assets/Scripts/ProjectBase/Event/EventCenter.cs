@@ -13,7 +13,7 @@ public class EventInfo<T> : IEventInfo
 {
     public UnityAction<T> actions;
 
-    public EventInfo( UnityAction<T> action)
+    public EventInfo(UnityAction<T> action)
     {
         actions += action;
     }

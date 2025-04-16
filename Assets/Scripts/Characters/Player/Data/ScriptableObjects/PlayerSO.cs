@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Cyber
 {
-    [CreateAssetMenu(fileName = "Player", menuName = "Genshin Impact Movement System/Characters/Player")]
+    [CreateAssetMenu(fileName = "Player", menuName = "Cyber/Characters/Player")]
     public class PlayerSO : ScriptableObject
     {
         [field: SerializeField] public PlayerGroundedData GroundedData { get; private set; }

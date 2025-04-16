@@ -123,6 +123,18 @@ public class UIManager : BaseManager<UIManager>
             if (callBack != null)
                 callBack(panel);
 
+            // 这里的处理有问题，后续再修改
+            EventCenter.GetInstance().AddEventListener<string>("ClearAllPanels", PanelsEvent);
+
+            void PanelsEvent(string str)
+            {
+                GameObject.Destroy(obj);
+                panelDic.Remove(panelName);
+                Debug.Log(panelName);
+                Debug.Log(str);
+                EventCenter.GetInstance().RemoveEventListener<string>("ClearAllPanels", PanelsEvent);
+            }
+
             panel.ShowMe();
 
             //把面板存起来

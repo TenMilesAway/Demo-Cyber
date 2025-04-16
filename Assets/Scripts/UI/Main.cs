@@ -11,6 +11,8 @@ namespace Cyber
             PromptMgr.GetInstance().ShowPromptPanel("Game Start");
 
             GameDataMgr.GetInstance().Init();
+            DialogueMgr.GetInstance().Init();
+            CameraController.GetInstance().Init();
 
             UIManager.GetInstance().ShowPanel<MainPanel>("MainPanel");
         }
