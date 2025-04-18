@@ -23,6 +23,8 @@ namespace Cyber
         public PlayerJumpingState JumpingState { get; }
         public PlayerFallingState FallingState { get; }
 
+        public PlayerFlippingState FlippingState { get; }
+
         public PlayerMovementStateMachine(Player player)
         {
             Player = player;
@@ -45,6 +47,8 @@ namespace Cyber
 
             JumpingState = new PlayerJumpingState(this);
             FallingState = new PlayerFallingState(this);
+
+            FlippingState = new PlayerFlippingState(this);
         }
     }
 }

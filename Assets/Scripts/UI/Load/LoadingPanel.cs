@@ -40,8 +40,6 @@ namespace Cyber
                     ao.allowSceneActivation = true;
                 }
 
-                
-
                 yield return null;
             }
 

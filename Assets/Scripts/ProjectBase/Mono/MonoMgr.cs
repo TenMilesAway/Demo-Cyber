@@ -51,4 +51,9 @@ public class MonoMgr : BaseManager<MonoMgr>
     {
         return controller.StartCoroutine(methodName);
     }
+
+    public void StopCoroutine(Coroutine coroutine)
+    {
+        controller.StopCoroutine(coroutine);
+    }
 }

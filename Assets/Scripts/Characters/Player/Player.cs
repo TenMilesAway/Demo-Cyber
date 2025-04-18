@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Cyber
@@ -27,6 +28,8 @@ namespace Cyber
         public Transform MainCameraTransform { get; private set; }
 
         private PlayerMovementStateMachine movementStateMachine;
+
+        public List<AttackSO> combo;
 
         private void Awake()
         {

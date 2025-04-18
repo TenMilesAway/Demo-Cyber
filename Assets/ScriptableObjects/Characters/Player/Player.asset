@@ -219,4 +219,7 @@ MonoBehaviour:
       <DecelerationForce>k__BackingField: 1.5
     <FallData>k__BackingField:
       <FallSpeedLimit>k__BackingField: 10
-      <MinimumDistanceToBeConsideredHardFall>k__BackingField: 3
+      <MinimumDistanceToBeConsideredHardFall>k__BackingField: 5
+  <AttackData>k__BackingField:
+    <ComboDuration>k__BackingField: 2
+    <comboCounter>k__BackingField: 6

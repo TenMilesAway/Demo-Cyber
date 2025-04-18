@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Cyber
@@ -12,6 +14,7 @@ namespace Cyber
         [SerializeField] private string stoppingParameterName = "Stopping";
         [SerializeField] private string landingParameterName = "Landing";
         [SerializeField] private string airborneParameterName = "Airborne";
+        [SerializeField] private string attackParameterName = "Attack";
 
         [Header("Grounded Parameter Names")]
         [SerializeField] private string idleParameterName = "isIdling";
@@ -26,6 +29,10 @@ namespace Cyber
 
         [Header("Airborne Parameter Names")]
         [SerializeField] private string fallParameterName = "isFalling";
+
+        [Header("Attack Parameter Names")]
+        [SerializeField] private string attackReadyParameterName = "isAttackReady";
+
 
         public int GroundedParameterHash { get; private set; }
         public int MovingParameterHash { get; private set; }
@@ -45,6 +52,9 @@ namespace Cyber
 
         public int FallParameterHash { get; private set; }
 
+        public int AttackParameterHash { get; private set; }
+        public int AttackReadyParameterHash { get; private set; }
+
         public void Initialize()
         {
             GroundedParameterHash = Animator.StringToHash(groundedParameterName);
@@ -52,6 +62,7 @@ namespace Cyber
             StoppingParameterHash = Animator.StringToHash(stoppingParameterName);
             LandingParameterHash = Animator.StringToHash(landingParameterName);
             AirborneParameterHash = Animator.StringToHash(airborneParameterName);
+            AttackParameterHash = Animator.StringToHash(attackParameterName);
 
             IdleParameterHash = Animator.StringToHash(idleParameterName);
             DashParameterHash = Animator.StringToHash(dashParameterName);
@@ -64,6 +75,7 @@ namespace Cyber
             HardLandParameterHash = Animator.StringToHash(hardLandParameterName);
 
             FallParameterHash = Animator.StringToHash(fallParameterName);
+            AttackReadyParameterHash = Animator.StringToHash(attackReadyParameterName);
         }
     }
 }

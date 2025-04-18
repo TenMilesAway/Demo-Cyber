@@ -1,0 +1,13 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Third Flipping
+  m_Controller: {fileID: 9100000, guid: f5b8cade8f59c014aadc8754d3930c27, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 06fdb896f4ef5954e9b5dcb040bde60d, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: ecad08f7a6b8c644a8149f5b567937c2, type: 2}

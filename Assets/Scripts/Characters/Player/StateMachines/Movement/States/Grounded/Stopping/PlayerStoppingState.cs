@@ -32,8 +32,8 @@ namespace Cyber
 
             RotateTowardsTargetRotation();
 
-            if (!IsMovingHorizontally())
-            {
+            if (!IsMovingHorizontally(0))
+            {                
                 return;
             }
 

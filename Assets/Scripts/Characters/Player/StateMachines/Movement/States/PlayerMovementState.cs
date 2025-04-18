@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -24,6 +25,8 @@ namespace Cyber
         public virtual void Enter()
         {
             AddInputActionsCallbacks();
+
+            Debug.Log(GetType().Name);
         }
 
         public virtual void Exit()
@@ -115,6 +118,8 @@ namespace Cyber
 
             stateMachine.Player.Input.PlayerActions.Movement.performed += OnMovementPerformed;
             stateMachine.Player.Input.PlayerActions.Movement.canceled += OnMovementCanceled;
+
+            stateMachine.Player.Input.PlayerActions.Flip.started += OnFlipStarted;
         }
 
         protected virtual void RemoveInputActionsCallbacks()
@@ -125,6 +130,8 @@ namespace Cyber
 
             stateMachine.Player.Input.PlayerActions.Movement.performed -= OnMovementPerformed;
             stateMachine.Player.Input.PlayerActions.Movement.canceled -= OnMovementCanceled;
+
+            stateMachine.Player.Input.PlayerActions.Flip.started -= OnFlipStarted;
         }
 
         protected virtual void OnWalkToggleStarted(InputAction.CallbackContext context)
@@ -147,12 +154,17 @@ namespace Cyber
             DisableCameraRecentering();
         }
 
+        protected virtual void OnFlipStarted(InputAction.CallbackContext context)
+        {
+            stateMachine.ChangeState(stateMachine.FlippingState);
+        }
+
         private void ReadMovementInput()
         {
             stateMachine.ReusableData.MovementInput = stateMachine.Player.Input.PlayerActions.Movement.ReadValue<Vector2>();
         }
 
-        private void Move()
+        protected void Move()
         {
             if (stateMachine.ReusableData.MovementInput == Vector2.zero || stateMachine.ReusableData.MovementSpeedModifier == 0f)
             {
@@ -238,7 +250,7 @@ namespace Cyber
         {
             float currentYAngle = stateMachine.Player.Rigidbody.rotation.eulerAngles.y;
 
-            if (currentYAngle == stateMachine.ReusableData.CurrentTargetRotation.y)
+            if (Mathf.Abs(currentYAngle - stateMachine.ReusableData.CurrentTargetRotation.y) <= 0.01f)
             {
                 return;
             }

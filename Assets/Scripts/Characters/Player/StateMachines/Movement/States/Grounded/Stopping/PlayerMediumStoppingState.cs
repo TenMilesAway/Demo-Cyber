@@ -20,7 +20,7 @@ namespace Cyber
         public override void Exit()
         {
             base.Exit();
-
+            
             StopAnimation(stateMachine.Player.AnimationData.MediumStopParameterHash);
         }
     }
