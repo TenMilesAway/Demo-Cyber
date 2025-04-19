@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <GroundedData>k__BackingField:
     <BaseSpeed>k__BackingField: 5
-    <GroundToFallRayDistance>k__BackingField: 1
+    <GroundToFallRayDistance>k__BackingField: 2
     <SlopeSpeedAngles>k__BackingField:
       serializedVersion: 2
       m_Curve:
@@ -221,5 +221,6 @@ MonoBehaviour:
       <FallSpeedLimit>k__BackingField: 10
       <MinimumDistanceToBeConsideredHardFall>k__BackingField: 5
   <AttackData>k__BackingField:
-    <ComboDuration>k__BackingField: 2
-    <comboCounter>k__BackingField: 6
+    <ComboDeterTime>k__BackingField: 0.3
+    <ComboWaitTime>k__BackingField: 0.5
+    <SpeedModified>k__BackingField: 0.3

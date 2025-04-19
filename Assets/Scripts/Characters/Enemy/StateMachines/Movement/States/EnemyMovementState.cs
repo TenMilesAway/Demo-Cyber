@@ -72,5 +72,10 @@ namespace Cyber
         {
             stateMachine.Enemy.Animator.SetBool(animationHash, false);
         }
+
+        public void OnTriggerStay(Collider collider)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

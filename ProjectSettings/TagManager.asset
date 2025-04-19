@@ -27,10 +27,10 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Enemy
   - Environment
   - GroundCheck
-  - 
+  - AttackCheck
   - 
   - 
   - 

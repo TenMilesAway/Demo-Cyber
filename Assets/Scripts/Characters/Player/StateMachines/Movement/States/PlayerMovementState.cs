@@ -58,6 +58,11 @@ namespace Cyber
             }
         }
 
+        public virtual void OnTriggerStay(Collider collider)
+        {
+
+        }
+
         public virtual void OnTriggerExit(Collider collider)
         {
             if (stateMachine.Player.LayerData.IsGroundLayer(collider.gameObject.layer))
@@ -119,7 +124,7 @@ namespace Cyber
             stateMachine.Player.Input.PlayerActions.Movement.performed += OnMovementPerformed;
             stateMachine.Player.Input.PlayerActions.Movement.canceled += OnMovementCanceled;
 
-            stateMachine.Player.Input.PlayerActions.Flip.started += OnFlipStarted;
+            stateMachine.Player.Input.PlayerActions.Flip.canceled += OnFlipStarted;
         }
 
         protected virtual void RemoveInputActionsCallbacks()
@@ -131,7 +136,7 @@ namespace Cyber
             stateMachine.Player.Input.PlayerActions.Movement.performed -= OnMovementPerformed;
             stateMachine.Player.Input.PlayerActions.Movement.canceled -= OnMovementCanceled;
 
-            stateMachine.Player.Input.PlayerActions.Flip.started -= OnFlipStarted;
+            stateMachine.Player.Input.PlayerActions.Flip.canceled -= OnFlipStarted;
         }
 
         protected virtual void OnWalkToggleStarted(InputAction.CallbackContext context)
@@ -164,7 +169,7 @@ namespace Cyber
             stateMachine.ReusableData.MovementInput = stateMachine.Player.Input.PlayerActions.Movement.ReadValue<Vector2>();
         }
 
-        protected void Move()
+        private void Move()
         {
             if (stateMachine.ReusableData.MovementInput == Vector2.zero || stateMachine.ReusableData.MovementSpeedModifier == 0f)
             {
