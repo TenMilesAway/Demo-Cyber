@@ -10,9 +10,27 @@ namespace Cyber
 
         public Vector3 GroundCheckColliderVerticalExtents { get; private set; }
 
+        [field: SerializeField] public BoxCollider AttackCheckCollider { get; private set; }
+
+        public Vector3 AttackCheckColliderVerticalExtent { get; private set; }
+
         public void Initialize()
         {
             GroundCheckColliderVerticalExtents = GroundCheckCollider.bounds.extents;
+
+            AttackCheckColliderVerticalExtent = AttackCheckCollider.bounds.extents;
+
+            HideAttackCheckCollider();
+        }
+
+        public void ShowAttackCheckCollider()
+        {
+            AttackCheckCollider.gameObject.SetActive(true);
+        }
+
+        public void HideAttackCheckCollider()
+        {
+            AttackCheckCollider.gameObject.SetActive(false);
         }
     }
 }
