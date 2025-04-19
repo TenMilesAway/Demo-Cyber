@@ -26,17 +26,16 @@ namespace Cyber
 
         public PlayerAttackingState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
-            lastComboEnd = 0;
+            lastComboEnd = Time.time;
         }
 
         public override void Enter()
         {
-            stateMachine.ReusableData.MovementSpeedModifier = stateMachine.Player.Data.AttackData.SpeedModified;
-
             base.Enter();
 
             combo = stateMachine.Player.combo;
 
+            // 这个看放在哪里，因为后续可能要加向前突进的距离
             ResetVelocity();
 
             StartAnimation(stateMachine.Player.AnimationData.AttackParameterHash);
@@ -49,11 +48,6 @@ namespace Cyber
             StopAnimation(stateMachine.Player.AnimationData.AttackParameterHash);
         }
 
-        public override void HandleInput()
-        {
-            base.HandleInput();
-        }
-
         public override void Update()
         {
             base.Update();
@@ -61,10 +55,7 @@ namespace Cyber
 
         public override void PhysicsUpdate()
         {
-            if (stateMachine.ReusableData.MovementInput == Vector2.zero || stateMachine.ReusableData.MovementSpeedModifier == 0f)
-                ResetVelocity();
-
-            base.PhysicsUpdate();
+            base.Update();
 
             Float();
         }
@@ -78,32 +69,6 @@ namespace Cyber
         {
             base.RemoveInputActionsCallbacks();
         }
-
-        public override void OnTriggerEnter(Collider collider)
-        {
-            base.OnTriggerEnter(collider);
-
-            if (stateMachine.Player.LayerData.IsEnemyLayer(collider.gameObject.layer))
-            {
-                // 攻击逻辑
-                Debug.LogWarning("击中敌人");
-
-                MonoMgr.GetInstance().StartCoroutine(SimulateHitfeel());
-
-                // 添加监听
-            }
-        }
-
-        public override void OnAnimationEnterEvent()
-        {
-            stateMachine.Player.ResizableCapsuleCollider.TriggerColliderData.ShowAttackCheckCollider();
-        }
-
-        public override void OnAnimationExitEvent()
-        {
-            stateMachine.Player.ResizableCapsuleCollider.TriggerColliderData.HideAttackCheckCollider();
-        }
-
 
         #region Main Methods
         private void Float()
@@ -152,42 +117,33 @@ namespace Cyber
             return slopeSpeedModifier;
         }
 
+        protected bool IsComboTime()
+        {
+            return Time.time - lastComboEnd > stateMachine.Player.Data.AttackData.ComboDuration;
+        }
+
         protected void ExitAttack()
         {
             if (stateMachine.Player.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.9f)
+            {
                 // 传递给 MonoMgr 的协程函数只能是 public
                 EndComboCo = MonoMgr.GetInstance().StartCoroutine(EndCombo());
+            }
         }
 
         public IEnumerator EndCombo()
         {
             hasExit = true;
 
-            yield return new WaitForSeconds(stateMachine.Player.Data.AttackData.ComboWaitTime);
+            yield return new WaitForSeconds(0.5f);
 
             comboCounter = 0;
+
+            lastComboEnd = Time.time;
 
             stateMachine.ChangeState(stateMachine.IdlingState);
 
             hasExit = false;
-        }
-
-        public bool IsComboTime()
-        {
-            return Time.time - lastComboEnd > stateMachine.Player.Data.AttackData.ComboWaitTime;
-        }
-
-        public IEnumerator SimulateHitfeel()
-        {
-            stateMachine.Player.Animator.speed = 0.01f;
-
-            CameraController.GetInstance().SwitchToShake(0.5f);
-
-            yield return new WaitForSeconds(0.1f);
-
-            CameraController.GetInstance().ReturnToNoShake();
-
-            stateMachine.Player.Animator.speed = 1f;
         }
         #endregion
     }

@@ -14,25 +14,18 @@ namespace Cyber
 
         private CinemachineBrain brain;
 
-        private CinemachineVirtualCamera mainCamera;
-
-        private static string virtualCameraTag = "VirtualCamera";
-
-        private static string mainCameraTag = "PlayerCamera";
+        private static string cameraTag = "VirtualCamera";
 
         
         public void Init()
         {
-            cameras = GameObject.FindGameObjectsWithTag(virtualCameraTag);
+            cameras = GameObject.FindGameObjectsWithTag(cameraTag);
 
             brain = Camera.main.GetComponent<CinemachineBrain>();
 
             for (int i = 0; i < cameras.Length; i++)
             {
                 cameraDic.Add(cameras[i].name, cameras[i].GetComponent<CinemachineVirtualCamera>());
-
-                if (cameras[i].name == mainCameraTag)
-                    mainCamera = cameraDic[cameras[i].name];
             }
         }
 
@@ -61,16 +54,6 @@ namespace Cyber
 
             if (callback != null)
                 callback();
-        }
-
-        public void SwitchToShake(float amplitudeGain)
-        {
-            mainCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = amplitudeGain;
-        }
-
-        public void ReturnToNoShake()
-        {
-            mainCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0f;
         }
     }
 }

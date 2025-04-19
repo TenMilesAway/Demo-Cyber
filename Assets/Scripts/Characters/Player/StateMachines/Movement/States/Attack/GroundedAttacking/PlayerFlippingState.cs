@@ -16,52 +16,39 @@ namespace Cyber
         {
             base.Enter();
 
-            if (!IsComboTime())
-                return;
+            comboCounter++;
 
             if (EndComboCo != null)
             {
                 MonoMgr.GetInstance().StopCoroutine(EndComboCo);
-
                 hasExit = false;
             }
 
-            // 第一次攻击时，开始连击，这里应该去判断连击间隔
-            if (comboCounter == 0)
+            //if (!IsComboTime())
+            //    return;
+
+            // 第一次攻击时，开始连击
+            if (comboCounter == 1)
             {
-                stateMachine.Player.Animator.runtimeAnimatorController = combo[comboCounter].animatorOV;
-                
-                StartAnimation(stateMachine.Player.AnimationData.AttackReadyParameterHash);
-
+                stateMachine.Player.Animator.runtimeAnimatorController = combo[comboCounter - 1].animatorOV;
                 stateMachine.Player.Animator.Play("Flip", 0, 0);
-
+                StartAnimation(stateMachine.Player.AnimationData.AttackReadyParameterHash);
                 lastClickedTime = Time.time;
-
-                comboCounter++;
-
+                Debug.LogWarning(comboCounter);
                 return;
             }
 
             // 我可不可以缓存一下鼠标的点击次数，这样就不用判断间隔时间了，后续优化
-            //if (Time.time - lastClickedTime >= stateMachine.Player.Data.AttackData.ComboDeterTime)
-            if (stateMachine.Player.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f
-                || stateMachine.Player.Animator.GetCurrentAnimatorStateInfo(0).IsName("ReadyToExitAttack"))
+            if (Time.time - lastClickedTime >= stateMachine.Player.Data.AttackData.ComboDeterTime)
             {
-                stateMachine.Player.Animator.runtimeAnimatorController = combo[comboCounter].animatorOV;
-
-                StartAnimation(stateMachine.Player.AnimationData.AttackReadyParameterHash);
-
+                stateMachine.Player.Animator.runtimeAnimatorController = combo[comboCounter - 1].animatorOV;
                 stateMachine.Player.Animator.Play("Flip", 0, 0);
-
+                StartAnimation(stateMachine.Player.AnimationData.AttackReadyParameterHash);
                 lastClickedTime = Time.time;
-
-                comboCounter++;
             }
-
             comboCounter = comboCounter % combo.Count;
 
-            if (comboCounter == 0)
-                lastComboEnd = Time.time;
+            Debug.LogWarning(comboCounter);
          }
 
         public override void Exit()
@@ -77,6 +64,11 @@ namespace Cyber
 
             if (!hasExit)
                 ExitAttack();
+        }
+
+        public override void PhysicsUpdate()
+        {
+            base.PhysicsUpdate();
         }
     }
 }

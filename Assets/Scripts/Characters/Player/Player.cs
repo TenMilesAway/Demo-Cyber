@@ -69,11 +69,6 @@ namespace Cyber
             movementStateMachine.OnTriggerEnter(collider);
         }
 
-        private void OnTriggerStay(Collider collider)
-        {
-            movementStateMachine.OnTriggerStay(collider);
-        }
-
         private void OnTriggerExit(Collider collider)
         {
             movementStateMachine.OnTriggerExit(collider);

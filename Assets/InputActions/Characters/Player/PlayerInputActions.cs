@@ -118,6 +118,15 @@ namespace Cyber
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Bash"",
+                    ""type"": ""Button"",
+                    ""id"": ""7d15ac12-81e6-4a1d-90dd-78b91736e6b9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -290,10 +299,21 @@ namespace Cyber
                     ""name"": """",
                     ""id"": ""29cedd97-5f7b-4158-88e4-a3b82903137a"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Flip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1fbc0f6a-0238-4a5c-a5b1-418286e24ffc"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Bash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -314,6 +334,7 @@ namespace Cyber
             m_Player_CursorToggle = m_Player.FindAction("CursorToggle", throwIfNotFound: true);
             m_Player_TalkInteraction = m_Player.FindAction("TalkInteraction", throwIfNotFound: true);
             m_Player_Flip = m_Player.FindAction("Flip", throwIfNotFound: true);
+            m_Player_Bash = m_Player.FindAction("Bash", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -385,6 +406,7 @@ namespace Cyber
         private readonly InputAction m_Player_CursorToggle;
         private readonly InputAction m_Player_TalkInteraction;
         private readonly InputAction m_Player_Flip;
+        private readonly InputAction m_Player_Bash;
         public struct PlayerActions
         {
             private @PlayerInputActions m_Wrapper;
@@ -399,6 +421,7 @@ namespace Cyber
             public InputAction @CursorToggle => m_Wrapper.m_Player_CursorToggle;
             public InputAction @TalkInteraction => m_Wrapper.m_Player_TalkInteraction;
             public InputAction @Flip => m_Wrapper.m_Player_Flip;
+            public InputAction @Bash => m_Wrapper.m_Player_Bash;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -438,6 +461,9 @@ namespace Cyber
                 @Flip.started += instance.OnFlip;
                 @Flip.performed += instance.OnFlip;
                 @Flip.canceled += instance.OnFlip;
+                @Bash.started += instance.OnBash;
+                @Bash.performed += instance.OnBash;
+                @Bash.canceled += instance.OnBash;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -472,6 +498,9 @@ namespace Cyber
                 @Flip.started -= instance.OnFlip;
                 @Flip.performed -= instance.OnFlip;
                 @Flip.canceled -= instance.OnFlip;
+                @Bash.started -= instance.OnBash;
+                @Bash.performed -= instance.OnBash;
+                @Bash.canceled -= instance.OnBash;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -501,6 +530,7 @@ namespace Cyber
             void OnCursorToggle(InputAction.CallbackContext context);
             void OnTalkInteraction(InputAction.CallbackContext context);
             void OnFlip(InputAction.CallbackContext context);
+            void OnBash(InputAction.CallbackContext context);
         }
     }
 }
