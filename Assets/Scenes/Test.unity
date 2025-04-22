@@ -3171,11 +3171,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2581126757537936005, guid: b4541604376939e4bb46c650675afb1d, type: 3}
       propertyPath: m_HorizontalRecentering.m_enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2581126757537936005, guid: b4541604376939e4bb46c650675afb1d, type: 3}
       propertyPath: m_HorizontalRecentering.m_RecenteringTime
-      value: 4
+      value: 13.33333
       objectReference: {fileID: 0}
     - target: {fileID: 5455656819816236464, guid: b4541604376939e4bb46c650675afb1d, type: 3}
       propertyPath: m_RootOrder

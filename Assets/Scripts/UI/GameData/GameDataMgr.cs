@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -10,6 +8,8 @@ namespace Cyber
     public class GameDataMgr : BaseManager<GameDataMgr>
     {
         Dictionary<int, Item> itemInfoDic = new Dictionary<int, Item>();
+
+        public string id = "";
 
         public PlayerInfo playerInfo;
 
@@ -43,17 +43,32 @@ namespace Cyber
 
         private void InitPlayerInfo()
         {
-            if (File.Exists(PlayerInfo_Url))
-            {
-                // 读取数据
-                string info = File.ReadAllText(PlayerInfo_Url);
-                playerInfo = JsonUtility.FromJson<PlayerInfo>(info);
-            }
-            else
-            {
-                playerInfo = new PlayerInfo();
-                SavePlayerInfo();
-            }
+            // 重写逻辑
+            MsgPlayerDataLoad msg = new MsgPlayerDataLoad();
+
+            msg.playerInfo = new PlayerInfo();
+
+            msg.playerInfo.id = id;
+
+            NetManager.Send(msg);
+
+
+            //if (File.Exists(PlayerInfo_Url))
+            //{
+            //    // 读取数据
+            //    string info = File.ReadAllText(PlayerInfo_Url);
+            //    playerInfo = JsonUtility.FromJson<PlayerInfo>(info);
+            //}
+            //else
+            //{
+            //    playerInfo = new PlayerInfo();
+            //    SavePlayerInfo();
+            //}
+        }
+
+        public PlayerInfo GetPlayerInfo()
+        {
+            return playerInfo;
         }
 
         public void SavePlayerInfo()
@@ -93,21 +108,24 @@ namespace Cyber
         public int num;
     }
 
+    [System.Serializable]
     public class PlayerInfo
     {
-        public string name;
+        public string id;
+
         public int level;
         public int gold;
         public int gem;
         public int hp;
         public string head;
+
         public List<ItemInfo> items;
         public List<ItemInfo> equips;
         public List<ItemInfo> potions;
-
+        
         public PlayerInfo()
         {
-            name = "HuiHui";
+            id = "zll";
             level = 1;
             gold = 100;
             gem = 0;

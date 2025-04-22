@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,31 +7,38 @@ namespace Cyber
 {
     public class StartMain : MonoBehaviour
     {
+        public string ip = "127.0.0.1";
+        public int port = 8888;
+
         void Start()
         {
-            NetManager.Connect("127.0.0.1", 8888);
-
-            UIManager.GetInstance().ShowPanel<LoginPanel>("LoginPanel", E_UI_Layer.System);
-
-            NetManager.AddEventListener(NetManager.NetEvent.ConnectSucc, (err) => 
-            {
-                print("连接服务器成功");
-            });
-
-            NetManager.AddEventListener(NetManager.NetEvent.ConnectFail, (err) => 
-            {
-                print("连接服务器失败, " + err);
-            });
-
-            NetManager.AddEventListener(NetManager.NetEvent.Close, (err) => 
-            {
-                print("服务器关闭");
-            });
+            // 连接服务器
+            Connect();
+            // 初始化 UI
+            InitUI();
         }
 
         private void Update()
         {
             NetManager.Update();
+        }
+
+        private void Connect()
+        {
+            NetManager.Connect(ip, port);
+
+            ConnectCallback callback = new ConnectCallback();
+
+            NetManager.AddEventListener(NetManager.NetEvent.ConnectSucc, callback.ConnectSucc);
+
+            NetManager.AddEventListener(NetManager.NetEvent.ConnectFail, callback.ConnectFail);
+
+            NetManager.AddEventListener(NetManager.NetEvent.Close, callback.ConnectClose);
+        }
+
+        private void InitUI()
+        {
+            UIManager.GetInstance().ShowPanel<LoginPanel>("LoginPanel", E_UI_Layer.System);
         }
     }
 }
