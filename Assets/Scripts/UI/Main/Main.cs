@@ -16,15 +16,11 @@ namespace Cyber
             InitDialogueMgr();
             // 初始化 cinemachines
             InitVirtualCameras();
-            // 初始化网络监听
-            InitNet();
-
-            DataSave();
         }
 
-        private void InitNet()
+        private void Update()
         {
-            NetManager.AddMsgListener("MsgDataSave", OnMsgDataSave);
+            NetManager.Update();
         }
 
         private static void InitUI()
@@ -49,34 +45,8 @@ namespace Cyber
             CameraController.GetInstance().Init();
         }
 
-        public void DataSave()
-        {
-            MsgPlayerDataSave msgDataSave = new MsgPlayerDataSave();
-
-            PlayerInfo playerInfo = GameDataMgr.GetInstance().GetPlayerInfo();
-
-            msgDataSave.playerInfo = playerInfo;
-
-            NetManager.Send(msgDataSave);
-        }
-
-        private void OnMsgDataSave(MsgBase msgBase)
-        {
-            MsgPlayerDataSave msg = (MsgPlayerDataSave) msgBase;
-
-            if (msg.result == 0)
-            {
-                print("[客户端] 更新成功");
-            }
-            else
-            {
-                print("[客户端] 更新失败");
-            }
-        }
-
-        private void Update()
-        {
-            NetManager.Update();
-        }
+        #region Network Methods
+        
+        #endregion
     }
 }

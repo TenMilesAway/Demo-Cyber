@@ -23,6 +23,12 @@ namespace Cyber
             NetManager.Update();
         }
 
+        private void InitUI()
+        {
+            UIManager.GetInstance().ShowPanel<LoginPanel>("LoginPanel", E_UI_Layer.System);
+        }
+
+        #region Network Methods
         private void Connect()
         {
             NetManager.Connect(ip, port);
@@ -35,10 +41,6 @@ namespace Cyber
 
             NetManager.AddEventListener(NetManager.NetEvent.Close, callback.ConnectClose);
         }
-
-        private void InitUI()
-        {
-            UIManager.GetInstance().ShowPanel<LoginPanel>("LoginPanel", E_UI_Layer.System);
-        }
+        #endregion
     }
 }

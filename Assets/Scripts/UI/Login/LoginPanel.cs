@@ -54,6 +54,7 @@ namespace Cyber
             });
         }
 
+        #region Network Methods
         public void OnMsgLogin(MsgBase msgBase)
         {
             MsgLogin msg = (MsgLogin)msgBase;
@@ -68,7 +69,9 @@ namespace Cyber
                 print("[¿Í»§¶Ë] µÇÂ¼Ê§°Ü");
             }
         }
+        #endregion
 
+        #region Main Methods
         public void Load()
         {
             UIManager.GetInstance().ShowPanel<LoadingPanel>("LoadingPanel", E_UI_Layer.System, (panel) =>
@@ -77,5 +80,6 @@ namespace Cyber
             });
             UIManager.GetInstance().HidePanel("LoginPanel");
         }
+        #endregion
     }
 }

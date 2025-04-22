@@ -364,6 +364,7 @@ public static class NetManager
 	public static void Update()
 	{
 		MsgUpdate();
+		// 心跳机制
 		PingUpdate();
 	}
 
