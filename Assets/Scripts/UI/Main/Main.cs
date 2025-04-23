@@ -40,7 +40,9 @@ namespace Cyber
                 return;
 
             // 获取临时数据后，做网络请求的发送
+            UploadPlayerTempInfo();
 
+            UpdatePlayerTempInfo();
         }
 
         private static void InitData()
@@ -51,7 +53,9 @@ namespace Cyber
         private void InitNet()
         {
             NetManager.AddMsgListener("MsgUpdatePlayerEntities", OnMsgUpdatePlayerEntities);
-            
+
+            NetManager.AddMsgListener("MsgUpdatePlayerTempInfo", OnMsgUpdatePlayerTempInfo);
+
             GameDataMgr.GetInstance().isDataReady = false;
         }
 
@@ -86,6 +90,22 @@ namespace Cyber
 
             GameDataMgr.GetInstance().isEnterNewMap = false;
         }
+
+        private void UploadPlayerTempInfo()
+        {
+            MsgUploadPlayerTempInfo msg = new MsgUploadPlayerTempInfo();
+
+            msg.tempInfo = GameDataMgr.GetInstance().GetPlayerTempInfo();
+
+            NetManager.Send(msg);
+        }
+
+        private void UpdatePlayerTempInfo()
+        {
+            MsgUpdatePlayerTempInfo msg = new MsgUpdatePlayerTempInfo();
+
+            NetManager.Send(msg);
+        }
         #endregion
 
         #region Msg Methods
@@ -96,15 +116,34 @@ namespace Cyber
             foreach (PlayerInfo playerInfo in msg.list)
             {
                 // 判断是否是角色
-                Debug.Log("判断一下");
                 if (playerInfo.id == GameDataMgr.GetInstance().id) continue;
                 // 判断和本角色是否在一张地图
-                Debug.Log("判断是不是在一张地图");
                 if (playerInfo.map != GameDataMgr.GetInstance().playerInfo.map) continue;
-                Debug.Log("不在，创建新新角色");
+                // 如果字典中已存在该角色
+                if (syncPlayers.ContainsKey(playerInfo.id)) continue;
+
                 GameObject syncPlayer = ResMgr.GetInstance().Load<GameObject>("EntityProp/SyncPlayer/SyncPlayer");
 
                 syncPlayers.Add(playerInfo.id, syncPlayer.GetComponent<SyncPlayer>());
+            }
+        }
+
+        public void OnMsgUpdatePlayerTempInfo(MsgBase msgBase)
+        {
+            MsgUpdatePlayerTempInfo msg = (MsgUpdatePlayerTempInfo)msgBase;
+
+            // 拿到所有玩家的 tempInfos
+            foreach (PlayerTempInfo tempInfo in msg.tempInfos)
+            {
+                // 判断是否是角色
+                if (tempInfo.id == GameDataMgr.GetInstance().id) continue;
+                // 判断和本角色是否在一张地图
+                if (tempInfo.map != GameDataMgr.GetInstance().playerInfo.map) continue;
+
+                Transform syncPlayer = syncPlayers[tempInfo.id].transform;
+                syncPlayer.position = new Vector3(tempInfo.x, tempInfo.y, tempInfo.z);
+                syncPlayer.eulerAngles = new Vector3(tempInfo.rx, tempInfo.ry, tempInfo.rz);
+                Debug.Log(tempInfo.state);
             }
 
         }

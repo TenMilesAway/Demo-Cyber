@@ -57,6 +57,9 @@ namespace Cyber
             movementStateMachine.HandleInput();
 
             movementStateMachine.Update();
+
+            if (GameDataMgr.GetInstance().GetPlayerTempInfo() != null)
+                GameDataMgr.GetInstance().UpdateTempInfo(transform.position, transform.eulerAngles, movementStateMachine.GetCurrentState());
         }
 
         private void FixedUpdate()

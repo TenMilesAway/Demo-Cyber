@@ -159,6 +159,19 @@ namespace Cyber
                 return itemInfoDic[id];
             return null;
         }
+
+        public void UpdateTempInfo(Vector3 pos, Vector3 rot, string state)
+        {
+            tempInfo.x = pos.x;
+            tempInfo.y = pos.y;
+            tempInfo.z = pos.z;
+
+            tempInfo.rx = rot.x;
+            tempInfo.ry = rot.y;
+            tempInfo.rz = rot.z;
+
+            tempInfo.state = state;
+        }
         #endregion
     }
 
