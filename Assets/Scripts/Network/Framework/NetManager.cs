@@ -66,7 +66,7 @@ public static class NetManager
 		}
 	}
 	// 分发事件
-	private static void FireEvent(NetEvent netEvent, String err)
+	public static void FireEvent(NetEvent netEvent, String err)
 	{
 		if (eventListeners.ContainsKey(netEvent))
 		{
@@ -364,6 +364,7 @@ public static class NetManager
 	public static void Update()
 	{
 		MsgUpdate();
+		// 心跳机制
 		PingUpdate();
 	}
 

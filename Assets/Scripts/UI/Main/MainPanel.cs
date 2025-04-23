@@ -32,7 +32,7 @@ namespace Cyber
             txtLevel.text = GameDataMgr.GetInstance().playerInfo.level.ToString();
             txtGold.text = GameDataMgr.GetInstance().playerInfo.gold.ToString();
             txtGem.text = GameDataMgr.GetInstance().playerInfo.gem.ToString();
-            txtName.text = GameDataMgr.GetInstance().playerInfo.name;
+            txtName.text = GameDataMgr.GetInstance().playerInfo.id;
         }
     }
 }

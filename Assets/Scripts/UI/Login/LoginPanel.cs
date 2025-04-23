@@ -10,15 +10,35 @@ namespace Cyber
         public Text txtID;
         public InputField inputFieldUserPW;
 
+        private NetManager.MsgListener MsgLoginListener;
+
         private void Start()
         {
-            // µÇÂ¼Âß¼­
-            NetManager.AddMsgListener("MsgLogin", OnMsgLogin);
+            // ³õÊ¼»¯ÍøÂç´«Êä¼àÌý
+            InitNet();
+            // ³õÊ¼»¯ UI
+            InitUI();
+        }
 
+        private void OnDestroy()
+        {
+            NetManager.RemoveMsgListener("MsgLogin", MsgLoginListener);
+        }
+
+        private void InitNet()
+        {
+            // µÇÂ¼
+            MsgLoginListener = OnMsgLogin;
+
+            NetManager.AddMsgListener("MsgLogin", MsgLoginListener);
+        }
+
+        private void InitUI()
+        {
             txtID = GetControl<Text>("txtID");
             inputFieldUserPW = GetControl<InputField>("inputFieldUserPW");
 
-            GetControl<Button>("btnStart").onClick.AddListener(()=> 
+            GetControl<Button>("btnStart").onClick.AddListener(() =>
             {
                 MsgLogin msg = new MsgLogin();
                 msg.id = txtID.text;
@@ -34,27 +54,32 @@ namespace Cyber
             });
         }
 
+        #region Network Methods
         public void OnMsgLogin(MsgBase msgBase)
         {
-            MsgLogin msg = (MsgLogin) msgBase;
-
-            print("½øÀ´ÁË");
+            MsgLogin msg = (MsgLogin)msgBase;
 
             if (msg.result == 0)
             {
-                print("µÇÂ¼³É¹¦");
+                Debug.Log("[¿Í»§¶Ë] µÇÂ¼³É¹¦");
                 Load();
             }
             else
             {
-                print("µÇÂ¼Ê§°Ü");
+                print("[¿Í»§¶Ë] µÇÂ¼Ê§°Ü");
             }
         }
+        #endregion
 
+        #region Main Methods
         public void Load()
         {
-            UIManager.GetInstance().ShowPanel<LoadingPanel>("LoadingPanel", E_UI_Layer.System);
+            UIManager.GetInstance().ShowPanel<LoadingPanel>("LoadingPanel", E_UI_Layer.System, (panel) =>
+            {
+                GameDataMgr.GetInstance().id = txtID.text;
+            });
             UIManager.GetInstance().HidePanel("LoginPanel");
         }
+        #endregion
     }
 }

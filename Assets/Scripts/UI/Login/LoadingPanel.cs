@@ -8,6 +8,8 @@ namespace Cyber
 {
     public class LoadingPanel : BasePanel
     {
+        public string id = "";
+
         public Image imgBack;
         public Text txtLoad;
         public Slider sliderLoad;
