@@ -27,7 +27,7 @@ namespace Cyber
 
         public Transform MainCameraTransform { get; private set; }
 
-        private PlayerMovementStateMachine movementStateMachine;
+        public PlayerMovementStateMachine movementStateMachine;
 
         public List<AttackSO> combo;
 

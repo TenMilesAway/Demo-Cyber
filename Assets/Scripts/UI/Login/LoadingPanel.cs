@@ -25,7 +25,10 @@ namespace Cyber
 
         public IEnumerator LoadSceneAsych()
         {
+            // 这里自定义需要 Load 的场景
             AsyncOperation ao = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
+
+            GameDataMgr.GetInstance().isEnterNewMap = true;
 
             ao.allowSceneActivation = false;
 

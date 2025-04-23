@@ -11,9 +11,17 @@ namespace Cyber
 
         public string id = "";
 
+        private Player player;
+
         public PlayerInfo playerInfo;
 
-        private static string PlayerInfo_Url = Application.persistentDataPath + "/PlayerInfo.txt";
+        public PlayerTempInfo tempInfo;
+
+        // 一些布尔判断值
+        // 地图逻辑
+        public bool isEnterNewMap = false;
+        // 数据准备完毕
+        public bool isDataReady = false;
 
         public void Init()
         {
@@ -22,11 +30,12 @@ namespace Cyber
 
             // 初始化道具配置
             InitItemInfo();
+
             // 初始化玩家信息
             InitPlayerInfo();
-            // 初始化背包信息
-            InitInventoryInfo();
 
+            //// 初始化背包信息
+            //InitInventoryInfo();
         }
 
         private void InitNet()
@@ -54,7 +63,7 @@ namespace Cyber
 
         private void InitPlayerInfo()
         {
-            // 读取
+            // 读取玩家的数据，向服务器发送 MsgPlayerDataLoad 消息
             PlayerInfoDataLoad();
         }
 
@@ -109,9 +118,18 @@ namespace Cyber
             else
             {
                 Debug.Log("[客户端] 角色信息获取失败");
+                // 失败后 new 一个新的信息
                 playerInfo = new PlayerInfo();
+                // 并把数据保存至数据库
                 PlayerInfoDataSave();
             }
+
+            // 加载出基础信息以后，去获取 player
+            player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+
+            tempInfo = new PlayerTempInfo(id, playerInfo.map, player.transform.position, player.transform.eulerAngles, player.movementStateMachine.GetCurrentState());
+
+            isDataReady = true;
         }
         #endregion
 
@@ -119,6 +137,20 @@ namespace Cyber
         public PlayerInfo GetPlayerInfo()
         {
             return playerInfo;
+        }
+
+        public PlayerTempInfo GetPlayerTempInfo()
+        {
+            return tempInfo;
+        }
+
+        /// <summary>
+        /// 若 player 为空，不允许上传自身的 tempInfo 等信息
+        /// </summary>
+        /// <returns></returns>
+        public Player GetPlayer()
+        {
+            return player;
         }
 
         public Item GetItemInfo(int id)
@@ -164,6 +196,7 @@ namespace Cyber
         public int gem;
         public int hp;
         public string head;
+        public int map;
 
         public List<ItemInfo> items;
         public List<ItemInfo> equips;
@@ -177,12 +210,53 @@ namespace Cyber
             gem = 0;
             hp = 100;
             head = "Icons/头像";
+            map = (int)Maps.Spawn;
 
             items = new List<ItemInfo> { new ItemInfo { id = 13, num = 1 } };
             equips = new List<ItemInfo> { new ItemInfo { id = 1, num = 1 }, new ItemInfo { id = 2, num = 1 },
                                           new ItemInfo { id = 3, num = 1 }, new ItemInfo { id = 4, num = 1 },
                                           new ItemInfo { id = 5, num = 1 }, new ItemInfo { id = 6, num = 1 } };
             potions = new List<ItemInfo> { new ItemInfo { id = 7, num = 3 }, new ItemInfo { id = 8, num = 3 } };
+        }
+    }
+
+    public enum Maps
+    {
+        Login = 0,
+        Spawn,
+        Forest,
+    }
+
+    [System.Serializable]
+    public class PlayerTempInfo
+    {
+        // 用于查找
+        public string id;
+
+        // 临时信息 - 地图
+        public int map;
+        // 临时信息 - 坐标
+        public float x;
+        public float y;
+        public float z;
+        // 临时信息 - 旋转值
+        public float rx;
+        public float ry;
+        public float rz;
+        // 临时信息 - 玩家有限状态
+        public string state;
+
+        public PlayerTempInfo(string id, int map, Vector3 pos, Vector3 rot, string state)
+        {
+            this.id = id;
+            this.map = map;
+            x = pos.x;
+            y = pos.y;
+            z = pos.z;
+            rx = rot.x;
+            ry = rot.y;
+            rz = rot.z;
+            this.state = state;
         }
     }
     #endregion

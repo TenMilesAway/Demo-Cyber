@@ -59,5 +59,10 @@ namespace Cyber
         {
             currentState?.OnAnimationTransitionEvent();
         }
+
+        public string GetCurrentState()
+        {
+            return currentState.GetType().Name;
+        }
     }
 }

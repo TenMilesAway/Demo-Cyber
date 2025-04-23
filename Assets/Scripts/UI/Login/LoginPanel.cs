@@ -10,8 +10,6 @@ namespace Cyber
         public Text txtID;
         public InputField inputFieldUserPW;
 
-        private NetManager.MsgListener MsgLoginListener;
-
         private void Start()
         {
             // ³õÊ¼»¯ÍøÂç´«Êä¼àÌý
@@ -19,18 +17,10 @@ namespace Cyber
             // ³õÊ¼»¯ UI
             InitUI();
         }
-
-        private void OnDestroy()
-        {
-            NetManager.RemoveMsgListener("MsgLogin", MsgLoginListener);
-        }
-
         private void InitNet()
         {
             // µÇÂ¼
-            MsgLoginListener = OnMsgLogin;
-
-            NetManager.AddMsgListener("MsgLogin", MsgLoginListener);
+            NetManager.AddMsgListener("MsgLogin", OnMsgLogin);
         }
 
         private void InitUI()
@@ -38,14 +28,7 @@ namespace Cyber
             txtID = GetControl<Text>("txtID");
             inputFieldUserPW = GetControl<InputField>("inputFieldUserPW");
 
-            GetControl<Button>("btnStart").onClick.AddListener(() =>
-            {
-                MsgLogin msg = new MsgLogin();
-                msg.id = txtID.text;
-                msg.pw = inputFieldUserPW.text;
-
-                NetManager.Send(msg);
-            });
+            GetControl<Button>("btnStart").onClick.AddListener(Login);
 
             GetControl<Button>("btnTest").onClick.AddListener(() =>
             {
@@ -55,6 +38,15 @@ namespace Cyber
         }
 
         #region Network Methods
+        public void Login()
+        {
+            MsgLogin msg = new MsgLogin();
+            msg.id = txtID.text;
+            msg.pw = inputFieldUserPW.text;
+
+            NetManager.Send(msg);
+        }
+
         public void OnMsgLogin(MsgBase msgBase)
         {
             MsgLogin msg = (MsgLogin)msgBase;

@@ -12,6 +12,8 @@ namespace Cyber
 
         void Start()
         {
+            DontDestroyOnLoad(this);
+
             // 连接服务器
             Connect();
             // 初始化 UI
