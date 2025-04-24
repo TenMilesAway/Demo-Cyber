@@ -5,15 +5,15 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /// <summary>
-/// 面板基类，可通过代码快速的找到所有的子控件
+/// 面板基类，通过代码快速的找到所有的子控件
 /// </summary>
 public class BasePanel : MonoBehaviour
 {
-    //通过里式转换原则 来存储所有的控件
+    // 通过里式转换原则存储所有的控件
     private Dictionary<string, List<UIBehaviour>> controlDic = new Dictionary<string, List<UIBehaviour>>();
 
-	// Use this for initialization
-	protected virtual void Awake () {
+    #region Unity 生命周期
+    protected virtual void Awake () {
         FindChildrenControl<Button>();
         FindChildrenControl<Image>();
         FindChildrenControl<Text>();
@@ -22,9 +22,35 @@ public class BasePanel : MonoBehaviour
         FindChildrenControl<ScrollRect>();
         FindChildrenControl<InputField>();
     }
-	
+
+    protected virtual void Start()
+    {
+        // 初始化网络监听
+        InitNet();
+        // 初始化 UI
+        InitUI();
+    }
+
+    protected virtual void OnDestroy()
+    {
+
+    }
+    #endregion
+
+    #region Init Methods
+    protected virtual void InitNet()
+    {
+
+    }
+
+    protected virtual void InitUI()
+    {
+
+    }
+    #endregion
+
     /// <summary>
-    /// 显示自己
+    /// 显示自己时调用的函数
     /// </summary>
     public virtual void ShowMe()
     {
@@ -32,7 +58,7 @@ public class BasePanel : MonoBehaviour
     }
 
     /// <summary>
-    /// 隐藏自己
+    /// 隐藏自己时调用的函数
     /// </summary>
     public virtual void HideMe()
     {
@@ -59,7 +85,7 @@ public class BasePanel : MonoBehaviour
     {
         if(controlDic.ContainsKey(controlName))
         {
-            for( int i = 0; i <controlDic[controlName].Count; ++i )
+            for( int i = 0; i < controlDic[controlName].Count; ++i )
             {
                 if (controlDic[controlName][i] is T)
                     return controlDic[controlName][i] as T;
@@ -78,27 +104,11 @@ public class BasePanel : MonoBehaviour
         T[] controls = this.GetComponentsInChildren<T>();
         for (int i = 0; i < controls.Length; ++i)
         {
-            string objName = controls[i].gameObject.name;
+            string objName = controls[i].name;
             if (controlDic.ContainsKey(objName))
                 controlDic[objName].Add(controls[i]);
             else
                 controlDic.Add(objName, new List<UIBehaviour>() { controls[i] });
-            //如果是按钮控件
-            if(controls[i] is Button)
-            {
-                (controls[i] as Button).onClick.AddListener(()=>
-                {
-                    OnClick(objName);
-                });
-            }
-            //如果是单选框或者多选框
-            else if(controls[i] is Toggle)
-            {
-                (controls[i] as Toggle).onValueChanged.AddListener((value) =>
-                {
-                    OnValueChanged(objName, value);
-                });
-            }
         }
     }
 }

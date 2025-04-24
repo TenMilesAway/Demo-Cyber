@@ -17,11 +17,12 @@ public enum E_UI_Layer
 
 /// <summary>
 /// UI管理器
-/// 1.管理所有显示的面板
-/// 2.提供给外部 显示和隐藏等等接口
 /// </summary>
 public class UIManager : BaseManager<UIManager>
 {
+    private static string CanvasPath { get; set; } = "UI/Canvas";
+    private static string EventSystemPath { get; set; } = "UI/EventSystem";
+
     public Dictionary<string, BasePanel> panelDic = new Dictionary<string, BasePanel>();
 
     private Transform bot;
@@ -29,24 +30,24 @@ public class UIManager : BaseManager<UIManager>
     private Transform top;
     private Transform system;
 
-    //记录我们UI的Canvas父对象 方便以后外部可能会使用它
+    // 记录 UI 的 Canvas 父对象 方便以后外部使用
     public RectTransform canvas;
 
     public UIManager()
     {
-        //创建Canvas 让其过场景的时候 不被移除
-        GameObject obj = ResMgr.GetInstance().Load<GameObject>("UI/Canvas");
+        // 创建 Canvas，让其过场景不被移除
+        GameObject obj = ResMgr.GetInstance().Load<GameObject>(CanvasPath);
         canvas = obj.transform as RectTransform;
         GameObject.DontDestroyOnLoad(obj);
 
-        //找到各层
+        // 找到各层
         bot = canvas.Find("Bot");
         mid = canvas.Find("Mid");
         top = canvas.Find("Top");
         system = canvas.Find("System");
 
-        //创建EventSystem 让其过场景的时候 不被移除
-        obj = ResMgr.GetInstance().Load<GameObject>("UI/EventSystem");
+        // 创建 EventSystem，让其过场景不被移除
+        obj = ResMgr.GetInstance().Load<GameObject>(EventSystemPath);
         GameObject.DontDestroyOnLoad(obj);
     }
 
@@ -86,15 +87,12 @@ public class UIManager : BaseManager<UIManager>
             // 处理面板创建完成后的逻辑
             if (callBack != null)
                 callBack(panelDic[panelName] as T);
-            //避免面板重复加载 如果存在该面板 即直接显示 调用回调函数后  直接return 不再处理后面的异步加载逻辑
+            // 避免面板重复加载
             return;
         }
 
         ResMgr.GetInstance().LoadAsync<GameObject>("UI/" + panelName, (obj) =>
         {
-            //把他作为 Canvas的子对象
-            //并且 要设置它的相对位置
-            //找到父对象 你到底显示在哪一层
             Transform father = bot;
             switch(layer)
             {
@@ -108,7 +106,7 @@ public class UIManager : BaseManager<UIManager>
                     father = system;
                     break;
             }
-            //设置父对象  设置相对位置和大小
+            // 设置父对象，设置相对位置和大小
             obj.transform.SetParent(father);
 
             obj.transform.localPosition = Vector3.zero;
@@ -117,7 +115,7 @@ public class UIManager : BaseManager<UIManager>
             (obj.transform as RectTransform).offsetMax = Vector2.zero;
             (obj.transform as RectTransform).offsetMin = Vector2.zero;
 
-            //得到预设体身上的面板脚本
+            // 得到预设体身上的面板脚本
             T panel = obj.GetComponent<T>();
             // 处理面板创建完成后的逻辑
             if (callBack != null)
@@ -137,7 +135,6 @@ public class UIManager : BaseManager<UIManager>
 
             panel.ShowMe();
 
-            //把面板存起来
             panelDic.Add(panelName, panel);
         });
     }
@@ -157,7 +154,7 @@ public class UIManager : BaseManager<UIManager>
     }
 
     /// <summary>
-    /// 得到某一个已经显示的面板 方便外部使用
+    /// 得到某一个已经显示的面板
     /// </summary>
     public T GetPanel<T>(string name) where T:BasePanel
     {

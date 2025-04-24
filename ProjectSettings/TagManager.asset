@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - VirtualCamera
+  - SyncPlayer
   layers:
   - Default
   - TransparentFX
@@ -31,8 +32,8 @@ TagManager:
   - Environment
   - GroundCheck
   - AttackCheck
-  - 
-  - 
+  - SyncPlayer
+  - Player
   - 
   - 
   - 

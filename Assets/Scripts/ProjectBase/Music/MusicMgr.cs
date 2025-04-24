@@ -5,16 +5,19 @@ using UnityEngine.Events;
 
 public class MusicMgr : BaseManager<MusicMgr>
 {
-    //唯一的背景音乐组件
+    private static string MusicBKPath { get; set; } = "Music/BK/";
+    private static string MusicSoundPath { get; set; } = "Music/Sound/";
+
+    // 唯一的背景音乐组件
     private AudioSource bkMusic = null;
-    //音乐大小
+    // 音乐大小
     private float bkValue = 1;
 
-    //音效依附对象
+    // 音效依附对象
     private GameObject soundObj = null;
-    //音效列表
+    // 音效列表
     private List<AudioSource> soundList = new List<AudioSource>();
-    //音效大小
+    // 音效大小
     private float soundValue = 1;
 
     public MusicMgr()
@@ -46,8 +49,8 @@ public class MusicMgr : BaseManager<MusicMgr>
             obj.name = "BkMusic";
             bkMusic = obj.AddComponent<AudioSource>();
         }
-        //异步加载背景音乐 加载完成后 播放
-        ResMgr.GetInstance().LoadAsync<AudioClip>("Music/BK/" + name, (clip) =>
+        // 异步加载背景音乐，加载完成后播放
+        ResMgr.GetInstance().LoadAsync<AudioClip>(MusicBKPath + name, (clip) =>
         {
             bkMusic.clip = clip;
             bkMusic.loop = true;
@@ -99,8 +102,8 @@ public class MusicMgr : BaseManager<MusicMgr>
             soundObj = new GameObject();
             soundObj.name = "Sound";
         }
-        //当音效资源异步加载结束后 再添加一个音效
-        ResMgr.GetInstance().LoadAsync<AudioClip>("Music/Sound/" + name, (clip) =>
+        // 当音效资源异步加载结束后，再添加一个音效
+        ResMgr.GetInstance().LoadAsync<AudioClip>(MusicSoundPath + name, (clip) =>
         {
             AudioSource source = soundObj.AddComponent<AudioSource>();
             source.clip = clip;

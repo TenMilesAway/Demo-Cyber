@@ -10,42 +10,35 @@ namespace Cyber
         public Text txtID;
         public InputField inputFieldUserPW;
 
-        private NetManager.MsgListener MsgLoginListener;
+        // 监听存储，有加必有减
+        private MsgListener MsgLoginListener;
 
-        private void Start()
+        #region Unity 生命周期
+        protected override void Start()
         {
-            // 初始化网络传输监听
-            InitNet();
-            // 初始化 UI
-            InitUI();
+            base.Start();
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             NetManager.RemoveMsgListener("MsgLogin", MsgLoginListener);
         }
+        #endregion
 
-        private void InitNet()
+        #region Init Methods
+        protected override void InitNet()
         {
             // 登录
             MsgLoginListener = OnMsgLogin;
-
             NetManager.AddMsgListener("MsgLogin", MsgLoginListener);
         }
 
-        private void InitUI()
+        protected override void InitUI()
         {
             txtID = GetControl<Text>("txtID");
             inputFieldUserPW = GetControl<InputField>("inputFieldUserPW");
 
-            GetControl<Button>("btnStart").onClick.AddListener(() =>
-            {
-                MsgLogin msg = new MsgLogin();
-                msg.id = txtID.text;
-                msg.pw = inputFieldUserPW.text;
-
-                NetManager.Send(msg);
-            });
+            GetControl<Button>("btnStart").onClick.AddListener(Login);
 
             GetControl<Button>("btnTest").onClick.AddListener(() =>
             {
@@ -53,8 +46,21 @@ namespace Cyber
                 Debug.LogWarning(inputFieldUserPW.text);
             });
         }
+        #endregion
 
         #region Network Methods
+        public void Login()
+        {
+            MsgLogin msg = new MsgLogin();
+
+            msg.id = txtID.text;
+            msg.pw = inputFieldUserPW.text;
+
+            NetManager.Send(msg);
+        }
+        #endregion
+
+        #region Listener Methods
         public void OnMsgLogin(MsgBase msgBase)
         {
             MsgLogin msg = (MsgLogin)msgBase;
@@ -62,6 +68,7 @@ namespace Cyber
             if (msg.result == 0)
             {
                 Debug.Log("[客户端] 登录成功");
+                // 加载地图
                 Load();
             }
             else
@@ -76,6 +83,9 @@ namespace Cyber
         {
             UIManager.GetInstance().ShowPanel<LoadingPanel>("LoadingPanel", E_UI_Layer.System, (panel) =>
             {
+                // 这里加载地图，可以为以后存储上次离线点做准备
+                panel.maps = Maps.Spawn;
+                GameDataMgr.GetInstance().mapInfo = Maps.Spawn;
                 GameDataMgr.GetInstance().id = txtID.text;
             });
             UIManager.GetInstance().HidePanel("LoginPanel");

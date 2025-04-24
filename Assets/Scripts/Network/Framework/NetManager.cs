@@ -4,8 +4,14 @@ using UnityEngine;
 using System.Net.Sockets;
 using System;
 using System.Linq;
+using Cyber;
 
-public static class NetManager 
+// 事件委托类型
+public delegate void EventListener(String err);
+// 消息委托类型
+public delegate void MsgListener(MsgBase msgBase);
+
+public static class NetManager
 {
 	// 定义套接字
 	static Socket socket;
@@ -39,8 +45,7 @@ public static class NetManager
 		ConnectFail = 2,
 		Close = 3,
 	}
-	// 事件委托类型
-	public delegate void EventListener(String err);
+	
 	// 事件监听列表
 	private static Dictionary<NetEvent, EventListener> eventListeners = new Dictionary<NetEvent, EventListener>();
 	// 添加事件监听
@@ -74,9 +79,7 @@ public static class NetManager
 		}
 	}
 
-
-	// 消息委托类型
-	public delegate void MsgListener(MsgBase msgBase);
+	
 	// 消息监听列表
 	private static Dictionary<string, MsgListener> msgListeners = new Dictionary<string, MsgListener>();
 	// 添加消息监听
