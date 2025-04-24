@@ -31,16 +31,12 @@ public class EventInfo : IEventInfo
 
 
 /// <summary>
-/// 事件中心 单例模式对象
-/// 1.Dictionary
-/// 2.委托
-/// 3.观察者设计模式
-/// 4.泛型
+/// 事件中心
 /// </summary>
 public class EventCenter : BaseManager<EventCenter>
 {
-    //key —— 事件的名字（比如：怪物死亡，玩家死亡，通关 等等）
-    //value —— 对应的是 监听这个事件 对应的委托函数们
+    // key —— 事件的名字（比如：怪物死亡，玩家死亡，通关 等等）
+    // value —— 对应监听这个事件的一系列委托函数
     private Dictionary<string, IEventInfo> eventDic = new Dictionary<string, IEventInfo>();
 
     /// <summary>
@@ -50,13 +46,13 @@ public class EventCenter : BaseManager<EventCenter>
     /// <param name="action">准备用来处理事件 的委托函数</param>
     public void AddEventListener<T>(string name, UnityAction<T> action)
     {
-        //有没有对应的事件监听
-        //有的情况
+        // 有没有对应的事件监听
+        // 有
         if( eventDic.ContainsKey(name) )
         {
             (eventDic[name] as EventInfo<T>).actions += action;
         }
-        //没有的情况
+        // 没有
         else
         {
             eventDic.Add(name, new EventInfo<T>( action ));
@@ -70,13 +66,13 @@ public class EventCenter : BaseManager<EventCenter>
     /// <param name="action"></param>
     public void AddEventListener(string name, UnityAction action)
     {
-        //有没有对应的事件监听
-        //有的情况
+        // 有没有对应的事件监听
+        // 有
         if (eventDic.ContainsKey(name))
         {
             (eventDic[name] as EventInfo).actions += action;
         }
-        //没有的情况
+        // 没有
         else
         {
             eventDic.Add(name, new EventInfo(action));
@@ -112,14 +108,12 @@ public class EventCenter : BaseManager<EventCenter>
     /// <param name="name">哪一个名字的事件触发了</param>
     public void EventTrigger<T>(string name, T info)
     {
-        //有没有对应的事件监听
-        //有的情况
+        // 有没有对应的事件监听
+        // 有
         if (eventDic.ContainsKey(name))
         {
-            //eventDic[name]();
             if((eventDic[name] as EventInfo<T>).actions != null)
                 (eventDic[name] as EventInfo<T>).actions.Invoke(info);
-            //eventDic[name].Invoke(info);
         }
     }
 
@@ -129,20 +123,17 @@ public class EventCenter : BaseManager<EventCenter>
     /// <param name="name"></param>
     public void EventTrigger(string name)
     {
-        //有没有对应的事件监听
-        //有的情况
+        // 有没有对应的事件监听
+        // 有
         if (eventDic.ContainsKey(name))
         {
-            //eventDic[name]();
             if ((eventDic[name] as EventInfo).actions != null)
                 (eventDic[name] as EventInfo).actions.Invoke();
-            //eventDic[name].Invoke(info);
         }
     }
 
     /// <summary>
     /// 清空事件中心
-    /// 主要用在 场景切换时
     /// </summary>
     public void Clear()
     {
