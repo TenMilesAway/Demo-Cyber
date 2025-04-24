@@ -6,16 +6,28 @@ namespace Cyber
 {
     public class SyncPlayer : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
+        [field: Header("Animations")]
+        [field: SerializeField] public PlayerAnimationData AnimationData { get; private set; }
+
+        public Rigidbody Rigidbody { get; private set; }
+        public Animator Animator { get; private set; }
+
+        public SyncPlayerMovementStateMachine movementStateMachine;
+
+        private void Awake()
         {
-        
+            AnimationData.Initialize();
+
+            Rigidbody = GetComponent<Rigidbody>();
+
+            Animator = GetComponentInChildren<Animator>();
+
+            movementStateMachine = new SyncPlayerMovementStateMachine(this);
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Start()
         {
-        
+            movementStateMachine.ChangeState(movementStateMachine.IdlingState);
         }
     }
 }

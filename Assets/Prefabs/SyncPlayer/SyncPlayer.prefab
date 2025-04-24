@@ -110,7 +110,7 @@ Animator:
   m_GameObject: {fileID: 233374287751306468}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 41da0a637e1b865429684ab3de76c2b7, type: 3}
-  m_Controller: {fileID: 22100000, guid: 1a2a3448a9855f245beef20a79f9eec3, type: 2}
+  m_Controller: {fileID: 9100000, guid: 97030d6c18d02c9478f79b498b8deedb, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -1822,6 +1822,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6472ba25fce179a4daa72c54f7d3d1e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <AnimationData>k__BackingField:
+    groundedParameterName: Grounded
+    movingParameterName: Moving
+    stoppingParameterName: Stopping
+    landingParameterName: Landing
+    airborneParameterName: Airborne
+    attackParameterName: Attack
+    idleParameterName: isIdling
+    dashParameterName: isDashing
+    walkParameterName: isWalking
+    runParameterName: isRunning
+    sprintParameterName: isSprinting
+    mediumStopParameterName: isMediumStopping
+    hardStopParameterName: isHardStopping
+    rollParameterName: isRolling
+    hardLandParameterName: isHardLanding
+    fallParameterName: isFalling
+    attackReadyParameterName: isAttackReady
 --- !u!1 &6967008945560752627
 GameObject:
   m_ObjectHideFlags: 0
