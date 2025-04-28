@@ -9,7 +9,7 @@ namespace Cyber
     public class PromptPanel : BasePanel
     {
         private string prompt;
-        private void Start()
+        protected override void Start()
         {
             Sequence sequence = DOTween.Sequence();
 
