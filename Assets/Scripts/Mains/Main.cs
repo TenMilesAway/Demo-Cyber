@@ -34,6 +34,7 @@ namespace Cyber
                 InitNet();
 
             // 无论如何，需要更新一下地图的角色 
+            // 这里有问题，如果是新注册的角色，数据还没存入数据库，所以会发生错误
             if (GameDataMgr.GetInstance().isEnterNewMap)
                 UpdateSyncPlayer();
 
@@ -152,7 +153,8 @@ namespace Cyber
                 Transform syncPlayer = GameDataMgr.GetInstance().syncPlayers[tempInfo.id].transform;
                 syncPlayer.position = new Vector3(tempInfo.x, tempInfo.y, tempInfo.z);
                 syncPlayer.eulerAngles = new Vector3(tempInfo.rx, tempInfo.ry, tempInfo.rz);
-                Debug.Log(tempInfo.state);
+                
+                // 利用反射改变同步角色的状态机
                 tempSyncStateMachine = GameDataMgr.GetInstance().syncPlayers[tempInfo.id].movementStateMachine;
                 PropertyInfo info = t.GetProperty(tempInfo.state);
                 GameDataMgr.GetInstance().syncPlayers[tempInfo.id].movementStateMachine.ChangeState(info.GetValue(tempSyncStateMachine) as IState);

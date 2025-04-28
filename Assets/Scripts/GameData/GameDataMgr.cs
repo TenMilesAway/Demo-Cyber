@@ -113,6 +113,7 @@ namespace Cyber
             if (msg.result == 0)
             {
                 Debug.Log("[客户端] 角色信息存储成功");
+                // 这里来改个变量
             }
             else
             {
