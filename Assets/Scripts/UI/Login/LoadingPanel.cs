@@ -47,7 +47,7 @@ namespace Cyber
 
             while (!ao.isDone)
             {
-                sliderLoad.value = ao.progress * 100;
+                sliderLoad.value = ao.progress;
 
                 txtLoad.text = (sliderLoad.value * 100).ToString();
 

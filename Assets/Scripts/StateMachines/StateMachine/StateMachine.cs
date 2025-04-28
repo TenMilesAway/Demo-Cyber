@@ -62,7 +62,7 @@ namespace Cyber
 
         public string GetCurrentState()
         {
-            return currentState.GetType().Name;
+            return currentState.GetType().Name.Remove(0, 6);
         }
     }
 }

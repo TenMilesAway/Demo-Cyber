@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Cyber;
 
 /// <summary>
 /// 面板基类，通过代码快速的找到所有的子控件
@@ -21,14 +22,15 @@ public class BasePanel : MonoBehaviour
         FindChildrenControl<Slider>();
         FindChildrenControl<ScrollRect>();
         FindChildrenControl<InputField>();
+
+        // 初始化 UI
+        InitUI();
     }
 
     protected virtual void Start()
     {
         // 初始化网络监听
         InitNet();
-        // 初始化 UI
-        InitUI();
     }
 
     protected virtual void OnDestroy()
@@ -62,17 +64,7 @@ public class BasePanel : MonoBehaviour
     /// </summary>
     public virtual void HideMe()
     {
-
-    }
-
-    protected virtual void OnClick(string btnName)
-    {
-
-    }
-
-    protected virtual void OnValueChanged(string toggleName, bool value)
-    {
-
+        
     }
 
     /// <summary>

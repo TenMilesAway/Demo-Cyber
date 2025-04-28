@@ -12,6 +12,7 @@ namespace Cyber
         [SerializeField] private CinemachineInputProvider inputProvider;
         [SerializeField] private bool disableCameraLookOnCursorVisible;
         [SerializeField] private bool disableCameraZoomOnCursorVisible;
+        [SerializeField] private bool disableStateAttack;
 
         [Tooltip("If you're using Cinemachine 2.8.4 or under, untick this option.\nIf unticked, both Look and Zoom will be disabled.")]
         [SerializeField] private bool fixedCinemachineVersion;
@@ -58,6 +59,7 @@ namespace Cyber
 
                 inputProvider.XYAxis.action.Enable();
                 inputProvider.ZAxis.action.Enable();
+                GameDataMgr.GetInstance().GetPlayer().Input.PlayerActions.Flip.Enable();
 
                 return;
             }
@@ -79,6 +81,11 @@ namespace Cyber
             if (disableCameraZoomOnCursorVisible)
             {
                 inputProvider.ZAxis.action.Disable();
+            }
+
+            if (disableStateAttack)
+            {
+                GameDataMgr.GetInstance().GetPlayer().Input.InputActions.Player.Flip.Disable();
             }
         }
     }

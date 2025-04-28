@@ -25,8 +25,6 @@ namespace Cyber
         public virtual void Enter()
         {
             AddInputActionsCallbacks();
-
-            Debug.Log(GetType().Name);
         }
 
         public virtual void Exit()

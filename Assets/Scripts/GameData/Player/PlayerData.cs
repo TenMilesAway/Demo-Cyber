@@ -19,6 +19,8 @@ namespace Cyber
         public List<ItemInfo> equips;
         public List<ItemInfo> potions;
 
+        public List<ItemInfo> nowEquips;
+
         public PlayerInfo()
         {
             id = GameDataMgr.GetInstance().id;
@@ -33,6 +35,8 @@ namespace Cyber
                                           new ItemInfo { id = 3, num = 1 }, new ItemInfo { id = 4, num = 1 },
                                           new ItemInfo { id = 5, num = 1 }, new ItemInfo { id = 6, num = 1 } };
             potions = new List<ItemInfo> { new ItemInfo { id = 7, num = 3 }, new ItemInfo { id = 8, num = 3 } };
+
+            nowEquips = new List<ItemInfo>();
         }
     }
 

@@ -5,24 +5,19 @@ using UnityEngine.UI;
 
 namespace Cyber
 {
-    public enum E_Bag_Type
-    {
-        Item = 1,
-        Equip,
-        Potion
-    }
-
-    public class InventoryPanel : BasePanel
+    public class InventoryPanel : DisableBasePanel
     {
         public Transform content;
 
         private List<ItemCell> list = new List<ItemCell>();
 
-        private void Start()
+        #region Unity ÉúÃüÖÜÆÚ
+        protected override void Start()
         {
             GetControl<Button>("btnClose").onClick.AddListener(() => 
             {
                 UIManager.GetInstance().HidePanel("InventoryPanel");
+                UIManager.GetInstance().HidePanel("EquipPanel");
             });
 
             GetControl<Toggle>("togItem").onValueChanged.AddListener(ToggleValueChanged);
@@ -31,7 +26,9 @@ namespace Cyber
 
             ChangeType(E_Bag_Type.Item);
         }
+        #endregion
 
+        #region Main Methods
         private void ToggleValueChanged(bool value)
         {
             if (GetControl<Toggle>("togItem").isOn)
@@ -71,10 +68,11 @@ namespace Cyber
             foreach (ItemInfo itemInfo in tempInfo)
             {
                 ItemCell cell = ResMgr.GetInstance().Load<GameObject>("UI/ItemCell").GetComponent<ItemCell>();
-                cell.transform.SetParent(content);
+                cell.transform.SetParent(content, false);
                 cell.InitInfo(itemInfo);
                 list.Add(cell);
             }
         }
+        #endregion
     }
 }
