@@ -1,13 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace Cyber
 {
     public class Main : MonoBehaviour
     {
-        public bool isInitNet = false;
+        public Type t = typeof(SyncPlayerMovementStateMachine);
+        public SyncPlayerMovementStateMachine tempSyncStateMachine;
 
         #region Unity 生命周期
         void Start()
@@ -39,13 +41,13 @@ namespace Cyber
             if (GameDataMgr.GetInstance().GetPlayerTempInfo() == null)
                 return;
 
-            // 获取临时数据后，做网络请求的发送，这些上传更新加点频率限制，只有移动的时候才上传？
+            // 获取临时数据后，做网络请求的发送
             UploadPlayerTempInfo();
         }
         #endregion
 
         #region Init Methods
-        private static void InitData()
+        private void InitData()
         {
             GameDataMgr.GetInstance().Init();
         }
@@ -60,19 +62,19 @@ namespace Cyber
             GameDataMgr.GetInstance().isDataReady = false;
         }
 
-        private static void InitUI()
+        private void InitUI()
         {
             PromptMgr.GetInstance().ShowPromptPanel("Game Start");
 
             UIManager.GetInstance().ShowPanel<MainPanel>("MainPanel");
         }
 
-        private static void InitDialogueMgr()
+        private void InitDialogueMgr()
         {
             DialogueMgr.GetInstance().Init();
         }
 
-        private static void InitVirtualCameras()
+        private void InitVirtualCameras()
         {
             CameraController.GetInstance().Init();
         }
@@ -137,8 +139,10 @@ namespace Cyber
                 syncPlayer.position = new Vector3(tempInfo.x, tempInfo.y, tempInfo.z);
                 syncPlayer.eulerAngles = new Vector3(tempInfo.rx, tempInfo.ry, tempInfo.rz);
                 Debug.Log(tempInfo.state);
+                tempSyncStateMachine = GameDataMgr.GetInstance().syncPlayers[tempInfo.id].movementStateMachine;
+                PropertyInfo info = t.GetProperty(tempInfo.state);
+                GameDataMgr.GetInstance().syncPlayers[tempInfo.id].movementStateMachine.ChangeState(info.GetValue(tempSyncStateMachine) as IState);
             }
-
         }
         #endregion
     }

@@ -10,8 +10,6 @@ namespace Cyber
         public Text txtID;
         public InputField inputFieldUserPW;
 
-        // 监听存储，有加必有减
-        private MsgListener MsgLoginListener;
 
         #region Unity 生命周期
         protected override void Start()
@@ -21,7 +19,7 @@ namespace Cyber
 
         protected override void OnDestroy()
         {
-            NetManager.RemoveMsgListener("MsgLogin", MsgLoginListener);
+            NetManager.RemoveMsgListener("MsgLogin", OnMsgLogin);
         }
         #endregion
 
@@ -29,8 +27,7 @@ namespace Cyber
         protected override void InitNet()
         {
             // 登录
-            MsgLoginListener = OnMsgLogin;
-            NetManager.AddMsgListener("MsgLogin", MsgLoginListener);
+            NetManager.AddMsgListener("MsgLogin", OnMsgLogin);
         }
 
         protected override void InitUI()

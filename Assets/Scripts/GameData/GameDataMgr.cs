@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using UnityEngine;
 
@@ -73,6 +75,11 @@ namespace Cyber
             player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
             // PlayerTempInfo
             tempInfo = new PlayerTempInfo(id, player.transform.position, player.transform.eulerAngles, player.movementStateMachine.GetCurrentState());
+
+            PlayerMovementStateMachine stateMachine = new PlayerMovementStateMachine(player);
+            Type t = typeof(PlayerMovementStateMachine);
+            PropertyInfo info = t.GetProperty("IdlingState");
+            Debug.Log(info.GetValue(stateMachine));
         }
         #endregion
 
@@ -176,7 +183,7 @@ namespace Cyber
             tempInfo.ry = rot.y;
             tempInfo.rz = rot.z;
 
-            tempInfo.state = state;
+            tempInfo.state = state.Remove(0, 6);
         }
         #endregion
     }

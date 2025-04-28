@@ -13,6 +13,8 @@ namespace Cyber
         #region Unity 生命周期
         void Start()
         {
+            Screen.SetResolution(960, 490, false);
+
             DontDestroyOnLoad(this);
 
             // 连接服务器
