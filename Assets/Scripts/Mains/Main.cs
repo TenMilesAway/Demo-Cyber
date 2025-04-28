@@ -1,13 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace Cyber
 {
     public class Main : MonoBehaviour
     {
-        public bool isInitNet = false;
+        public Type t = typeof(SyncPlayerMovementStateMachine);
+        public SyncPlayerMovementStateMachine tempSyncStateMachine;
 
         #region Unity 生命周期
         void Start()
@@ -96,7 +98,7 @@ namespace Cyber
             GameDataMgr.GetInstance().isEnterNewMap = false;
         }
 
-        // 这个方法目前只有上传，上传以后没做回传
+        // 这个方法只有上传，上传以后没做回传
         private void UploadPlayerTempInfo()
         {
             MsgUploadPlayerTempInfo msg = new MsgUploadPlayerTempInfo();
@@ -151,6 +153,9 @@ namespace Cyber
                 syncPlayer.position = new Vector3(tempInfo.x, tempInfo.y, tempInfo.z);
                 syncPlayer.eulerAngles = new Vector3(tempInfo.rx, tempInfo.ry, tempInfo.rz);
                 Debug.Log(tempInfo.state);
+                tempSyncStateMachine = GameDataMgr.GetInstance().syncPlayers[tempInfo.id].movementStateMachine;
+                PropertyInfo info = t.GetProperty(tempInfo.state);
+                GameDataMgr.GetInstance().syncPlayers[tempInfo.id].movementStateMachine.ChangeState(info.GetValue(tempSyncStateMachine) as IState);
             }
 
         }

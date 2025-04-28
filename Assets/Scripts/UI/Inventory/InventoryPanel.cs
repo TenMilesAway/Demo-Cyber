@@ -68,7 +68,7 @@ namespace Cyber
             foreach (ItemInfo itemInfo in tempInfo)
             {
                 ItemCell cell = ResMgr.GetInstance().Load<GameObject>("UI/ItemCell").GetComponent<ItemCell>();
-                cell.transform.SetParent(content);
+                cell.transform.SetParent(content, false);
                 cell.InitInfo(itemInfo);
                 list.Add(cell);
             }
