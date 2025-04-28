@@ -19,6 +19,7 @@ namespace Cyber
         public int type;
         public int price;
         public string tips;
+        public int equip;
     }
 
     [System.Serializable]
@@ -26,5 +27,23 @@ namespace Cyber
     {
         public int id;
         public int num;
+    }
+
+    public enum E_Bag_Type
+    {
+        Item = 1,
+        Equip,
+        Potion
+    }
+
+    public enum E_Item_Type
+    {
+        Item = 0,
+        Weapon = 1,
+        Helmet = 2,
+        Armor = 3,
+        Glove = 4,
+        Cuish = 5,
+        Shoe = 6,
     }
 }

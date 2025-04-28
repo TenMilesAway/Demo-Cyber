@@ -48,6 +48,7 @@ namespace Cyber
         private static void InitData()
         {
             GameDataMgr.GetInstance().Init();
+            InventoryMgr.GetInstance().Init();
         }
 
         private void InitNet()
@@ -56,6 +57,8 @@ namespace Cyber
             NetManager.AddMsgListener("MsgUpdatePlayerEntities", OnMsgUpdatePlayerEntities);
             // 更新同步玩家的状态信息
             NetManager.AddMsgListener("MsgUpdatePlayerTempInfo", OnMsgUpdatePlayerTempInfo);
+            // 玩家下线
+            NetManager.AddMsgListener("MsgPlayerDisconnect", OnMsgPlayerDisconnect);
 
             GameDataMgr.GetInstance().isDataReady = false;
         }
@@ -121,6 +124,17 @@ namespace Cyber
 
                 GameDataMgr.GetInstance().syncPlayers.Add(playerInfo.id, syncPlayer.GetComponent<SyncPlayer>());
             }
+        }
+
+        public void OnMsgPlayerDisconnect(MsgBase msgBase)
+        {
+            MsgPlayerDisconnect msg = (MsgPlayerDisconnect)msgBase;
+
+            SyncPlayer syncPlayer = GameDataMgr.GetInstance().syncPlayers[msg.id];
+
+            Destroy(syncPlayer.gameObject);
+
+            GameDataMgr.GetInstance().syncPlayers.Remove(msg.id);
         }
 
         public void OnMsgUpdatePlayerTempInfo(MsgBase msgBase)

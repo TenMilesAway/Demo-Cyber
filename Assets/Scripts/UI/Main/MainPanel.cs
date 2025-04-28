@@ -12,17 +12,12 @@ namespace Cyber
         private Text txtGem;
         private Text txtName;
 
-        private void Start()
+        protected override void Start()
         {
-            UpdatePlayerInfo();
-
-            GetControl<Button>("btnInventory").onClick.AddListener(() => 
-            {
-                UIManager.GetInstance().ShowPanel<InventoryPanel>("InventoryPanel");
-            });
+            base.Start();
         }
 
-        public void UpdatePlayerInfo()
+        protected override void InitUI()
         {
             txtLevel = GetControl<Text>("txtLevel");
             txtGold = GetControl<Text>("txtGold");
@@ -33,6 +28,12 @@ namespace Cyber
             txtGold.text = GameDataMgr.GetInstance().playerInfo.gold.ToString();
             txtGem.text = GameDataMgr.GetInstance().playerInfo.gem.ToString();
             txtName.text = GameDataMgr.GetInstance().playerInfo.id;
+
+            GetControl<Button>("btnInventory").onClick.AddListener(() =>
+            {
+                UIManager.GetInstance().ShowPanel<InventoryPanel>("InventoryPanel");
+                UIManager.GetInstance().ShowPanel<EquipPanel>("EquipPanel");
+            });
         }
     }
 }

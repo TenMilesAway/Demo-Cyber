@@ -1639,6 +1639,7 @@ MonoBehaviour:
   inputProvider: {fileID: 2581126756401969253}
   disableCameraLookOnCursorVisible: 1
   disableCameraZoomOnCursorVisible: 1
+  disableStateAttack: 1
   fixedCinemachineVersion: 0
 --- !u!1 &2581126757537936003
 GameObject:

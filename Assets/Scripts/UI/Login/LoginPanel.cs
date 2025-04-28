@@ -10,8 +10,9 @@ namespace Cyber
         public Text txtID;
         public InputField inputFieldUserPW;
 
-        // 监听存储，有加必有减
-        private MsgListener MsgLoginListener;
+        public Button btnStart;
+        public Button btnTest;
+        public Button btnReg;
 
         #region Unity 生命周期
         protected override void Start()
@@ -21,7 +22,7 @@ namespace Cyber
 
         protected override void OnDestroy()
         {
-            NetManager.RemoveMsgListener("MsgLogin", MsgLoginListener);
+            NetManager.RemoveMsgListener("MsgLogin", OnMsgLogin);
         }
         #endregion
 
@@ -29,8 +30,7 @@ namespace Cyber
         protected override void InitNet()
         {
             // 登录
-            MsgLoginListener = OnMsgLogin;
-            NetManager.AddMsgListener("MsgLogin", MsgLoginListener);
+            NetManager.AddMsgListener("MsgLogin", OnMsgLogin);
         }
 
         protected override void InitUI()
@@ -38,13 +38,13 @@ namespace Cyber
             txtID = GetControl<Text>("txtID");
             inputFieldUserPW = GetControl<InputField>("inputFieldUserPW");
 
-            GetControl<Button>("btnStart").onClick.AddListener(Login);
+            btnStart = GetControl<Button>("btnStart");
+            btnTest = GetControl<Button>("btnTest");
+            btnReg = GetControl<Button>("btnReg");
 
-            GetControl<Button>("btnTest").onClick.AddListener(() =>
-            {
-                Debug.LogWarning(txtID.text);
-                Debug.LogWarning(inputFieldUserPW.text);
-            });
+            btnStart.onClick.AddListener(Login);
+            btnTest.onClick.AddListener(Test);
+            btnReg.onClick.AddListener(Switch2Register);
         }
         #endregion
 
@@ -79,7 +79,7 @@ namespace Cyber
         #endregion
 
         #region Main Methods
-        public void Load()
+        private void Load()
         {
             UIManager.GetInstance().ShowPanel<LoadingPanel>("LoadingPanel", E_UI_Layer.System, (panel) =>
             {
@@ -89,6 +89,18 @@ namespace Cyber
                 GameDataMgr.GetInstance().id = txtID.text;
             });
             UIManager.GetInstance().HidePanel("LoginPanel");
+        }
+
+        private void Test()
+        {
+            Debug.LogWarning(txtID.text);
+            Debug.LogWarning(inputFieldUserPW.text);
+        }
+
+        private void Switch2Register()
+        {
+            UIManager.GetInstance().HidePanel("LoginPanel");
+            UIManager.GetInstance().ShowPanel<RegisterPanel>("RegisterPanel");
         }
         #endregion
     }
