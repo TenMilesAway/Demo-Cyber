@@ -23,6 +23,10 @@ namespace Cyber
         protected override void OnDestroy()
         {
             NetManager.RemoveMsgListener("MsgLogin", OnMsgLogin);
+
+            btnStart.onClick.RemoveListener(Login);
+            btnTest.onClick.RemoveListener(Test);
+            btnReg.onClick.RemoveListener(Switch2Register);
         }
         #endregion
 

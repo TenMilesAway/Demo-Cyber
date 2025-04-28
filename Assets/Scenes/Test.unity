@@ -520,7 +520,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40318cb886ea5414db2eed598f931868, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isInitNet: 0
 --- !u!4 &371044151
 Transform:
   m_ObjectHideFlags: 0
@@ -4674,7 +4673,7 @@ MonoBehaviour:
   m_HorizontalRecentering:
     m_enabled: 0
     m_WaitTime: 0
-    m_RecenteringTime: 2.352941
+    m_RecenteringTime: 4
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
   m_ApplyBeforeBody: 0

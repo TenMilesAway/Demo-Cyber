@@ -80,6 +80,7 @@ namespace Cyber
 
                 // 设置父对象
                 nowSelItemCellImg.transform.SetParent(UIManager.GetInstance().canvas, false);
+                nowSelItemCellImg.transform.SetParent(UIManager.GetInstance().canvas, true);
 
                 // 拖动结束，放入缓存池
                 if (!isDraging)
