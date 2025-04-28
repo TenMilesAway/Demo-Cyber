@@ -41,13 +41,13 @@ namespace Cyber
             if (GameDataMgr.GetInstance().GetPlayerTempInfo() == null)
                 return;
 
-            // 获取临时数据后，做网络请求的发送，这些上传更新加点频率限制，只有移动的时候才上传？
+            // 获取临时数据后，做网络请求的发送
             UploadPlayerTempInfo();
         }
         #endregion
 
         #region Init Methods
-        private static void InitData()
+        private void InitData()
         {
             GameDataMgr.GetInstance().Init();
             InventoryMgr.GetInstance().Init();
@@ -65,19 +65,19 @@ namespace Cyber
             GameDataMgr.GetInstance().isDataReady = false;
         }
 
-        private static void InitUI()
+        private void InitUI()
         {
             PromptMgr.GetInstance().ShowPromptPanel("Game Start");
 
             UIManager.GetInstance().ShowPanel<MainPanel>("MainPanel");
         }
 
-        private static void InitDialogueMgr()
+        private void InitDialogueMgr()
         {
             DialogueMgr.GetInstance().Init();
         }
 
-        private static void InitVirtualCameras()
+        private void InitVirtualCameras()
         {
             CameraController.GetInstance().Init();
         }
@@ -157,7 +157,6 @@ namespace Cyber
                 PropertyInfo info = t.GetProperty(tempInfo.state);
                 GameDataMgr.GetInstance().syncPlayers[tempInfo.id].movementStateMachine.ChangeState(info.GetValue(tempSyncStateMachine) as IState);
             }
-
         }
         #endregion
     }

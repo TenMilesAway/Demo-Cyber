@@ -14,7 +14,7 @@ namespace Cyber
         public Button btnTest;
         public Button btnReg;
 
-        #region Unity 生命周期
+        #region Unity 鐢熷懡鍛ㄦ湡
         protected override void Start()
         {
             base.Start();
@@ -33,7 +33,7 @@ namespace Cyber
         #region Init Methods
         protected override void InitNet()
         {
-            // 登录
+            // 鐧诲綍
             NetManager.AddMsgListener("MsgLogin", OnMsgLogin);
         }
 
@@ -71,13 +71,13 @@ namespace Cyber
 
             if (msg.result == 0)
             {
-                Debug.Log("[客户端] 登录成功");
-                // 加载地图
+                Debug.Log("[瀹㈡埛绔痌 鐧诲綍鎴愬姛");
+                // 鍔犺浇鍦板浘
                 Load();
             }
             else
             {
-                print("[客户端] 登录失败");
+                print("[瀹㈡埛绔痌 鐧诲綍澶辫触");
             }
         }
         #endregion
@@ -87,7 +87,7 @@ namespace Cyber
         {
             UIManager.GetInstance().ShowPanel<LoadingPanel>("LoadingPanel", E_UI_Layer.System, (panel) =>
             {
-                // 这里加载地图，可以为以后存储上次离线点做准备
+                // 杩欓噷鍔犺浇鍦板浘锛屽彲浠ヤ负浠ュ悗瀛樺偍涓婃绂荤嚎鐐瑰仛鍑嗗
                 panel.maps = Maps.Spawn;
                 GameDataMgr.GetInstance().mapInfo = Maps.Spawn;
                 GameDataMgr.GetInstance().id = txtID.text;

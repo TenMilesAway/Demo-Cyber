@@ -66,7 +66,7 @@ namespace Cyber
             rx = rot.x;
             ry = rot.y;
             rz = rot.z;
-            this.state = state;
+            this.state = state.Remove(0, 6);
         }
     }
 }
