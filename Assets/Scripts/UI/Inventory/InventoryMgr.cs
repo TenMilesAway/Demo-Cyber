@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 namespace Cyber
 {
+    /// <summary>
+    /// 管理 Inventory 中 ItemCell 的一些事件响应
+    /// </summary>
     public class InventoryMgr : BaseManager<InventoryMgr>
     {
         // 当前拖动的格子
@@ -19,6 +22,9 @@ namespace Cyber
         // 是否拖动中
         private bool isDraging = false;
 
+        /// <summary>
+        /// 初始化背包 ItemCell 的相关事件
+        /// </summary>
         public void Init()
         {
             EventCenter.GetInstance().AddEventListener<ItemCell>("ItemCellBeginDrag", BeginDragItemCell);

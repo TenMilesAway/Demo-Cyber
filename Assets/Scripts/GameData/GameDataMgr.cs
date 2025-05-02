@@ -25,7 +25,7 @@ namespace Cyber
         // 存储当前的地图信息
         public Maps mapInfo;
 
-        // 一些布尔判断值
+        [Header("控制逻辑的布尔值")]
         // 是否进入了新地图
         public bool isEnterNewMap = false;
         // 数据准备完毕
@@ -53,6 +53,7 @@ namespace Cyber
 
         private void InitItemInfo()
         {
+            // 读取 txt 文件
             string info = ResMgr.GetInstance().Load<TextAsset>("GameData/Json/ItemInfo").text;
             Items items = JsonUtility.FromJson<Items>(info);
 
@@ -73,13 +74,8 @@ namespace Cyber
         {
             // Player
             player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-            // PlayerTempInfo
+            // PlayerTempInfo，用户的临时数据（坐标、状态）
             tempInfo = new PlayerTempInfo(id, player.transform.position, player.transform.eulerAngles, player.movementStateMachine.GetCurrentState());
-
-            PlayerMovementStateMachine stateMachine = new PlayerMovementStateMachine(player);
-            Type t = typeof(PlayerMovementStateMachine);
-            PropertyInfo info = t.GetProperty("IdlingState");
-            Debug.Log(info.GetValue(stateMachine));
         }
         #endregion
 
@@ -106,21 +102,7 @@ namespace Cyber
         #endregion
 
         #region Msg Methods
-        private void OnMsgPlayerDataSave(MsgBase msgBase)
-        {
-            MsgPlayerDataSave msg = (MsgPlayerDataSave) msgBase;
-
-            if (msg.result == 0)
-            {
-                Debug.Log("[客户端] 角色信息存储成功");
-                // 这里来改个变量
-            }
-            else
-            {
-                Debug.Log("[客户端] 角色信息存储失败");
-            }
-        }
-
+        // 接收服务器数据加载的返回消息，判断角色信息获取是否成功
         private void OnMsgPlayerDataLoad(MsgBase msgBase)
         {
             MsgPlayerDataLoad msg = (MsgPlayerDataLoad)msgBase;
@@ -144,6 +126,20 @@ namespace Cyber
 
             // 数据准备完成
             isDataReady = true;
+        }
+
+        private void OnMsgPlayerDataSave(MsgBase msgBase)
+        {
+            MsgPlayerDataSave msg = (MsgPlayerDataSave) msgBase;
+
+            if (msg.result == 0)
+            {
+                Debug.Log("[客户端] 角色信息存储成功");
+            }
+            else
+            {
+                Debug.Log("[客户端] 角色信息存储失败");
+            }
         }
         #endregion
 

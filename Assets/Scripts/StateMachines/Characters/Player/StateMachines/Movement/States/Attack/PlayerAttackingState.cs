@@ -83,13 +83,15 @@ namespace Cyber
         {
             base.OnTriggerEnter(collider);
 
-            if (stateMachine.Player.LayerData.IsEnemyLayer(collider.gameObject.layer))
+            if (stateMachine.Player.LayerData.IsEnemyLayer(collider.gameObject.layer)
+                && stateMachine.ReusableData.IsAttackValid)
             {
+                stateMachine.ReusableData.IsAttackValid = false;
+
                 // ¹¥»÷Âß¼­
                 Debug.LogWarning("»÷ÖÐµÐÈË");
 
                 MonoMgr.GetInstance().StartCoroutine(SimulateHitfeel());
-
                 // Ìí¼Ó¼àÌý
             }
         }
@@ -102,6 +104,7 @@ namespace Cyber
         public override void OnAnimationExitEvent()
         {
             stateMachine.Player.ResizableCapsuleCollider.TriggerColliderData.HideAttackCheckCollider();
+            stateMachine.ReusableData.IsAttackValid = true;
         }
 
 

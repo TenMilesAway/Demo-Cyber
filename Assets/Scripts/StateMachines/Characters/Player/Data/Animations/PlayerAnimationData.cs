@@ -33,6 +33,9 @@ namespace Cyber
         [Header("Attack Parameter Names")]
         [SerializeField] private string attackReadyParameterName = "isAttackReady";
 
+        [Header("Reaction Parameter Names")]
+        [SerializeField] private string reactionParameterName = "isReaction";
+
 
         public int GroundedParameterHash { get; private set; }
         public int MovingParameterHash { get; private set; }
@@ -55,6 +58,8 @@ namespace Cyber
         public int AttackParameterHash { get; private set; }
         public int AttackReadyParameterHash { get; private set; }
 
+        public int ReactionParameterHash { get; private set; }
+
         public void Initialize()
         {
             GroundedParameterHash = Animator.StringToHash(groundedParameterName);
@@ -76,6 +81,8 @@ namespace Cyber
 
             FallParameterHash = Animator.StringToHash(fallParameterName);
             AttackReadyParameterHash = Animator.StringToHash(attackReadyParameterName);
+
+            ReactionParameterHash = Animator.StringToHash(reactionParameterName);
         }
     }
 }

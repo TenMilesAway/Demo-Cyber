@@ -1,16 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Cyber
 {
     public class EnemyMovementState : IState
     {
+        protected NavMeshAgent agent;
         protected EnemyMovementStateMachine stateMachine;
+        protected Transform targetPlayer;
 
         public EnemyMovementState(EnemyMovementStateMachine enemyMovementStateMachine)
         {
             stateMachine = enemyMovementStateMachine;
+            agent = enemyMovementStateMachine.Enemy.Agent;
         }
 
         public virtual void Enter()
@@ -33,34 +37,39 @@ namespace Cyber
             
         }
 
-        public void HandleInput()
+        public virtual void HandleInput()
         {
-            throw new System.NotImplementedException();
+            
         }
 
-        public void OnAnimationEnterEvent()
+        public virtual void OnAnimationEnterEvent()
         {
-            throw new System.NotImplementedException();
+            
         }
 
-        public void OnAnimationExitEvent()
+        public virtual void OnAnimationExitEvent()
         {
-            throw new System.NotImplementedException();
+            
         }
 
-        public void OnAnimationTransitionEvent()
+        public virtual void OnAnimationTransitionEvent()
         {
-            throw new System.NotImplementedException();
+            
         }
 
-        public void OnTriggerEnter(Collider collider)
+        public virtual void OnTriggerEnter(Collider collider)
         {
-            throw new System.NotImplementedException();
+            
         }
 
-        public void OnTriggerExit(Collider collider)
+        public virtual void OnTriggerExit(Collider collider)
         {
-            throw new System.NotImplementedException();
+            
+        }
+
+        public virtual void OnTriggerStay(Collider collider)
+        {
+            
         }
 
         protected void StartAnimation(int animationHash)
@@ -71,11 +80,6 @@ namespace Cyber
         protected void StopAnimation(int animationHash)
         {
             stateMachine.Enemy.Animator.SetBool(animationHash, false);
-        }
-
-        public void OnTriggerStay(Collider collider)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

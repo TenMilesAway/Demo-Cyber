@@ -6,24 +6,20 @@ using UnityEngine.UI;
 
 namespace Cyber
 {
+    /// <summary>
+    /// Inventory 中的格子
+    /// </summary>
     public class ItemCell : BasePanel
     {
         private ItemInfo _itemInfo;
+        public ItemInfo itemInfo { get { return _itemInfo; } }
 
-        public ItemInfo itemInfo
-        {
-            get
-            {
-                return _itemInfo;
-            }
-        }
-
+        // 面板组件
         public Image imgBack;
         public Image imgItem;
         public Text txtNum;
 
-        private Sprite tempSprite;
-
+        // 防止多次添加监听
         private bool isOpenDrag = false;
 
         // 装备类型，默认为 Item

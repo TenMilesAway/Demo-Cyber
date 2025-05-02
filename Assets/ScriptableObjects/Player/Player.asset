@@ -95,6 +95,8 @@ MonoBehaviour:
       <TimeToBeConsideredConsecutive>k__BackingField: 1
       <ConsecutiveDashesLimitAmount>k__BackingField: 2
       <DashLimitReachedCooldown>k__BackingField: 1.75
+    <ReactionData>k__BackingField:
+      <SpeedModifier>k__BackingField: 0.1
     <WalkData>k__BackingField:
       <SpeedModifier>k__BackingField: 0.225
       <BackwardsCameraRecenteringData>k__BackingField:

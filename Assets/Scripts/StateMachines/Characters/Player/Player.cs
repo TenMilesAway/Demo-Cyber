@@ -45,6 +45,8 @@ namespace Cyber
             MainCameraTransform = Camera.main.transform;
 
             movementStateMachine = new PlayerMovementStateMachine(this);
+
+            AddEventLiseners();
         }
 
         private void Start()
@@ -95,6 +97,18 @@ namespace Cyber
         public void OnMovementStateAnimationTransitionEvent()
         {
             movementStateMachine.OnAnimationTransitionEvent();
+        }
+
+        private void AddEventLiseners()
+        {
+            //  ‹…À
+            EventCenter.GetInstance().AddEventListener<float>("PlayerInjured", OnReaction);
+        }
+
+        public void OnReaction(float damage)
+        {
+            Debug.Log(" ‹µΩ…À∫¶: " + damage);
+            movementStateMachine.ChangeState(movementStateMachine.ReactionState);
         }
     }
 }

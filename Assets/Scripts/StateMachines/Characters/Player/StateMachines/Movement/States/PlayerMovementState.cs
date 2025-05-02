@@ -103,8 +103,14 @@ namespace Cyber
             stateMachine.ReusableData.TimeToReachTargetRotation = stateMachine.ReusableData.RotationData.TargetRotationReachTime;
         }
 
-        protected void StartAnimation(int animationHash)
+        protected void StartAnimation(int animationHash, bool isTrigger = false)
         {
+            if (isTrigger)
+            {
+                stateMachine.Player.Animator.SetTrigger(animationHash);
+                return;
+            }
+
             stateMachine.Player.Animator.SetBool(animationHash, true);
         }
 

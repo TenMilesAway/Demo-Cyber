@@ -53,6 +53,7 @@ namespace Cyber
         #endregion
 
         #region Network Methods
+        // 向服务器发送请求登录消息
         public void Login()
         {
             MsgLogin msg = new MsgLogin();
@@ -64,7 +65,8 @@ namespace Cyber
         }
         #endregion
 
-        #region Listener Methods
+        #region Msg Methods
+        // 监听登录是否成功
         public void OnMsgLogin(MsgBase msgBase)
         {
             MsgLogin msg = (MsgLogin)msgBase;

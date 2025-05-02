@@ -16,6 +16,7 @@ namespace Cyber
 
         public bool ShouldWalk { get; set; }
         public bool ShouldSprint { get; set; }
+        public bool IsAttackValid { get; set; } = true;
 
         private Vector3 currentTargetRotation;
         private Vector3 timeToReachTargetRotation;

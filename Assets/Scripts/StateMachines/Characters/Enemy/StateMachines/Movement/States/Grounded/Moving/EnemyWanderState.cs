@@ -7,14 +7,12 @@ namespace Cyber
 {
     public class EnemyWanderState : EnemyMovementState
     {
-        private NavMeshAgent agent;
         private Vector3 startPoint;
         private float wanderRadius;
 
         public EnemyWanderState(EnemyMovementStateMachine enemyMovementStateMachine) : base(enemyMovementStateMachine)
         {
-            agent = enemyMovementStateMachine.Enemy.Agent;
-            startPoint = enemyMovementStateMachine.Enemy.nowPosition.position;
+            startPoint = enemyMovementStateMachine.Enemy.NowPosition.position;
             wanderRadius = 10f;
         }
 
@@ -22,13 +20,14 @@ namespace Cyber
         {
             base.Enter();
 
-            Debug.Log("¿ªÊ¼Ñ²Âß");
             StartAnimation(stateMachine.Enemy.AniamtionData.WalkParameterHash);
         }
 
         public override void Exit()
         {
             base.Exit();
+
+            agent.isStopped = true;
 
             StopAnimation(stateMachine.Enemy.AniamtionData.WalkParameterHash);
         }
@@ -49,11 +48,13 @@ namespace Cyber
             }
         }
 
+        #region Main Methods
         private bool HasReachedDestination()
         {
             return !agent.pathPending
                 && agent.remainingDistance <= agent.stoppingDistance
                 && (!agent.hasPath || agent.velocity.sqrMagnitude == 0f);
         }
+        #endregion
     }
 }

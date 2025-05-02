@@ -25,6 +25,8 @@ namespace Cyber
 
         public PlayerFlippingState FlippingState { get; }
 
+        public PlayerReactionState ReactionState { get; }
+
         public PlayerMovementStateMachine(Player player)
         {
             Player = player;
@@ -49,6 +51,8 @@ namespace Cyber
             FallingState = new PlayerFallingState(this);
 
             FlippingState = new PlayerFlippingState(this);
+
+            ReactionState = new PlayerReactionState(this);
         }
     }
 }

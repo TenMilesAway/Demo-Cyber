@@ -6,10 +6,15 @@ using UnityEngine;
 
 namespace Cyber
 {
+    /// <summary>
+    /// 主要做数据、UI等功能的初始化，以及监听同步玩家数据
+    /// </summary>
     public class Main : MonoBehaviour
     {
-        public Type t = typeof(SyncPlayerMovementStateMachine);
-        public SyncPlayerMovementStateMachine tempSyncStateMachine;
+        // SyncPlayerMovementStateMachine 的反射
+        private Type t = typeof(SyncPlayerMovementStateMachine);
+        // 临时 SyncPlayerMovementStateMachine
+        private SyncPlayerMovementStateMachine tempSyncStateMachine;
 
         #region Unity 生命周期
         void Start()
@@ -34,11 +39,10 @@ namespace Cyber
                 InitNet();
 
             // 无论如何，需要更新一下地图的角色 
-            // 这里有问题，如果是新注册的角色，数据还没存入数据库，所以会发生错误
             if (GameDataMgr.GetInstance().isEnterNewMap)
                 UpdateSyncPlayer();
 
-            // 如果临时信息为空，则不执行后续逻辑
+            // 如果临时信息为空，则先不执行后续逻辑
             if (GameDataMgr.GetInstance().GetPlayerTempInfo() == null)
                 return;
 
@@ -69,7 +73,6 @@ namespace Cyber
         private void InitUI()
         {
             PromptMgr.GetInstance().ShowPromptPanel("Game Start");
-
             UIManager.GetInstance().ShowPanel<MainPanel>("MainPanel");
         }
 
@@ -112,6 +115,10 @@ namespace Cyber
         #endregion
 
         #region Msg Methods
+        /// <summary>
+        /// 监听消息，同步玩家的创建
+        /// </summary>
+        /// <param name="msgBase"></param>
         public void OnMsgUpdatePlayerEntities(MsgBase msgBase)
         {
             MsgUpdatePlayerEntities msg = (MsgUpdatePlayerEntities)msgBase;
@@ -129,6 +136,10 @@ namespace Cyber
             }
         }
 
+        /// <summary>
+        /// 监听消息，同步玩家下线
+        /// </summary>
+        /// <param name="msgBase"></param>
         public void OnMsgPlayerDisconnect(MsgBase msgBase)
         {
             MsgPlayerDisconnect msg = (MsgPlayerDisconnect)msgBase;
@@ -140,6 +151,10 @@ namespace Cyber
             GameDataMgr.GetInstance().syncPlayers.Remove(msg.id);
         }
 
+        /// <summary>
+        /// 监听消息，更新当前地图同步玩家的位置和状态
+        /// </summary>
+        /// <param name="msgBase"></param>
         public void OnMsgUpdatePlayerTempInfo(MsgBase msgBase)
         {
             MsgUpdatePlayerTempInfo msg = (MsgUpdatePlayerTempInfo)msgBase;
