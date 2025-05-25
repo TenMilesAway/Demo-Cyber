@@ -10,23 +10,30 @@ namespace Cyber
     {
         [field: SerializeField] public NavMeshAgent Agent { get; private set; }
         [field: SerializeField] public Animator Animator { get; private set; }
+        [field: SerializeField] public BehaviorTree BT { get; private set; }
 
-        public bool isWandering;
-        public bool isIdling;
+        public GameObject waypoints;
+        public GameObject waypoint1;
+        public GameObject waypoint2;
+        public GameObject waypoint3;
+        public GameObject waypoint4;
 
-        private Vector3 startPoint;
-        private float wanderRadius;
+        private bool isIdling;
+        private bool isWandering;
+
+        private float patrolRadius = 5f;
+        private float attackInterval = 2f;
+
+        private Vector3[] waypointArray = new Vector3[4];
 
         private void Awake()
         {
             Agent = GetComponent<NavMeshAgent>();
             Animator = GetComponentInChildren<Animator>();
+            BT = GetComponent<BehaviorTree>();
 
-            ResetAllBool();
-            isWandering = true;
-
-            startPoint = transform.position;
-            wanderRadius = 10f;
+            InitVariables();
+            GenerateWaypoints(patrolRadius);
         }
 
         private void Update()
@@ -34,16 +41,14 @@ namespace Cyber
             // 如果是巡逻状态
             if (isWandering)
             {
-                if (HasReachedDestination())
-                {
-                    Vector3 randomDirection = Random.insideUnitSphere * wanderRadius;
-                    randomDirection += startPoint;
-                    NavMeshHit hit;
-                    NavMesh.SamplePosition(randomDirection, out hit, wanderRadius, 1);
-                    Agent.SetDestination(hit.position);
 
-                    Animator.SetBool("isWalking", true);
-                }
+            }
+
+            BT.GetVariable("_velocity").SetValue(Agent.velocity.magnitude);
+
+            if (BT.GetVariable("_player").GetValue() != null)
+            {
+                Debug.Log("看到目标了");
             }
         }
 
@@ -53,7 +58,21 @@ namespace Cyber
             ResetAllBool();
             ResetAllAnimatorBool();
 
+            Animator.SetBool("isWalking", true);
             isWandering = true;
+        }
+
+        public void ChangeStateToIdle()
+        {
+            ResetAllBool();
+            ResetAllAnimatorBool();
+
+            isIdling = true;
+        }
+
+        public void ChangeStateToAttack()
+        {
+            Animator.SetTrigger("attack");
         }
         #endregion
 
@@ -70,11 +89,35 @@ namespace Cyber
             Animator.SetBool("isIdling", false);
         }
 
-        private bool HasReachedDestination()
+        private void InitVariables()
         {
-            return !Agent.pathPending
-                && Agent.remainingDistance < Agent.stoppingDistance
-                && (!Agent.hasPath || Agent.velocity.sqrMagnitude == 0f);
+            BT.GetVariable("_attackInterval").SetValue(attackInterval);
+        }
+
+        /// <summary>
+        /// 在范围内随机生成 4 个路径点
+        /// </summary>
+        private void GenerateWaypoints(float radius)
+        {
+            Vector3 randomDirection;
+            for (int i = 0; i < waypointArray.Length; i++)
+            {
+                randomDirection = Random.insideUnitSphere * radius;
+                randomDirection += transform.position;
+                waypointArray[i] = randomDirection;
+            }
+
+            for (int i = 0; i < waypointArray.Length; i++)
+            {
+                BT.SetVariableValue("_waypoint" + (i + 1), waypointArray[i]);
+            }
+
+            waypoint1.transform.position = (Vector3)BT.GetVariable("_waypoint1").GetValue();
+            waypoint2.transform.position = (Vector3)BT.GetVariable("_waypoint2").GetValue();
+            waypoint3.transform.position = (Vector3)BT.GetVariable("_waypoint3").GetValue();
+            waypoint4.transform.position = (Vector3)BT.GetVariable("_waypoint4").GetValue();
+
+            waypoints.transform.SetParent(null);
         }
         #endregion
     }

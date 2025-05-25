@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using Cyber;
+using TMPro;
 
 /// <summary>
 /// 面板基类，通过代码快速的找到所有的子控件
@@ -22,6 +22,9 @@ public class BasePanel : MonoBehaviour
         FindChildrenControl<Slider>();
         FindChildrenControl<ScrollRect>();
         FindChildrenControl<InputField>();
+
+        FindChildrenControl<TextMeshProUGUI>();
+        FindChildrenControl<TextMeshPro>();
 
         // 初始化 UI
         InitUI();
