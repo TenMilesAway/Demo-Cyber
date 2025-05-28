@@ -52,11 +52,11 @@ namespace Cyber
             switch (SearchTreeEntry.userData)
             {
                 case DSDialogueType.SingleChoice:
-                    DSSingleChoiceNode singleChoiceNode = graphView.CreateNode(DSDialogueType.SingleChoice, localMousePosition) as DSSingleChoiceNode;
+                    DSSingleChoiceNode singleChoiceNode = graphView.CreateNode("DialogueName", DSDialogueType.SingleChoice, localMousePosition) as DSSingleChoiceNode;
                     graphView.AddElement(singleChoiceNode);
                     return true;
                 case DSDialogueType.MultipleChoice:
-                    DSMultipleChoiceNode multipleChoiceNode = graphView.CreateNode(DSDialogueType.MultipleChoice, localMousePosition) as DSMultipleChoiceNode;
+                    DSMultipleChoiceNode multipleChoiceNode = graphView.CreateNode("DialogueName", DSDialogueType.MultipleChoice, localMousePosition) as DSMultipleChoiceNode;
                     graphView.AddElement(multipleChoiceNode);
                     return true;
                 case Group _:

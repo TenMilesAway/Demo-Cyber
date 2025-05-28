@@ -7,9 +7,9 @@ namespace Cyber
 {
     public class DSSingleChoiceNode : DSNode
     {
-        public override void Initialize(DSGraphView dSGraphView, Vector2 position)
+        public override void Initialize(string nodeName, DSGraphView dSGraphView, Vector2 position)
         {
-            base.Initialize(dSGraphView, position);
+            base.Initialize(nodeName, dSGraphView, position);
 
             DialogueType = DSDialogueType.SingleChoice;
 

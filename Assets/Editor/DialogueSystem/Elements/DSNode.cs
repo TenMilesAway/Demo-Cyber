@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -20,10 +21,11 @@ namespace Cyber
 
         private Color defaultBackgroundColor;
 
-        public virtual void Initialize(DSGraphView dSGraphView, Vector2 position)
+        public virtual void Initialize(string nodeName, DSGraphView dSGraphView, Vector2 position)
         {
             ID = Guid.NewGuid().ToString();
-            DialogueName = "DialogueName";
+
+            DialogueName = nodeName;
             Choices = new List<DSChoiceSaveData>();
             Text = "Dialogue text.";
 
@@ -44,6 +46,22 @@ namespace Cyber
 
                 target.value = callback.newValue.RemoveWhitespaces().RemoveSpecialCharacters();
 
+                if (string.IsNullOrEmpty(target.value))
+                {
+                    if (!string.IsNullOrEmpty(DialogueName))
+                    {
+                        ++graphView.NameErrorsAmount;
+                    }
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(DialogueName))
+                    {
+                        --graphView.NameErrorsAmount;
+                    }
+                }
+
+                // 如果是没有分组的节点
                 if (Group == null)
                 {
                     graphView.RemoveUngroupedNode(this);
@@ -55,6 +73,7 @@ namespace Cyber
                     return;
                 }
 
+                // 已有分组的节点
                 DSGroup currentGroup = Group;
 
                 graphView.RemoveGroupedNode(this, Group);
@@ -85,7 +104,10 @@ namespace Cyber
                 text = "Dialogue Text"
             };
 
-            TextField textTextField = DSElementUtility.CreateTextArea(Text);
+            TextField textTextField = DSElementUtility.CreateTextArea(Text, null, callback => 
+            {
+                Text = callback.newValue;
+            });
 
             textTextField.AddClasses(
                 "ds-node__textfield",
@@ -137,6 +159,13 @@ namespace Cyber
 
                 graphView.DeleteElements(port.connections);
             }
+        }
+
+        public bool IsStartingNode()
+        {
+            Port inputPort = inputContainer.Children().First() as Port;
+
+            return !inputPort.connected;
         }
 
         public void SetErrorStyle(Color color)

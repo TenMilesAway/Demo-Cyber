@@ -17,25 +17,25 @@ namespace Cyber
         private SerializableDictionary<string, DSGroupErrorData> groups;
         private SerializableDictionary<Group, SerializableDictionary<string, DSNodeErrorData>> groupedNodes;
 
-        private int repeatedNamesAmout;
+        private int nameErrorsAmount;
 
-        public int RepeatedNamesAmout
+        public int NameErrorsAmount
         {
             get
             {
-                return repeatedNamesAmout;
+                return nameErrorsAmount;
             }
             set
             {
-                repeatedNamesAmout = value;
+                nameErrorsAmount = value;
 
-                if (repeatedNamesAmout == 0)
+                if (nameErrorsAmount == 0)
                 {
                     // 启用保存按钮
                     editorWindow.EnableSaving();
                 }
 
-                if (repeatedNamesAmout == 1)
+                if (nameErrorsAmount == 1)
                 {
                     // 禁用保存按钮
                     editorWindow.DisableSaving();
@@ -53,6 +53,7 @@ namespace Cyber
 
             AddManipulators();
             AddSearchWindow();
+            AddMiniMap();
             AddGridBackground();
 
             OnElementsDeleted();
@@ -103,6 +104,7 @@ namespace Cyber
             this.AddManipulator(new RectangleSelector());
             this.AddManipulator(new ContentDragger());
 
+            // 右键菜单创建功能
             this.AddManipulator(CreateNodeContextualMenu("Add Node (Single Choice)", DSDialogueType.SingleChoice));
             this.AddManipulator(CreateNodeContextualMenu("Add Node (Multiple Choice)", DSDialogueType.MultipleChoice));
 
@@ -113,12 +115,13 @@ namespace Cyber
         private IManipulator CreateNodeContextualMenu(string actionTitle, DSDialogueType dialogueType)
         {
             ContextualMenuManipulator contextualMenuManipulator = new ContextualMenuManipulator(
-                menuEvent => menuEvent.menu.AppendAction(actionTitle, actionEvent => AddElement(CreateNode(dialogueType, GetLocalMousePosition(actionEvent.eventInfo.localMousePosition))))
+                menuEvent => menuEvent.menu.AppendAction(actionTitle, actionEvent => AddElement(CreateNode("DialogueName", dialogueType, GetLocalMousePosition(actionEvent.eventInfo.localMousePosition))))
             );
 
             return contextualMenuManipulator;
         }
 
+        // 创建 Group
         private IManipulator CreateGroupContextualMenu()
         {
             ContextualMenuManipulator contextualMenuManipulator = new ContextualMenuManipulator(
@@ -130,14 +133,15 @@ namespace Cyber
         #endregion
 
         #region Element Creation
-        public DSNode CreateNode(DSDialogueType dialogueType, Vector2 position)
+        public DSNode CreateNode(string nodeName, DSDialogueType dialogueType, Vector2 position, bool shouldDraw = true)
         {
             Type nodeType = Type.GetType($"Cyber.DS{dialogueType}Node");
 
             DSNode node = Activator.CreateInstance(nodeType) as DSNode;
 
-            node.Initialize(this, position);
-            node.Draw();
+            node.Initialize(nodeName, this, position);
+
+            if (shouldDraw) node.Draw();
 
             AddUngroupedNode(node);
 
@@ -150,7 +154,7 @@ namespace Cyber
 
             AddGroup(group);
 
-            AddElement(group);
+            this.AddElement(group);
             
             foreach (GraphElement selectedElement in selection)
             {
@@ -177,12 +181,15 @@ namespace Cyber
                 Type groupType = typeof(DSGroup);
                 Type edgeType = typeof(Edge);
 
+                // 最后统一删除列表，如果在遍历时删除会出问题
                 List<DSGroup> groupsToDelete = new List<DSGroup>();
                 List<Edge> edgesToDelete = new List<Edge>();
                 List<DSNode> nodesToDelete = new List<DSNode>();
 
                 foreach (GraphElement element in selection)
                 {
+                    // element.GetType().BaseType == nodeType
+                    // 有继承，最好用 is 判断
                     if (element is DSNode)
                     {
                         nodesToDelete.Add(element as DSNode);
@@ -283,9 +290,10 @@ namespace Cyber
                         continue;
                     }
 
+                    DSGroup nodeGroup = group as DSGroup;
                     DSNode node = element as DSNode;
 
-                    RemoveGroupedNode(node, group);
+                    RemoveGroupedNode(node, nodeGroup);
                     AddUngroupedNode(node);
                 }
             };
@@ -298,6 +306,21 @@ namespace Cyber
                 DSGroup dSGroup = group as DSGroup;
 
                 dSGroup.title = newTitle.RemoveWhitespaces().RemoveSpecialCharacters();
+
+                if (string.IsNullOrEmpty(dSGroup.title))
+                {
+                    if (!string.IsNullOrEmpty(dSGroup.OldTitle))
+                    {
+                        ++NameErrorsAmount;
+                    }
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(dSGroup.OldTitle))
+                    {
+                        --NameErrorsAmount;
+                    }
+                }
 
                 RemoveGroup(dSGroup);
 
@@ -373,7 +396,7 @@ namespace Cyber
 
             if (ungroupedNodesList.Count == 2)
             {
-                ++RepeatedNamesAmout;
+                ++NameErrorsAmount;
 
                 ungroupedNodesList[0].SetErrorStyle(errorColor);
             }
@@ -391,7 +414,7 @@ namespace Cyber
 
             if (ungroupedNodesList.Count == 1)
             {
-                --RepeatedNamesAmout;
+                --NameErrorsAmount;
 
                 ungroupedNodesList[0].ResetStyle();
 
@@ -429,7 +452,7 @@ namespace Cyber
 
             if (groupsList.Count == 2)
             {
-                ++RepeatedNamesAmout;
+                ++NameErrorsAmount;
 
                 groupsList[0].SetErrorStyle(errorColor);
             }
@@ -447,7 +470,7 @@ namespace Cyber
 
             if (groupsList.Count == 1)
             {
-                --RepeatedNamesAmout;
+                --NameErrorsAmount;
 
                 groupsList[0].ResetStyle();
 
@@ -492,13 +515,13 @@ namespace Cyber
 
             if (groupedNodesList.Count == 2)
             {
-                ++RepeatedNamesAmout;
+                ++NameErrorsAmount;
 
                 groupedNodesList[0].SetErrorStyle(errorColor);
             }
         }
 
-        public void RemoveGroupedNode(DSNode node, Group group)
+        public void RemoveGroupedNode(DSNode node, DSGroup group)
         {
             string nodeName = node.DialogueName.ToLower();
 
@@ -512,7 +535,7 @@ namespace Cyber
 
             if (groupedNodesList.Count == 1)
             {
-                --RepeatedNamesAmout;
+                --NameErrorsAmount;
 
                 groupedNodesList[0].ResetStyle();
 
@@ -542,6 +565,18 @@ namespace Cyber
             }
 
             nodeCreationRequest = context => SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), searchWindow);
+        }
+
+        private void AddMiniMap()
+        {
+            MiniMap miniMap = new MiniMap()
+            {
+                anchored = true
+            };
+
+            miniMap.SetPosition(new Rect(15, 50, 200, 180));
+
+            Add(miniMap);
         }
 
         private void AddGridBackground()
@@ -575,6 +610,17 @@ namespace Cyber
             Vector2 localMousePosition = contentViewContainer.WorldToLocal(worldMousePosition);
 
             return localMousePosition;
+        }
+
+        public void ClearGraph()
+        {
+            graphElements.ForEach(graphElement => RemoveElement(graphElement));
+
+            groups.Clear();
+            groupedNodes.Clear();
+            ungroupedNodes.Clear();
+
+            NameErrorsAmount = 0;
         }
         #endregion
     }
