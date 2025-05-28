@@ -13,6 +13,8 @@ namespace Cyber
         private DSEditorWindow editorWindow;
         private DSSearchWindow searchWindow;
 
+        private MiniMap miniMap;
+
         private SerializableDictionary<string, DSNodeErrorData> ungroupedNodes;
         private SerializableDictionary<string, DSGroupErrorData> groups;
         private SerializableDictionary<Group, SerializableDictionary<string, DSNodeErrorData>> groupedNodes;
@@ -63,6 +65,7 @@ namespace Cyber
             OnGraphViewChanged();
 
             AddStyles();
+            AddMiniMapStyles();
         }
 
         #region Overrided Methods
@@ -569,7 +572,7 @@ namespace Cyber
 
         private void AddMiniMap()
         {
-            MiniMap miniMap = new MiniMap()
+            miniMap = new MiniMap()
             {
                 anchored = true
             };
@@ -577,6 +580,8 @@ namespace Cyber
             miniMap.SetPosition(new Rect(15, 50, 200, 180));
 
             Add(miniMap);
+
+            miniMap.visible = false;
         }
 
         private void AddGridBackground()
@@ -594,6 +599,18 @@ namespace Cyber
                 "DialogueSystem/DSGraphViewStyles.uss",
                 "DialogueSystem/DSNodeStyles.uss"
             );
+        }
+
+        private void AddMiniMapStyles()
+        {
+            StyleColor backgroundColor = new StyleColor(new Color32(29, 29, 30, 255));
+            StyleColor borderColor = new StyleColor(new Color32(51, 51, 51, 255));
+
+            miniMap.style.backgroundColor   = backgroundColor;
+            miniMap.style.borderTopColor    = borderColor;
+            miniMap.style.borderLeftColor   = borderColor;
+            miniMap.style.borderRightColor  = borderColor;
+            miniMap.style.borderBottomColor = borderColor;
         }
         #endregion
 
@@ -621,6 +638,11 @@ namespace Cyber
             ungroupedNodes.Clear();
 
             NameErrorsAmount = 0;
+        }
+
+        public void ToggleMiniMap()
+        {
+            miniMap.visible = !miniMap.visible;
         }
         #endregion
     }

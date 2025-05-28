@@ -9,7 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfe0751e5f9aaa54ba45e701411d6c54, type: 3}
-  m_Name: DialogueGroup
+  m_Script: {fileID: 11500000, guid: 2074e3cc26805aa47a3ccf5ec441183a, type: 3}
+  m_Name: 2
   m_EditorClassIdentifier: 
-  <GroupName>k__BackingField: DialogueGroup
+  <FileName>k__BackingField: 2
+  <DialogueGroups>k__BackingField:
+    m_keys: []
+  <UngroupedDialogues>k__BackingField: []

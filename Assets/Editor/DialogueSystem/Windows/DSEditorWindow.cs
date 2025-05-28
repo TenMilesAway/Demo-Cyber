@@ -16,6 +16,7 @@ namespace Cyber
 
         private static TextField fileNameTextField;
         private Button saveButton;
+        private Button miniMapButton;
 
         [MenuItem("Window/DS/Dialogue Graph")]
         public static void ShowExample()
@@ -47,11 +48,14 @@ namespace Cyber
             Button clearButton = DSElementUtility.CreateButton("Clear", () => Clear());
             Button resetButton = DSElementUtility.CreateButton("Reset", () => ResetGraph());
 
+            miniMapButton = DSElementUtility.CreateButton("Minimap", () => ToggleMiniMap());
+
             toolbar.Add(fileNameTextField);
             toolbar.Add(saveButton);
             toolbar.Add(loadButton);
             toolbar.Add(clearButton);
             toolbar.Add(resetButton);
+            toolbar.Add(miniMapButton);
 
             toolbar.AddStyleSheets(
                 "DialogueSystem/DSToolbarStyles.uss"
@@ -119,6 +123,13 @@ namespace Cyber
         {
             Clear();
             UpdateFileName(defaultFileName);
+        }
+
+        private void ToggleMiniMap()
+        {
+            graphView.ToggleMiniMap();
+
+            miniMapButton.ToggleInClassList("ds-toolbar__button__selected");
         }
         #endregion
 
