@@ -15,5 +15,9 @@ namespace Cyber
 
         [SerializeField] private int selectedDialogueGroupIndex;
         [SerializeField] private int selectedDialogueIndex;
+
+        public DSDialogueContainerSO DialogueContainer { get { return dialogueContainer; } }
+        public DSDialogueGroupSO DialogueGroup { get { return dialogueGroup; } }
+        public DSDialogueSO Dialogue { get { return dialogue; } }
     }
 }

@@ -12,17 +12,27 @@ namespace Cyber
         [SerializeField] private List<DialogueString> dialogueStrings = new List<DialogueString>();
         [SerializeField] private Transform NPCTransform;
 
+        private DSDialogue dialogue;
+
+        private void Awake()
+        {
+            dialogue = GetComponent<DSDialogue>();
+        }
+
         private void OnTriggerEnter(Collider other)
         {
-            DialogueMgr.GetInstance().OnTriggerEnter(other, dialogueStrings, NPCTransform);
+            //DialogueMgr.GetInstance().OnTriggerEnter(other, dialogueStrings, NPCTransform);
+            NewDialogueMgr.GetInstance().OnTriggerEnter(other, dialogue, NPCTransform);
         }
 
         private void OnTriggerExit(Collider other)
         {
-            DialogueMgr.GetInstance().OnTriggerExit(other);
+            //DialogueMgr.GetInstance().OnTriggerExit(other);
+            NewDialogueMgr.GetInstance().OnTriggerExit(other);
         }
     }
 
+    #region Old Dialgue System
     [System.Serializable]
     public class DialogueString
     {
@@ -47,4 +57,5 @@ namespace Cyber
         public UnityEvent chooseEvent;
         
     }
+    #endregion
 }

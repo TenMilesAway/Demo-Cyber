@@ -78,7 +78,8 @@ namespace Cyber
 
         private void InitDialogueMgr()
         {
-            DialogueMgr.GetInstance().Init();
+            //DialogueMgr.GetInstance().Init();
+            NewDialogueMgr.GetInstance().Initialize();
         }
 
         private void InitVirtualCameras()
