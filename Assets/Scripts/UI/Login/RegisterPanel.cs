@@ -21,13 +21,29 @@ namespace Cyber
         public Button btnLogin;
 
         #region Unity ÉúÃüÖÜÆÚ
+        protected override void Awake()
+        {
+            base.Awake();
+        }
+
         protected override void Start()
         {
             base.Start();
+
+            InitNet();
         }
 
-        protected override void OnDestroy()
+        public override void ShowMe()
         {
+            base.ShowMe();
+
+            InitUI();
+        }
+
+        public override void HideMe()
+        {
+            base.HideMe();
+
             NetManager.RemoveMsgListener("MsgRegister", OnMsgRegister);
 
             inputFieldUserPW.onValueChanged.RemoveListener(VerifyPassword);
@@ -38,13 +54,13 @@ namespace Cyber
         #endregion
 
         #region Init Methods
-        protected override void InitNet()
+        private void InitNet()
         {
             // ×¢²á
             NetManager.AddMsgListener("MsgRegister", OnMsgRegister);
         }
 
-        protected override void InitUI()
+        private void InitUI()
         {
             txtID = GetControl<Text>("txtID");
             inputFieldUserPW = GetControl<InputField>("inputFieldUserPW");

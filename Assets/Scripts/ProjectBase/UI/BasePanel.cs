@@ -25,15 +25,11 @@ public class BasePanel : MonoBehaviour
 
         FindChildrenControl<TextMeshProUGUI>();
         FindChildrenControl<TextMeshPro>();
-
-        // 初始化 UI
-        InitUI();
     }
 
     protected virtual void Start()
     {
-        // 初始化网络监听
-        InitNet();
+
     }
 
     protected virtual void OnDestroy()
@@ -42,20 +38,8 @@ public class BasePanel : MonoBehaviour
     }
     #endregion
 
-    #region Init Methods
-    protected virtual void InitNet()
-    {
-
-    }
-
-    protected virtual void InitUI()
-    {
-
-    }
-    #endregion
-
     /// <summary>
-    /// 显示自己时调用的函数
+    /// 面板异步加载完成后调用的函数
     /// </summary>
     public virtual void ShowMe()
     {
@@ -63,7 +47,7 @@ public class BasePanel : MonoBehaviour
     }
 
     /// <summary>
-    /// 隐藏自己时调用的函数
+    /// 面板销毁前调用的函数
     /// </summary>
     public virtual void HideMe()
     {

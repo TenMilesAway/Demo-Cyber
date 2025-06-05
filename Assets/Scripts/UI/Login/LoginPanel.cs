@@ -15,13 +15,29 @@ namespace Cyber
         public Button btnReg;
 
         #region Unity 生命周期
+        protected override void Awake()
+        {
+            base.Awake();
+        }
+
         protected override void Start()
         {
             base.Start();
+
+            InitNet();
         }
 
-        protected override void OnDestroy()
+        public override void ShowMe()
         {
+            base.ShowMe();
+
+            InitUI();
+        }
+
+        public override void HideMe()
+        {
+            base.HideMe();
+
             NetManager.RemoveMsgListener("MsgLogin", OnMsgLogin);
 
             btnStart.onClick.RemoveListener(Login);
@@ -31,13 +47,13 @@ namespace Cyber
         #endregion
 
         #region Init Methods
-        protected override void InitNet()
+        private void InitNet()
         {
             // 登录
             NetManager.AddMsgListener("MsgLogin", OnMsgLogin);
         }
 
-        protected override void InitUI()
+        private void InitUI()
         {
             txtID = GetControl<Text>("txtID");
             inputFieldUserPW = GetControl<InputField>("inputFieldUserPW");

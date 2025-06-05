@@ -121,6 +121,7 @@ public class UIManager : BaseManager<UIManager>
             if (callBack != null)
                 callBack(panel);
 
+            // 清除当前的所有面板
             // 这里的处理有问题，后续再修改
             EventCenter.GetInstance().AddEventListener<string>("ClearAllPanels", PanelsEvent);
 
@@ -128,11 +129,10 @@ public class UIManager : BaseManager<UIManager>
             {
                 GameObject.Destroy(obj);
                 panelDic.Remove(panelName);
-                Debug.Log(panelName);
-                Debug.Log(str);
                 EventCenter.GetInstance().RemoveEventListener<string>("ClearAllPanels", PanelsEvent);
             }
 
+            // 在等待异步加载完成后执行的操作
             panel.ShowMe();
 
             panelDic.Add(panelName, panel);

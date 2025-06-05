@@ -12,12 +12,19 @@ namespace Cyber
         private Text txtGem;
         private Text txtName;
 
+        protected override void Awake()
+        {
+            base.Awake();
+
+            InitUI();
+        }
+
         protected override void Start()
         {
             base.Start();
         }
 
-        protected override void InitUI()
+        private void InitUI()
         {
             txtLevel = GetControl<Text>("txtLevel");
             txtGold = GetControl<Text>("txtGold");

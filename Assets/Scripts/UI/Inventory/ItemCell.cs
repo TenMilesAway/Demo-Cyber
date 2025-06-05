@@ -30,6 +30,8 @@ namespace Cyber
         protected override void Awake()
         {
             base.Awake();
+
+            InitUI();
         }
 
         protected override void Start()
@@ -39,7 +41,7 @@ namespace Cyber
         #endregion
 
         #region Init Methods
-        protected override void InitUI()
+        private void InitUI()
         {
             imgBack = GetControl<Image>("imgBack");
             imgItem = GetControl<Image>("imgItem");

@@ -16,16 +16,28 @@ namespace Cyber
         public Maps maps = Maps.Start;
 
         #region Unity ÉúÃüÖÜÆÚ
+        protected override void Awake()
+        {
+            base.Awake();
+        }
+
         protected override void Start()
         {
             base.Start();
 
             StartCoroutine(LoadSceneAsych());
         }
+
+        public override void ShowMe()
+        {
+            base.ShowMe();
+
+            InitUI();
+        }
         #endregion
 
         #region Init Methods
-        protected override void InitUI()
+        private void InitUI()
         {
             txtLoad = GetControl<Text>("txtLoad");
             sliderLoad = GetControl<Slider>("sliderLoad");

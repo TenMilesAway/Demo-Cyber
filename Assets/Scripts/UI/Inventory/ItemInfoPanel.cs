@@ -21,6 +21,8 @@ namespace Cyber
         protected override void Awake()
         {
             base.Awake();
+
+            InitUI();
         }
 
         protected override void Start()
@@ -38,7 +40,7 @@ namespace Cyber
         #endregion
 
         #region Init Methods
-        protected override void InitUI()
+        private void InitUI()
         {
             txtName = GetControl<Text>("txtName");
             txtType = GetControl<Text>("txtType");

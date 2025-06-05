@@ -380,7 +380,7 @@ public static class NetManager
 			return;
 		}
 		// 重复处理消息
-		for (int i = 0; i< MAX_MESSAGE_FIRE; i++)
+		for (int i = 0; i < MAX_MESSAGE_FIRE; i++)
 		{
 			// 获取第一条消息
 			MsgBase msgBase = null;
