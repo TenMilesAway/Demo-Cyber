@@ -10,8 +10,8 @@ namespace Cyber
     /// </summary>
     public class StartMain : MonoBehaviour
     {
-        [field: SerializeField] private string ip = "10.153.184.201"; // IP 地址
-        [field: SerializeField] private int port = 8888;              // 端口号
+        [SerializeField] private string ip = "192.168.43.132"; // IP 地址
+        [SerializeField] private int port = 8888;              // 端口号
 
         #region Unity 生命周期
         void Start()

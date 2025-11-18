@@ -7,9 +7,12 @@ public class SingletonMono<T> : MonoBehaviour where T: MonoBehaviour
 {
     private static T instance;
 
-    public static T GetInstance()
+    public static T Instance
     {
-        return instance;
+        get
+        {
+            return instance;
+        }
     }
 
     protected virtual void Awake()

@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System;
 using System.Linq;
 using Cyber;
+using System.Threading.Tasks;
 
 // 事件委托类型
 public delegate void EventListener(String err);
@@ -69,6 +70,11 @@ public static class NetManager
 		{
 			eventListeners[netEvent] -= listener;
 		}
+
+		if (eventListeners[netEvent] == null)
+        {
+			eventListeners.Remove(netEvent);
+        }
 	}
 	// 分发事件
 	public static void FireEvent(NetEvent netEvent, String err)
