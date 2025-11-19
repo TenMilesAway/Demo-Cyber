@@ -1,11 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Net.Sockets;
 using System;
 using System.Linq;
-using Cyber;
-using System.Threading.Tasks;
 
 // 事件委托类型
 public delegate void EventListener(String err);
@@ -38,50 +35,42 @@ public static class NetManager
 	static float lastPingTime = 0;
 	// 上一次收到 PONG 的时间
 	static float lastPongTime = 0;
-
-	//事件
-	public enum NetEvent
-	{
-		ConnectSucc = 1,
-		ConnectFail = 2,
-		Close = 3,
-	}
 	
 	// 事件监听列表
-	private static Dictionary<NetEvent, EventListener> eventListeners = new Dictionary<NetEvent, EventListener>();
+	private static Dictionary<EventEnum, EventListener> eventListeners = new Dictionary<EventEnum, EventListener>();
 	// 添加事件监听
-	public static void AddEventListener(NetEvent netEvent, EventListener listener)
+	public static void AddEventListener(EventEnum eventEnum, EventListener listener)
 	{
 		// 添加事件
-		if (eventListeners.ContainsKey(netEvent))
+		if (eventListeners.ContainsKey(eventEnum))
 		{
-			eventListeners[netEvent] += listener;
+			eventListeners[eventEnum] += listener;
 		}
 		// 新增事件
 		else
 		{
-			eventListeners[netEvent] = listener;
+			eventListeners[eventEnum] = listener;
 		}
 	}
 	// 删除事件监听
-	public static void RemoveEventListener(NetEvent netEvent, EventListener listener)
+	public static void RemoveEventListener(EventEnum eventEnum, EventListener listener)
 	{
-		if (eventListeners.ContainsKey(netEvent))
+		if (eventListeners.ContainsKey(eventEnum))
 		{
-			eventListeners[netEvent] -= listener;
+			eventListeners[eventEnum] -= listener;
 		}
 
-		if (eventListeners[netEvent] == null)
+		if (eventListeners[eventEnum] == null)
         {
-			eventListeners.Remove(netEvent);
+			eventListeners.Remove(eventEnum);
         }
 	}
 	// 分发事件
-	public static void FireEvent(NetEvent netEvent, String err)
+	public static void FireEvent(EventEnum eventEnum, String err)
 	{
-		if (eventListeners.ContainsKey(netEvent))
+		if (eventListeners.ContainsKey(eventEnum))
 		{
-			eventListeners[netEvent](err);
+			eventListeners[eventEnum](err);
 		}
 	}
 
@@ -178,16 +167,14 @@ public static class NetManager
 		{
 			Socket socket = (Socket) ar.AsyncState;
 			socket.EndConnect(ar);
-			Debug.Log("[客户端] 连接成功");
-			FireEvent(NetEvent.ConnectSucc, "");
+			FireEvent(EventEnum.ConnectSucc, "");
 			isConnecting = false;
 			// 开始接收
 			socket.BeginReceive(readBuff.bytes, readBuff.writeIdx, readBuff.remain, 0, ReceiveCallback, socket);
 		}
 		catch (SocketException ex)
 		{
-			Debug.Log("[客户端] 连接失败, " + ex.ToString());
-			FireEvent(NetEvent.ConnectFail, ex.ToString());
+			FireEvent(EventEnum.ConnectFail, ex.ToString());
 			isConnecting = false;
 		}
 	} 
@@ -213,7 +200,7 @@ public static class NetManager
 		else
 		{
 			socket.Close();
-			FireEvent(NetEvent.Close, "");
+			FireEvent(EventEnum.Close, "");
 		}
 	} 
 

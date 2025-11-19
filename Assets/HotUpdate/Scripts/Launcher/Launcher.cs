@@ -11,7 +11,7 @@ namespace Cyber
     {
         None,
 
-        // 预加载：资源、配置表等
+        // 预加载：一些配置、资源、道具配置表等
         PreloadBegin,
         PreloadIng,
         PreloadEnd,
@@ -25,6 +25,16 @@ namespace Cyber
         LoginBegin,
         LoginIng,
         LoginEnd,
+
+        // 初始化数据
+        InitDataBegin,
+        InitDataIng,
+        InitDataEnd,
+
+        // 切换地图
+        SwitchSceneBegin,
+        SwitchSceneIng,
+        SwitchSceneEnd,
     }
 
     /// <summary>
@@ -36,30 +46,26 @@ namespace Cyber
         [SerializeField] private string address = "127.0.0.1";
         [SerializeField] private int port = 8888;
 
-        private ConnectCallback callback;
-
         [Header("状态相关")]
         private LauncherProcess process;
 
         private void OnEnable()
         {
-            callback = new ConnectCallback();
-
-            NetManager.AddEventListener(NetManager.NetEvent.ConnectSucc, callback.ConnectSucc);
-            NetManager.AddEventListener(NetManager.NetEvent.ConnectFail, callback.ConnectFail);
-            NetManager.AddEventListener(NetManager.NetEvent.Close, callback.ConnectClose);
+            NetManager.AddEventListener(EventEnum.ConnectSucc, ConnectSucc);
+            NetManager.AddEventListener(EventEnum.ConnectFail, ConnectFail);
+            NetManager.AddEventListener(EventEnum.Close, ConnectClose);
         }
 
         private void OnDisable()
         {
-            NetManager.RemoveEventListener(NetManager.NetEvent.ConnectSucc, callback.ConnectSucc);
-            NetManager.RemoveEventListener(NetManager.NetEvent.ConnectFail, callback.ConnectFail);
-            NetManager.RemoveEventListener(NetManager.NetEvent.Close, callback.ConnectClose);
+            NetManager.RemoveEventListener(EventEnum.ConnectSucc, ConnectSucc);
+            NetManager.RemoveEventListener(EventEnum.ConnectFail, ConnectFail);
+            NetManager.RemoveEventListener(EventEnum.Close, ConnectClose);
         }
 
         private void Start()
         {
-            process = LauncherProcess.ConnectBegin;
+            process = LauncherProcess.PreloadBegin;
         }
 
         private void Update()
@@ -68,7 +74,8 @@ namespace Cyber
             {
                 case LauncherProcess.PreloadBegin:
                     {
-
+                        process = LauncherProcess.ConnectBegin;
+                        HADebug.DebugMode = true;
                         break;
                     }
                 case LauncherProcess.PreloadIng:
@@ -114,6 +121,21 @@ namespace Cyber
         /// 外界调用修改 Launcher 的状态
         /// </summary>
         /// <param name="state">状态</param>
+        private void ConnectSucc(string msg)
+        {
+            HADebug.LogFormat("[客户端] 连接服务器成功, [{0}]", msg);
+        }
+
+        private void ConnectFail(string msg)
+        {
+            HADebug.LogErrorFormat("[客户端] 连接服务器失败, 错误信息 [{0}]", msg);
+        }
+
+        private void ConnectClose(string msg)
+        {
+            HADebug.Log("[客户端] 服务器关闭");
+        }
+
         public void SetProcessState(LauncherProcess state)
         {
             process = state;

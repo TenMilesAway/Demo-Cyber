@@ -47,9 +47,9 @@ namespace Cyber
             NetManager.Connect(ip, port);
 
             ConnectCallback callback = new ConnectCallback();
-            NetManager.AddEventListener(NetManager.NetEvent.ConnectSucc, callback.ConnectSucc);
-            NetManager.AddEventListener(NetManager.NetEvent.ConnectFail, callback.ConnectFail);
-            NetManager.AddEventListener(NetManager.NetEvent.Close, callback.ConnectClose);
+            //NetManager.AddEventListener(NetManager.NetEvent.ConnectSucc, callback.ConnectSucc);
+            //NetManager.AddEventListener(NetManager.NetEvent.ConnectFail, callback.ConnectFail);
+            //NetManager.AddEventListener(NetManager.NetEvent.Close, callback.ConnectClose);
         }
         #endregion
     }
