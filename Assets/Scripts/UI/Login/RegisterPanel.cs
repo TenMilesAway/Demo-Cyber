@@ -116,7 +116,7 @@ namespace Cyber
         private void Swtich2Login()
         {
             UIManager.GetInstance().HidePanel("RegisterPanel");
-            UIManager.GetInstance().ShowPanel<LoginPanel>("LoginPanel");
+            //UIManager.GetInstance().ShowPanel<LoginPanel>("LoginPanel");
         }
 
         // 校验密码格式

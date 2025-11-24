@@ -36,7 +36,7 @@ namespace Cyber
         #region Init Methods
         private void InitUI()
         {
-            UIManager.GetInstance().ShowPanel<LoginPanel>("LoginPanel");
+            //UIManager.GetInstance().ShowPanel<LoginPanel>("LoginPanel");
         }
         #endregion
 

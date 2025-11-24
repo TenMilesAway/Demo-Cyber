@@ -125,6 +125,7 @@ public static class NetManager
 		}
 		// 初始化成员
 		InitState();
+
 		// 参数设置
 		socket.NoDelay = true;
 		// Connect
@@ -132,8 +133,8 @@ public static class NetManager
 		socket.BeginConnect(ip, port, ConnectCallback, socket);
 	}
 
-	// 初始化状态
-	private static void InitState()
+    // 初始化状态
+    private static void InitState()
 	{
 		// Socket
 		socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -176,7 +177,9 @@ public static class NetManager
 		{
 			FireEvent(EventEnum.ConnectFail, ex.ToString());
 			isConnecting = false;
-		}
+			socket = null;
+
+        }
 	} 
 
 
