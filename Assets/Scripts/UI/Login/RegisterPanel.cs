@@ -107,8 +107,6 @@ namespace Cyber
             }
 
             PromptMgr.GetInstance().ShowPromptPanel("Register Succeed");
-            Swtich2Login();
-            
         }
         #endregion
 

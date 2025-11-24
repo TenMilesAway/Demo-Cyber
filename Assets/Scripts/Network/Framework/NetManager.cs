@@ -266,6 +266,12 @@ public static class NetManager
 		ByteArray ba;
 		lock (writeQueue)
 		{
+			// 检查队列是否为空
+			if (!writeQueue.Any())
+			{
+				HADebug.LogWarning("写入队列为空，无法处理发送回调");
+				return;
+			}
 			ba = writeQueue.First();
 		}
 		// 完整发送
@@ -275,7 +281,15 @@ public static class NetManager
 			lock (writeQueue)
 			{
 				writeQueue.Dequeue();
-				ba = writeQueue.First();
+				// 再次检查队列是否为空
+				if (writeQueue.Any())
+				{
+					ba = writeQueue.First();
+				}
+				else
+				{
+					ba = null;
+				}
 			 }
 		}
 		// 继续发送

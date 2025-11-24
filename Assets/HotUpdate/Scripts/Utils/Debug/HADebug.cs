@@ -54,7 +54,7 @@ public class HADebug
     /// </summary>
     /// <param name="format">使用占位符的日志消息</param>
     /// <param name="args">对应占位符的参数</param>
-    public static void LogWarning(string format, params object[] args)
+    public static void LogWarningFormat(string format, params object[] args)
     {
         if (DebugMode)
         {

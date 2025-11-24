@@ -76,16 +76,26 @@ namespace Cyber
         [Header("主线程任务队列")]
         private Queue<Action> mainThreadActions = new Queue<Action>();
 
+        [Header("控制变量")]
+        private bool isConnected;
+        private bool isNetworkMode = true;
+
         private void OnEnable()
         {
             // 按钮监听
             btnConnect.onClick.AddListener(() => ShowConnectInfoPanel(true));
             btnNotConnect.onClick.AddListener(() => ShowConnectInfoPanel(false));
+            btnLogin.onClick.AddListener(() => ReqLogin());
+            btnRegister.onClick.AddListener(() => ReqRegister());
 
             // 事件监听
             NetManager.AddEventListener(EventEnum.ConnectSucc, ConnectSucc);
             NetManager.AddEventListener(EventEnum.ConnectFail, ConnectFail);
             NetManager.AddEventListener(EventEnum.Close, ConnectClose);
+
+            // 消息监听
+            NetManager.AddMsgListener("MsgRegister", OnMsgRegister);
+            NetManager.AddMsgListener("MsgLogin", OnMsgLogin);
         }
 
         private void OnDisable()
@@ -93,11 +103,17 @@ namespace Cyber
             // 移除按钮监听
             btnConnect.onClick.RemoveAllListeners();
             btnNotConnect.onClick.RemoveAllListeners();
+            btnLogin.onClick.RemoveAllListeners();
+            btnRegister.onClick.RemoveAllListeners();
 
             // 移除事件监听
             NetManager.RemoveEventListener(EventEnum.ConnectSucc, ConnectSucc);
             NetManager.RemoveEventListener(EventEnum.ConnectFail, ConnectFail);
             NetManager.RemoveEventListener(EventEnum.Close, ConnectClose);
+
+            // 移除消息监听
+            NetManager.RemoveMsgListener("MsgRegister", OnMsgRegister);
+            NetManager.RemoveMsgListener("MsgLogin", OnMsgLogin);
         }
 
         private void Start()
@@ -107,7 +123,11 @@ namespace Cyber
 
         private void Update()
         {
+            // 每帧处理非主线程调用
             ProcessMainThreadActions();
+
+            // 网络更新，先写在这里，后续可能更换位置
+            if (isConnected) NetManager.Update();
 
             switch (process)
             {
@@ -162,6 +182,10 @@ namespace Cyber
         }
 
         #region 主要方法
+        /// <summary>
+        /// 初始化必需资源并切换状态
+        /// </summary>
+        /// <returns></returns>
         private async Task InitResources()
         {
             AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(GlobalDefine.ToastPanel);
@@ -214,6 +238,16 @@ namespace Cyber
                 mainThreadActions.Enqueue(action);
             }
         }
+
+        /// <summary>
+        /// 切换连接状态 Text
+        /// </summary>
+        /// <param name="isConnect"></param>
+        private void SwitchConnectState(bool isConnect = true)
+        {
+            m_GOTxtConnectState.SetActive(!isConnect);
+            m_GOTxtConnectSstateConnected.SetActive(isConnect);
+        }
         #endregion
 
         #region 监听方法
@@ -224,6 +258,10 @@ namespace Cyber
             ExecuteOnMainThread(() =>
             {
                 OpenToast("连接成功！可以登录或注册啦~");
+                SwitchConnectState(true);
+                btnReqConnect.onClick.RemoveAllListeners();
+                btnReqConnect.interactable = false;
+                isConnected = true;
             });
         }
 
@@ -234,6 +272,8 @@ namespace Cyber
             ExecuteOnMainThread(() =>
             {
                 OpenToast("连接服务器失败，请检查输入信息或网络");
+                SwitchConnectState(false);
+                isConnected = false;
             });
         }
 
@@ -250,6 +290,7 @@ namespace Cyber
         {
             m_GOConnectInfoPanel.SetActive(isShow);
             m_GOBtnRegister.SetActive(isShow);
+            isNetworkMode = isShow;
 
             if (isShow) btnLogin.GetComponentInChildren<Text>().text = "登录";
             else btnLogin.GetComponentInChildren<Text>().text = "进入游戏";
@@ -275,6 +316,110 @@ namespace Cyber
 
             NetManager.Connect(ip.text, int.Parse(port.text));
 
+        }
+
+        /// <summary>
+        /// 发送注册请求
+        /// </summary>
+        private void ReqRegister()
+        {
+            if (!isConnected)
+            {
+                OpenToast("猎兽者大人，请连接服务器后再注册~");
+                return;
+            }
+
+            if (txtLoginID.text == "")
+            {
+                OpenToast("猎兽者大人，用户名不可为空");
+                return;
+            }
+
+            if (inputLoginPWD.text == "")
+            {
+                OpenToast("猎兽者大人，密码不可为空");
+                return;
+            }
+
+            MsgRegister msg = new MsgRegister();
+            msg.id = txtLoginID.text;
+            msg.pw = inputLoginPWD.text;
+            NetManager.Send(msg);
+        }
+
+        /// <summary>
+        /// 发送登录请求
+        /// </summary>
+        private void ReqLogin()
+        {
+            if (!isConnected)
+            {
+                OpenToast("猎兽者大人，请连接服务器后再登录~");
+                return;
+            }
+
+            if (txtLoginID.text == "")
+            {
+                OpenToast("猎兽者大人，用户名不可为空");
+                return;
+            }
+
+            if (inputLoginPWD.text == "")
+            {
+                OpenToast("猎兽者大人，密码不可为空");
+                return;
+            }
+
+            MsgLogin msg = new MsgLogin();
+            msg.id = txtLoginID.text;
+            msg.pw = inputLoginPWD.text;
+            NetManager.Send(msg);
+        }
+
+        private void OnMsgLogin(MsgBase msgBase)
+        {
+            MsgLogin msg = (MsgLogin)msgBase;
+
+            if (msg.result == 1)
+            {
+                ExecuteOnMainThread(() =>
+                {
+                    OpenToast("登录失败了呢，请猎兽者大人再检查一下信息");
+                    HADebug.LogWarning("登录失败");
+                });
+                return;
+            }
+            else
+            {
+                ExecuteOnMainThread(() =>
+                {
+                    OpenToast("登录成功！");
+                    HADebug.Log("登录成功");
+                });
+            }
+        }
+
+        private void OnMsgRegister(MsgBase msgBase)
+        {
+            MsgRegister msg = (MsgRegister)msgBase;
+
+            if (msg.result == 1)
+            {
+                ExecuteOnMainThread(() =>
+                {
+                    OpenToast("注册失败了呢，请猎兽者大人换个 ID 试试吧");
+                    HADebug.LogWarning("注册失败");
+                });
+                return;
+            } 
+            else
+            {
+                ExecuteOnMainThread(() =>
+                {
+                    OpenToast("注册成功！猎兽者大人您可以登录啦");
+                    HADebug.Log("注册成功");
+                });
+            }
         }
 
         /// <summary>

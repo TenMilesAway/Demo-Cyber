@@ -803,6 +803,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1990181276}
     m_Modifications:
     - target: {fileID: 5007675865684762701, guid: 6ce68e8c8083d99438b3017decba6630, type: 3}
+      propertyPath: m_Text
+      value: 8888
+      objectReference: {fileID: 0}
+    - target: {fileID: 5007675865684762701, guid: 6ce68e8c8083d99438b3017decba6630, type: 3}
       propertyPath: m_Navigation.m_Mode
       value: 2
       objectReference: {fileID: 0}
@@ -910,6 +914,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ConnectInfoPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 5007675865956543001, guid: 6ce68e8c8083d99438b3017decba6630, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5007675866569360136, guid: 6ce68e8c8083d99438b3017decba6630, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -927,8 +935,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5007675866569360143, guid: 6ce68e8c8083d99438b3017decba6630, type: 3}
+      propertyPath: m_Text
+      value: 127.0.0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5007675866569360143, guid: 6ce68e8c8083d99438b3017decba6630, type: 3}
       propertyPath: m_Navigation.m_Mode
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5007675866637499019, guid: 6ce68e8c8083d99438b3017decba6630, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7813815268713837467, guid: 6ce68e8c8083d99438b3017decba6630, type: 3}
       propertyPath: m_AnchorMax.y
