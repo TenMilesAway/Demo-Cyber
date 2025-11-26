@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,6 +6,8 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceProviders;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Cyber
@@ -27,9 +30,14 @@ namespace Cyber
         ConnectEnd,
 
         // 登录
-        LoginBegin,
-        LoginIng,
-        LoginEnd,
+        //LoginBegin,
+        //LoginIng,
+        //LoginEnd,
+
+        // 进度界面
+        InitProgressBegin,
+        InitProgressIng,
+        InitProgressEnd,
 
         // 初始化数据
         InitDataBegin,
@@ -55,20 +63,26 @@ namespace Cyber
         private LauncherProcess process;
 
         [Header("界面")]
+        // UI
         [SerializeField] private Canvas loginCanvas;
         [SerializeField] private Text txtLoginID;
+        [SerializeField] private Text txtLoad;
         [SerializeField] private Button btnConnect;
         [SerializeField] private Button btnNotConnect;
         [SerializeField] private Button btnRegister;
         [SerializeField] private Button btnLogin;
         [SerializeField] private Button btnReqConnect;
+        [SerializeField] private Slider sliderLoad;
         [SerializeField] private InputField inputLoginPWD;
-
-        [SerializeField] private GameObject m_GOEventSystem;
+        
+        // GameObject
         [SerializeField] private GameObject m_GOConnectInfoPanel;
-        [SerializeField] private GameObject m_GOBtnRegister;
+        [SerializeField] private GameObject m_GOLoadingPanel;
+        [SerializeField] private GameObject m_GOLoginButtons;
+        [SerializeField] private GameObject m_GONotLoginButtons;
         [SerializeField] private GameObject m_GOTxtConnectState;
         [SerializeField] private GameObject m_GOTxtConnectSstateConnected;
+        
 
         [Header("资源")]
         private GameObject prefabToastPanel;
@@ -77,8 +91,19 @@ namespace Cyber
         private Queue<Action> mainThreadActions = new Queue<Action>();
 
         [Header("控制变量")]
+        [HideInInspector] public bool isNetworkMode = true;
         private bool isConnected;
-        private bool isNetworkMode = true;
+        private bool canSwitchScene;
+        private bool isInitDataOver;
+        private bool isLoadSceneOver;
+        // DOTween 动画
+        private bool isAnimationCompleted;
+
+        [Header("切换场景后需隐藏")]
+        [SerializeField] private GameObject m_GOMainCamera;
+        [SerializeField] private GameObject m_GOLoginCanvas;
+        [SerializeField] private GameObject m_GOEventSystem;
+
 
         private void OnEnable()
         {
@@ -121,7 +146,7 @@ namespace Cyber
             process = LauncherProcess.PreloadBegin;
         }
 
-        private void Update()
+        private async void Update()
         {
             // 每帧处理非主线程调用
             ProcessMainThreadActions();
@@ -136,75 +161,111 @@ namespace Cyber
                         process = LauncherProcess.PreloadIng;
 
                         HADebug.DebugMode = true;
+                        // 回调 -> 加载成功，进入 PreloadEnd
                         Task task = InitResources();
-
-                        break;
                     }
+                    break;
                 case LauncherProcess.PreloadIng:
                     {
 
-                        break;
                     }
+                    break;
                 case LauncherProcess.PreloadEnd:
                     {
                         process = LauncherProcess.ConnectBegin;
-                        break;
                     }
+                    break;
                 case LauncherProcess.ConnectBegin:
                     {
                         process = LauncherProcess.ConnectIng;
 
+                        // 回调 -> 登录成功，移除监听，进入 ConnectEnd
                         btnReqConnect.onClick.AddListener(() => ReqConnect());
-
-                        break;
                     }
+                    break;
                 case LauncherProcess.ConnectIng:
                     {
-                        break;
+                        
                     }
+                    break;
                 case LauncherProcess.ConnectEnd:
                     {
-                        break;
+                        // 这里可以去做逻辑，但进入 InitProgressBegin 由 <登录> 控制
                     }
-                case LauncherProcess.LoginBegin:
+                    break;
+                case LauncherProcess.InitProgressBegin:
                     {
-                        break;
+                        process = LauncherProcess.InitProgressIng;
+
+                        m_GOEventSystem.SetActive(false);
+                        m_GOMainCamera.SetActive(false);
+
+                        ShowLoadingPanel();
                     }
-                case LauncherProcess.LoginIng:
+                    break;
+                case LauncherProcess.InitProgressIng:
                     {
-                        break;
+                        RefreshProgress();
                     }
-                case LauncherProcess.LoginEnd:
+                    break;
+                case LauncherProcess.InitProgressEnd:
                     {
-                        break;
+                        process = LauncherProcess.InitDataBegin;
                     }
+                    break;
+                case LauncherProcess.InitDataBegin:
+                    {
+                        process = LauncherProcess.InitDataIng;
+
+                        InitData();
+                    }
+                    break;
+                case LauncherProcess.InitDataIng:
+                    {
+                        RefreshProgress();
+                    }
+                    break;
+                case LauncherProcess.InitDataEnd:
+                    {
+                        process = LauncherProcess.SwitchSceneBegin;
+
+                        isInitDataOver = true;
+                    }
+                    break;
+                case LauncherProcess.SwitchSceneBegin:
+                    {
+                        process = LauncherProcess.SwitchSceneIng;
+
+                        await LoadScene();
+
+                        process = LauncherProcess.SwitchSceneEnd;
+                    }
+                    break;
+                case LauncherProcess.SwitchSceneIng:
+                    {
+                        RefreshProgress();
+                    }
+                    break;
+                case LauncherProcess.SwitchSceneEnd:
+                    {
+                        process = LauncherProcess.None;
+
+                        isLoadSceneOver = true;
+
+                        CheckCanSwitchScene();
+
+                        RefreshProgress();
+                    }
+                    break;
+                default:
+                    {
+                        
+                    }
+                    break;
             }
         }
 
-        #region 主要方法
-        /// <summary>
-        /// 初始化必需资源并切换状态
-        /// </summary>
-        /// <returns></returns>
-        private async Task InitResources()
-        {
-            AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(GlobalDefine.ToastPanel);
-
-            await handle.Task;
-
-            prefabToastPanel = handle.Result;
-            SetProcessState(LauncherProcess.PreloadEnd);
-        }
-
-        /// <summary>
-        /// 外界调用修改 Launcher 的状态
-        /// </summary>
-        /// <param name="state">状态</param>
-        public void SetProcessState(LauncherProcess state)
-        {
-            process = state;
-        }
-
+        #region 辅助方法
         /// <summary>
         /// 处理主线程任务
         /// </summary>
@@ -238,6 +299,32 @@ namespace Cyber
                 mainThreadActions.Enqueue(action);
             }
         }
+        #endregion
+
+
+        #region 业务方法
+        /// <summary>
+        /// 初始化必需资源并切换状态
+        /// </summary>
+        /// <returns></returns>
+        private async Task InitResources()
+        {
+            AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(GlobalDefine.ToastPanel);
+
+            await handle.Task;
+
+            prefabToastPanel = handle.Result;
+            SetProcessState(LauncherProcess.PreloadEnd);
+        }
+
+        /// <summary>
+        /// 外界调用修改 Launcher 的状态
+        /// </summary>
+        /// <param name="state">状态</param>
+        public void SetProcessState(LauncherProcess state)
+        {
+            process = state;
+        }
 
         /// <summary>
         /// 切换连接状态 Text
@@ -248,7 +335,80 @@ namespace Cyber
             m_GOTxtConnectState.SetActive(!isConnect);
             m_GOTxtConnectSstateConnected.SetActive(isConnect);
         }
+
+        /// <summary>
+        /// 显示加载界面
+        /// </summary>
+        /// <param name="isShow"></param>
+        private void ShowLoadingPanel(bool isShow = true)
+        {
+            m_GOLoadingPanel.SetActive(isShow);
+            txtLoad.text = "0";
+            sliderLoad.value = 0;
+
+            process = LauncherProcess.InitProgressEnd;
+        }
+
+        /// <summary>
+        /// 初始化配置表等数据
+        /// </summary>
+        private void InitData()
+        {
+            // 未来的配置表加载写在这里
+            process = LauncherProcess.InitDataEnd;
+        }
+
+        /// <summary>
+        /// 加载场景
+        /// </summary>
+        private async Task LoadScene()
+        {
+            AsyncOperationHandle<SceneInstance> asyncOperation = Addressables.LoadSceneAsync("Spawn", LoadSceneMode.Additive);
+            await asyncOperation.Task;
+            SceneManager.SetActiveScene(asyncOperation.Result.Scene);
+        }
+
+        /// <summary>
+        /// 进度条更新
+        /// </summary>
+        /// <param name="value"></param>
+        private void RefreshProgress(float value = 0.005f)
+        {
+            if (!canSwitchScene && sliderLoad.value <= 0.98f)
+            {
+                sliderLoad.value += value;
+                txtLoad.text = Mathf.FloorToInt(sliderLoad.value * 100).ToString();
+            }
+            else if (canSwitchScene)
+            {
+                if (isAnimationCompleted) return;
+
+                isAnimationCompleted = true;
+
+                // 创建动画序列
+                Sequence progressSequence = DOTween.Sequence();
+                progressSequence.Append(sliderLoad.DOValue(1f, 2.0f).SetEase(Ease.OutQuad));
+                progressSequence.Join(DOTween.To(() => sliderLoad.value * 100,
+                    x => txtLoad.text = Mathf.FloorToInt(x).ToString(),
+                    100, 2.0f).SetEase(Ease.OutQuad));
+                progressSequence.OnComplete(() =>
+                {
+                    m_GOLoginCanvas.SetActive(false);
+                    gameObject.SetActive(false);
+                });
+            }
+        }
+
+        /// <summary>
+        /// 检查是否可以切换场景了
+        /// </summary>
+        private void CheckCanSwitchScene()
+        {
+            canSwitchScene = isInitDataOver
+                          && isLoadSceneOver;
+        }
         #endregion
+
 
         #region 监听方法
         private void ConnectSucc(string msg)
@@ -262,6 +422,8 @@ namespace Cyber
                 btnReqConnect.onClick.RemoveAllListeners();
                 btnReqConnect.interactable = false;
                 isConnected = true;
+                SetProcessState(LauncherProcess.ConnectEnd);
+                btnReqConnect.onClick.RemoveAllListeners();
             });
         }
 
@@ -271,7 +433,7 @@ namespace Cyber
 
             ExecuteOnMainThread(() =>
             {
-                OpenToast("连接服务器失败，请检查输入信息或网络");
+                OpenToast("连接服务器失败，请猎兽者大人检查一下输入信息或网络");
                 SwitchConnectState(false);
                 isConnected = false;
             });
@@ -288,12 +450,16 @@ namespace Cyber
         /// <param name="isShow">true 为显示，false 为不显示</param>
         private void ShowConnectInfoPanel(bool isShow = true)
         {
-            m_GOConnectInfoPanel.SetActive(isShow);
-            m_GOBtnRegister.SetActive(isShow);
-            isNetworkMode = isShow;
+            if (!isShow)
+            {
+                OpenToast("功能未开启");
+                return;
+            }
 
-            if (isShow) btnLogin.GetComponentInChildren<Text>().text = "登录";
-            else btnLogin.GetComponentInChildren<Text>().text = "进入游戏";
+            m_GOConnectInfoPanel.SetActive(isShow);
+            m_GOLoginButtons.SetActive(isShow);
+            m_GONotLoginButtons.SetActive(!isShow);
+            isNetworkMode = isShow;
         }
 
         /// <summary>
@@ -376,6 +542,10 @@ namespace Cyber
             NetManager.Send(msg);
         }
 
+        /// <summary>
+        /// 登录回调
+        /// </summary>
+        /// <param name="msgBase"></param>
         private void OnMsgLogin(MsgBase msgBase)
         {
             MsgLogin msg = (MsgLogin)msgBase;
@@ -393,12 +563,18 @@ namespace Cyber
             {
                 ExecuteOnMainThread(() =>
                 {
-                    OpenToast("登录成功！");
                     HADebug.Log("登录成功");
+
+                    // 登录成功，显示进度条
+                    process = LauncherProcess.InitProgressBegin;
                 });
             }
         }
 
+        /// <summary>
+        /// 注册回调
+        /// </summary>
+        /// <param name="msgBase"></param>
         private void OnMsgRegister(MsgBase msgBase)
         {
             MsgRegister msg = (MsgRegister)msgBase;

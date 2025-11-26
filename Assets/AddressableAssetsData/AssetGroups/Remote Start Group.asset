@@ -17,8 +17,20 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: f0044622ae7f16e4eb1a487cc4f1ade0
   m_SerializeEntries:
-  - m_GUID: d2fe979c89d915f4597d2c9ba7185b6b
-    m_Address: Assets/UI/Start
+  - m_GUID: 8acf89e6c4ad17245a917dd1388d52ad
+    m_Address: Assets/UI/Start/Start.spriteatlas
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6959c7a8f46a5d84d9828928e4307656
+    m_Address: Assets/UI/Start/Others
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 405c1f6fb0b86524d82197f1dbe3b9e2
+    m_Address: Assets/UI/Start/Prefabs
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e035e72359442c6489fafa94c71f378f
+    m_Address: Assets/UI/Start/SpritesBig
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0
