@@ -20,8 +20,8 @@ namespace HA
                 itemDataDic[item.id] = item;
             }
         }
-
-        public ItemData GetItemData(int id)
+        
+        public ItemData GetData(int id)
         {
             return itemDataDic[id];
         }
