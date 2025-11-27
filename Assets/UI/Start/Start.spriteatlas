@@ -21,7 +21,19 @@ SpriteAtlas:
       readable: 0
       crunchedCompression: 0
       sRGB: 1
-    platformSettings: []
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
     packingSettings:
       serializedVersion: 2
       padding: 4
@@ -32,13 +44,42 @@ SpriteAtlas:
       enableAlphaDilation: 0
     secondaryTextureSettings: {}
     variantMultiplier: 1
-    packables: []
+    packables:
+    - {fileID: 102900000, guid: d0bb891fac480444180fd2ab99bd3337, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites: []
-  m_PackedSpriteNamesToIndex: []
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 8f08f2e1e3e6b7148bc6666918a7a830, type: 3}
+  - {fileID: 21300000, guid: 639b3cc201f24dc409b4affc56a66ea2, type: 3}
+  - {fileID: 21300000, guid: 41daa9136eaf9154882234584164ca3c, type: 3}
+  - {fileID: 21300000, guid: 4e6729b307699db41b2cd6edc138edd5, type: 3}
+  - {fileID: 21300000, guid: 40f3cd65026703543956f2360e7a508e, type: 3}
+  - {fileID: 21300000, guid: 1385f616b4bcaa149956524deedf0de7, type: 3}
+  - {fileID: 21300000, guid: 42dc5827a2f8e304ea77bdf12f37b16b, type: 3}
+  - {fileID: 21300000, guid: b89b0bf79f25c0d459d356af7685f0d6, type: 3}
+  - {fileID: 21300000, guid: 5a18f1382eabd8a4e91fbbdfc874cf79, type: 3}
+  - {fileID: 21300000, guid: 3b321998d1e448846b9a6cbe69bfb32e, type: 3}
+  - {fileID: 21300000, guid: 6875c72a27514f84d92bbd9da1fa42ea, type: 3}
+  - {fileID: 21300000, guid: 7a01918b171932d4396afe9a185735d4, type: 3}
+  - {fileID: 21300000, guid: fb94aecea3f587f4fa7a69ba93276c2d, type: 3}
+  - {fileID: 21300000, guid: 74e2e3efab4437e4aa5cf09d0d9b9240, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - SpriteLoginBgSecond
+  - Logo-removebg-preview
+  - SpriteLoginPanel
+  - SpriteLoginBgMain
+  - SpriteLoginGlassPanel
+  - SpriteLoginGlassPanel2
+  - SpriteLoginMainBg2
+  - SpriteLoginButton
+  - SpriteLoginIcon2
+  - SpriteLoginButton2
+  - SpriteLoginIcon
+  - SpriteBgToast
+  - SpriteLogo
+  - SpriteLoginMainBg
   m_RenderDataMap: {}
   m_Tag: Start
   m_IsVariant: 0

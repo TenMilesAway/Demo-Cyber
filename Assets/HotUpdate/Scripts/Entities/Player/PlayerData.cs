@@ -1,6 +1,6 @@
 namespace HA
 {
-    public class PlayerInfo
+    public class PlayerData
     {
 
     }

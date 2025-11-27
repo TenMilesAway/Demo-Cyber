@@ -9,6 +9,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Text;
 
 namespace Cyber
 {
@@ -217,7 +218,7 @@ namespace Cyber
                     {
                         process = LauncherProcess.InitDataIng;
 
-                        InitData();
+                        await InitData();
                     }
                     break;
                 case LauncherProcess.InitDataIng:
@@ -352,9 +353,15 @@ namespace Cyber
         /// <summary>
         /// 初始化配置表等数据
         /// </summary>
-        private void InitData()
+        private async Task InitData()
         {
-            // 未来的配置表加载写在这里
+            // 加载 GameMananger 预制体
+            AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>("Assets/UI/Start/Prefabs/GameManager.prefab");
+
+            await handle.Task;
+
+            Instantiate<GameObject>(handle.Result);
+
             process = LauncherProcess.InitDataEnd;
         }
 

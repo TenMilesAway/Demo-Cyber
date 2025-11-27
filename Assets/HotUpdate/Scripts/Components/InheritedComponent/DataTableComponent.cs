@@ -1,3 +1,4 @@
+using HA;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,8 +10,8 @@ namespace Cyber
         protected override void Awake()
         {
             base.Awake();
+
+            ItemDataManager.GetInstance().Init();
         }
-
-
     }
 }

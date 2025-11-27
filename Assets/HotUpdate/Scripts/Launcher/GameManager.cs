@@ -9,6 +9,12 @@ namespace Cyber
     {
         private static readonly List<BaseComponent> s_Components = new List<BaseComponent>();
 
+        public static DataTableComponent DataTable
+        {
+            get;
+            private set;
+        }
+
         private void Start()
         {
             InitComponents();
@@ -45,7 +51,7 @@ namespace Cyber
         /// </summary>
         private static void InitComponents()
         {
-
+            DataTable = GetTargetComponent<DataTableComponent>();
         }
 
         /// <summary>

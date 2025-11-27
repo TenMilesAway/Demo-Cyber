@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HAData
+public static class HAPPData
 {
     private static string ID;
 
