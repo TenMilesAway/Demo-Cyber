@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Cyber
+namespace HA
 {
     public class BaseComponent : MonoBehaviour
     {

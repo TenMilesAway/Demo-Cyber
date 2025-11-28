@@ -1,42 +1,128 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Pool
+namespace HA
 {
-    public class PoolConfig
+    public class ObjectPool<T> : IObjectPool<T>, IDisposable where T : new()
     {
-        public GameObject prefab;                // 对象
-        public int initialSize = 0;              // Prewarm 的对象数量
-        public int maxSize = 100;                // 池最大拥有对象数量
-        public float autoRecycleTime = 20f;      // 自动回收时间
-    }
+        private Queue<T> _objects;
+        private Func<T> _objectFactory;
+        private int _initialPoolSize = 0;
+        private int _curCount = 0;
+        private bool _disposed = false;
 
-    public class ObjectPool<T> : IObjectPool<T>
-    {
+        private readonly int MaxPoolSize = 200;
 
-        public int ActiveCount => throw new System.NotImplementedException();
-
-        public int InactiveCount => throw new System.NotImplementedException();
-
-        public void Clear()
+        public ObjectPool(Func<T> objectFactory, int initialPoolSize = 0, int maxPoolSize = 200)
         {
-            throw new System.NotImplementedException();
+            _objects = new Queue<T>();
+            _objectFactory = objectFactory;
+            _initialPoolSize = initialPoolSize;
+            _curCount = 0;
+            _disposed = false;
+
+            MaxPoolSize = maxPoolSize;
+
+            for (int i = 0; i < _initialPoolSize; i++)
+            {
+                var obj = CreateObject();
+                if (obj != null)  _objects.Enqueue(obj);
+            }
         }
 
-        public T Get()
+        public T Get(Vector3 vec = default)
         {
-            throw new System.NotImplementedException();
+            T item = _objects.Count == 0 ? CreateObject() : _objects.Dequeue();
+
+            if (item != null) DequeueHandle(item);
+
+            return item;
         }
 
-        public void Prewarm(int count)
+        public void Put(T item)
         {
-            throw new System.NotImplementedException();
+            if (item == null) return;
+
+            if (!_objects.Contains(item))
+            {
+                EnqueueHandle(item);
+                _objects.Enqueue(item);
+            }
         }
 
-        public void Put(T obj)
+        /// <summary>
+        /// 清理
+        /// </summary>
+        /// <param name="shouldClear">参数为 T，返回 bool 的委托</param>
+        public void Clear(Func<T, bool> shouldClear)
         {
-            throw new System.NotImplementedException();
+            int count = _objects.Count;
+
+            for (int i = 0; i < count; i++)
+            {
+                T item = _objects.Dequeue();
+
+                if (!shouldClear(item)) _objects.Enqueue(item);
+                else _curCount--;
+            }
         }
+
+        public void EnqueueHandle(T item)
+        {
+            if (item is IPoolObjectItem iPoolItem) iPoolItem.OnPutHandle();
+
+            if (item is IList list) list.Clear();
+            else if (item is IDictionary dictionary) dictionary.Clear();
+        }
+
+        public void DequeueHandle(T item)
+        {
+            if (item is IPoolObjectItem iPoolItem) iPoolItem.OnGetHandle();
+        }
+
+        #region 主要方法
+        private T CreateObject()
+        {
+            // 超过池最大数量，无法创建
+            if (_curCount >= MaxPoolSize) return default;
+
+            var newObject = _objectFactory != null ? _objectFactory() : new T();
+
+            _curCount++;
+
+            EnqueueHandle(newObject);
+
+            return newObject;
+        }
+        #endregion
+
+        #region 资源释放
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~ObjectPool()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            // 已经释放
+            if (_disposed) return;
+            // 释放托管资源
+            if (disposing)
+            {
+
+            }
+            // 释放非托管资源
+            // ...
+            _disposed = true;
+        }
+        #endregion
     }
 }

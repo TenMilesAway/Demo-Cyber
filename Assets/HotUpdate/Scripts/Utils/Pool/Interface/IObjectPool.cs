@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Pool
+namespace HA
 {
     public interface IObjectPool<T>
     {
@@ -10,33 +11,29 @@ namespace Pool
         /// 获取对象
         /// </summary>
         /// <returns></returns>
-        T Get();
+        T Get(Vector3 vec = default);
 
         /// <summary>
         /// 回收对象
         /// </summary>
-        /// <param name="obj"></param>
-        void Put(T obj);
-
-        /// <summary>
-        /// 预热创建对象
-        /// </summary>
-        /// <param name="count"></param>
-        void Prewarm(int count);
+        /// <param name="item"></param>
+        void Put(T item);
 
         /// <summary>
         /// 清理池对象
         /// </summary>
-        void Clear();
+        void Clear(Func<T, bool> shouldClear);
 
         /// <summary>
-        /// 激活对象数量
+        /// 入队列 Handle
         /// </summary>
-        int ActiveCount { get; }
+        /// <param name="item"></param>
+        void EnqueueHandle(T item);
 
         /// <summary>
-        /// 未激活对象数量
+        /// 出队列 Handle
         /// </summary>
-        int InactiveCount { get; }
+        /// <param name="item"></param>
+        void DequeueHandle(T item);
     }
 }

@@ -35,24 +35,24 @@ public class UIManager : BaseManager<UIManager>
 
     public UIManager()
     {
-        // 创建 Canvas，让其过场景不被移除
+        // 创建 Canvas，过场景不被移除
         GameObject obj = ResMgr.GetInstance().Load<GameObject>(CanvasPath);
         canvas = obj.transform as RectTransform;
         GameObject.DontDestroyOnLoad(obj);
 
-        // 找到各层
+        // 各层
         bot = canvas.Find("Bot");
         mid = canvas.Find("Mid");
         top = canvas.Find("Top");
         system = canvas.Find("System");
 
-        // 创建 EventSystem，让其过场景不被移除
+        // 创建 EventSystem，过场景不被移除
         obj = ResMgr.GetInstance().Load<GameObject>(EventSystemPath);
         GameObject.DontDestroyOnLoad(obj);
     }
 
     /// <summary>
-    /// 通过层级枚举 得到对应层级的父对象
+    /// 得到对应层级的父对象
     /// </summary>
     /// <param name="layer"></param>
     /// <returns></returns>
@@ -77,8 +77,8 @@ public class UIManager : BaseManager<UIManager>
     /// </summary>
     /// <typeparam name="T">面板脚本类型</typeparam>
     /// <param name="panelName">面板名</param>
-    /// <param name="layer">显示在哪一层</param>
-    /// <param name="callBack">当面板预设体创建成功后 你想做的事</param>
+    /// <param name="layer">显示层</param>
+    /// <param name="callBack">回调函数</param>
     public void ShowPanel<T>(string panelName, E_UI_Layer layer = E_UI_Layer.Mid, UnityAction<T> callBack = null) where T:BasePanel
     {
         if (panelDic.ContainsKey(panelName))
@@ -115,7 +115,7 @@ public class UIManager : BaseManager<UIManager>
             (obj.transform as RectTransform).offsetMax = Vector2.zero;
             (obj.transform as RectTransform).offsetMin = Vector2.zero;
 
-            // 得到预设体身上的面板脚本
+            // 得到预设体的面板脚本
             T panel = obj.GetComponent<T>();
             // 处理面板创建完成后的逻辑
             if (callBack != null)
