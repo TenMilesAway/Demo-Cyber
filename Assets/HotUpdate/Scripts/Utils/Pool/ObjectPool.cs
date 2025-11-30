@@ -17,11 +17,11 @@ namespace HA
 
         public ObjectPool(Func<T> objectFactory, int initialPoolSize = 0, int maxPoolSize = 200)
         {
-            _objects = new Queue<T>();
-            _objectFactory = objectFactory;
+            _objects         = new Queue<T>();
+            _objectFactory   = objectFactory;
             _initialPoolSize = initialPoolSize;
-            _curCount = 0;
-            _disposed = false;
+            _curCount        = 0;
+            _disposed        = false;
 
             MaxPoolSize = maxPoolSize;
 
@@ -45,6 +45,7 @@ namespace HA
         {
             if (item == null) return;
 
+            // 比较引用地址，去重检查
             if (!_objects.Contains(item))
             {
                 EnqueueHandle(item);

@@ -9,6 +9,12 @@ namespace HA
     {
         private static readonly List<BaseComponent> s_Components = new List<BaseComponent>();
 
+        public static DelayedTaskComponent DelayedTask
+        {
+            get;
+            private set;
+        }
+
         public static DataTableComponent DataTable
         {
             get;
@@ -51,6 +57,7 @@ namespace HA
         /// </summary>
         private static void InitComponents()
         {
+            DelayedTask = GetTargetComponent<DelayedTaskComponent>();
             DataTable = GetTargetComponent<DataTableComponent>();
         }
 
