@@ -31,7 +31,7 @@ namespace HA
         public string source;
 
         /// <summary>
-        /// 道具用途
+        /// 道具主要用途
         /// </summary>
         public string usage;
 
@@ -40,5 +40,19 @@ namespace HA
         /// </summary>
         public string icon;
 
+        /// <summary>
+        /// 道具类型: 0道具 1装备 2药剂
+        /// </summary>
+        public int type;
+
+        /// <summary>
+        /// 道具是否可以使用: 0不可以 1可以
+        /// </summary>
+        public int usable;
+
+        /// <summary>
+        /// 道具品阶: 0普通 1优秀 2精良 3史诗 4传说 5神圣
+        /// </summary>
+        public int level;
     }
 }
