@@ -9,17 +9,19 @@ namespace HA
     {
         private static readonly List<BaseComponent> s_Components = new List<BaseComponent>();
 
-        public static DelayedTaskComponent DelayedTask
-        {
-            get;
-            private set;
-        }
+        public static NetworkComponent Network { get; private set; }
 
-        public static DataTableComponent DataTable
-        {
-            get;
-            private set;
-        }
+        public static EventComponent Event { get; private set; }
+
+        public static TimerComponent Timer { get; private set; }
+
+        public static DelayedTaskComponent DelayedTask { get; private set; }
+
+        public static DataTableComponent DataTable { get; private set; }
+
+        public static ConsoleComponent Console { get; private set; }
+
+        public static ResourceComponent Resource { get; private set; }
 
         private void Start()
         {
@@ -29,7 +31,6 @@ namespace HA
         /// <summary>
         /// 注册组件
         /// </summary>
-        /// <param name="component"></param>
         public static void RegisterComponent(BaseComponent component)
         {
             if (component == null)
@@ -57,15 +58,18 @@ namespace HA
         /// </summary>
         private static void InitComponents()
         {
+            Network     = GetTargetComponent<NetworkComponent>();
+            Event       = GetTargetComponent<EventComponent>();
+            Timer       = GetTargetComponent<TimerComponent>();
             DelayedTask = GetTargetComponent<DelayedTaskComponent>();
-            DataTable = GetTargetComponent<DataTableComponent>();
+            DataTable   = GetTargetComponent<DataTableComponent>();
+            Console     = GetTargetComponent<ConsoleComponent>();
+            Resource    = GetTargetComponent<ResourceComponent>();
         }
 
         /// <summary>
         /// 获得指定类型的 Component
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
         private static T GetTargetComponent<T>() where T : BaseComponent
         {
             return (T)GetTargetComponent(typeof(T));

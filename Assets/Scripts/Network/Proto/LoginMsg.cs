@@ -4,6 +4,7 @@ public class MsgLogin : MsgBase
 
     public string id = "";
     public string pw = "";
+    public long serverTimeStamp = 0;
 
     // »Ø¸´ (0 - ³É¹¦£¬1 - Ê§°Ü)
     public int result = 1;

@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Net.Sockets;
 using System;
 using System.Linq;
+using HA;
 
 // 事件委托类型
 public delegate void EventListener(String err);
@@ -35,11 +36,13 @@ public static class NetManager
 	static float lastPingTime = 0;
 	// 上一次收到 PONG 的时间
 	static float lastPongTime = 0;
+
+	private static GameManager _gameManager;
 	
 	// 事件监听列表
-	private static Dictionary<EventEnum, EventListener> eventListeners = new Dictionary<EventEnum, EventListener>();
+	private static Dictionary<GameEventType, EventListener> eventListeners = new Dictionary<GameEventType, EventListener>();
 	// 添加事件监听
-	public static void AddEventListener(EventEnum eventEnum, EventListener listener)
+	public static void AddEventListener(GameEventType eventEnum, EventListener listener)
 	{
 		// 添加事件
 		if (eventListeners.ContainsKey(eventEnum))
@@ -53,7 +56,7 @@ public static class NetManager
 		}
 	}
 	// 删除事件监听
-	public static void RemoveEventListener(EventEnum eventEnum, EventListener listener)
+	public static void RemoveEventListener(GameEventType eventEnum, EventListener listener)
 	{
 		if (eventListeners.ContainsKey(eventEnum))
 		{
@@ -66,7 +69,7 @@ public static class NetManager
         }
 	}
 	// 分发事件
-	public static void FireEvent(EventEnum eventEnum, String err)
+	public static void FireEvent(GameEventType eventEnum, String err)
 	{
 		if (eventListeners.ContainsKey(eventEnum))
 		{
@@ -168,14 +171,14 @@ public static class NetManager
 		{
 			Socket socket = (Socket) ar.AsyncState;
 			socket.EndConnect(ar);
-			FireEvent(EventEnum.ConnectSucc, "");
+			FireEvent(GameEventType.ConnectSucc, "");
 			isConnecting = false;
 			// 开始接收
 			socket.BeginReceive(readBuff.bytes, readBuff.writeIdx, readBuff.remain, 0, ReceiveCallback, socket);
 		}
 		catch (SocketException ex)
 		{
-			FireEvent(EventEnum.ConnectFail, ex.ToString());
+			FireEvent(GameEventType.ConnectFail, ex.ToString());
 			isConnecting = false;
 			socket = null;
 
@@ -203,7 +206,7 @@ public static class NetManager
 		else
 		{
 			socket.Close();
-			FireEvent(EventEnum.Close, "");
+			FireEvent(GameEventType.Close, "");
 		}
 	} 
 
@@ -443,4 +446,11 @@ public static class NetManager
 	{
 		lastPongTime = Time.time;
 	}
+
+    #region 其它方法
+	public static void InitGameManager(GameManager gameManager)
+	{
+		_gameManager = gameManager;
+	}
+    #endregion
 }

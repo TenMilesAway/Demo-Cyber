@@ -6,7 +6,7 @@ dotnet %LUBAN_DLL% ^
     -t all ^
     -d json ^
     --conf %CONF_ROOT%\luban.conf ^
-    -x outputDataDir=..\Assets\HotUpdate\TableData
+    -x outputDataDir=..\Assets\HotUpdate\TableDatas
 
 dotnet %LUBAN_DLL% ^
     -t all ^

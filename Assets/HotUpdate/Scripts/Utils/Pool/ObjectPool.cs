@@ -7,13 +7,13 @@ namespace HA
 {
     public class ObjectPool<T> : IObjectPool<T>, IDisposable where T : new()
     {
-        private Queue<T> _objects;
-        private Func<T> _objectFactory;
-        private int _initialPoolSize = 0;
-        private int _curCount = 0;
-        private bool _disposed = false;
+        private Queue<T> _objects;               // 对象队列
+        private Func<T> _objectFactory;          // 工厂创建方法
+        private int _initialPoolSize = 0;        // 初始池大小
+        private int _curCount = 0;               // 当前池大小
+        private bool _disposed = false;          // 释放资源
 
-        private readonly int MaxPoolSize = 200;
+        private readonly int MaxPoolSize = 200;  // 最大池容量
 
         public ObjectPool(Func<T> objectFactory, int initialPoolSize = 0, int maxPoolSize = 200)
         {
@@ -84,6 +84,9 @@ namespace HA
         }
 
         #region 主要方法
+        /// <summary>
+        /// 创建对象
+        /// </summary>
         private T CreateObject()
         {
             // 超过池最大数量，无法创建
@@ -118,10 +121,17 @@ namespace HA
             // 释放托管资源
             if (disposing)
             {
+                if (_objects != null)
+                {
+                    _objects.Clear();
+                    _objects = null;
+                }
 
+                _objectFactory = null;
             }
             // 释放非托管资源
             // ...
+            _curCount = 0;
             _disposed = true;
         }
         #endregion

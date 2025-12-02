@@ -27,6 +27,9 @@ public sealed partial class Item : Luban.BeanBase
         Source = (string)_obj.GetValue("source");
         Usage = (string)_obj.GetValue("usage");
         Icon = (string)_obj.GetValue("icon");
+        Type = (int)_obj.GetValue("type");
+        Usable = (int)_obj.GetValue("usable");
+        Level = (int)_obj.GetValue("level");
     }
 
     public static Item DeserializeItem(JToken _buf)
@@ -55,13 +58,25 @@ public sealed partial class Item : Luban.BeanBase
     /// </summary>
     public readonly string Source;
     /// <summary>
-    /// 用途
+    /// 主要用途
     /// </summary>
     public readonly string Usage;
     /// <summary>
     /// 图片路径
     /// </summary>
     public readonly string Icon;
+    /// <summary>
+    /// 类型
+    /// </summary>
+    public readonly int Type;
+    /// <summary>
+    /// 可使用
+    /// </summary>
+    public readonly int Usable;
+    /// <summary>
+    /// 物品品阶
+    /// </summary>
+    public readonly int Level;
 
 
     public const int __ID__ = 2289459;
@@ -81,6 +96,9 @@ public sealed partial class Item : Luban.BeanBase
         + "source:" + Source + ","
         + "usage:" + Usage + ","
         + "icon:" + Icon + ","
+        + "type:" + Type + ","
+        + "usable:" + Usable + ","
+        + "level:" + Level + ","
         + "}";
     }
 }

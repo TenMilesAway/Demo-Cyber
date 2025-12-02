@@ -7,11 +7,12 @@ namespace HA
 {
     public class ObjectPoolFactory : BaseManager<ObjectPoolFactory>, IDisposable
     {
+        // 对象池字典: <对象类型, ObjectPool>
         private readonly Dictionary<Type, object> _pools = new Dictionary<Type, object>();
 
-        private const int DefaultPoolSize = 2;
-        private const int DefaultPoolMaxSize = 500;
-        private bool _disposed;
+        private const int DefaultPoolSize = 2;         // 默认的池大小
+        private const int DefaultPoolMaxSize = 500;    // 默认的池最大容量
+        private bool _disposed;                        // 释放资源
 
         public ObjectPoolFactory()
         {

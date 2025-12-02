@@ -10,6 +10,7 @@ using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Text;
+using HA;
 
 namespace Cyber
 {
@@ -82,8 +83,7 @@ namespace Cyber
         [SerializeField] private GameObject m_GOLoginButtons;
         [SerializeField] private GameObject m_GONotLoginButtons;
         [SerializeField] private GameObject m_GOTxtConnectState;
-        [SerializeField] private GameObject m_GOTxtConnectSstateConnected;
-        
+        [SerializeField] private GameObject m_GOTxtConnectSstateConnected;   
 
         [Header("资源")]
         private GameObject prefabToastPanel;
@@ -93,8 +93,9 @@ namespace Cyber
 
         [Header("控制变量")]
         [HideInInspector] public bool isNetworkMode = true;
-        private bool isConnected;
+        public bool isConnected;
         private bool canSwitchScene;
+        private bool isInitGameManager;
         private bool isInitDataOver;
         private bool isLoadSceneOver;
         // DOTween 动画
@@ -115,9 +116,9 @@ namespace Cyber
             btnRegister.onClick.AddListener(() => ReqRegister());
 
             // 事件监听
-            NetManager.AddEventListener(EventEnum.ConnectSucc, ConnectSucc);
-            NetManager.AddEventListener(EventEnum.ConnectFail, ConnectFail);
-            NetManager.AddEventListener(EventEnum.Close, ConnectClose);
+            NetManager.AddEventListener(GameEventType.ConnectSucc, ConnectSucc);
+            NetManager.AddEventListener(GameEventType.ConnectFail, ConnectFail);
+            NetManager.AddEventListener(GameEventType.Close, ConnectClose);
 
             // 消息监听
             NetManager.AddMsgListener("MsgRegister", OnMsgRegister);
@@ -133,9 +134,9 @@ namespace Cyber
             btnRegister.onClick.RemoveAllListeners();
 
             // 移除事件监听
-            NetManager.RemoveEventListener(EventEnum.ConnectSucc, ConnectSucc);
-            NetManager.RemoveEventListener(EventEnum.ConnectFail, ConnectFail);
-            NetManager.RemoveEventListener(EventEnum.Close, ConnectClose);
+            NetManager.RemoveEventListener(GameEventType.ConnectSucc, ConnectSucc);
+            NetManager.RemoveEventListener(GameEventType.ConnectFail, ConnectFail);
+            NetManager.RemoveEventListener(GameEventType.Close, ConnectClose);
 
             // 移除消息监听
             NetManager.RemoveMsgListener("MsgRegister", OnMsgRegister);
@@ -153,7 +154,7 @@ namespace Cyber
             ProcessMainThreadActions();
 
             // 网络更新，先写在这里，后续可能更换位置
-            if (isConnected) NetManager.Update();
+            //if (isConnected) NetManager.Update();
 
             switch (process)
             {
@@ -192,6 +193,8 @@ namespace Cyber
                 case LauncherProcess.ConnectEnd:
                     {
                         // 这里可以去做逻辑，但进入 InitProgressBegin 由 <登录> 控制
+
+                        await InitGameManager();
                     }
                     break;
                 case LauncherProcess.InitProgressBegin:
@@ -218,7 +221,7 @@ namespace Cyber
                     {
                         process = LauncherProcess.InitDataIng;
 
-                        await InitData();
+                        InitData();
                     }
                     break;
                 case LauncherProcess.InitDataIng:
@@ -350,18 +353,25 @@ namespace Cyber
             process = LauncherProcess.InitProgressEnd;
         }
 
-        /// <summary>
-        /// 初始化配置表等数据
-        /// </summary>
-        private async Task InitData()
+        private async Task InitGameManager()
         {
+            if (isInitGameManager) return;
+
+            isInitGameManager = true;
+
             // 加载 GameMananger 预制体
             AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>("Assets/UI/Start/Prefabs/GameManager.prefab");
 
             await handle.Task;
 
             Instantiate<GameObject>(handle.Result);
+        }
 
+        /// <summary>
+        /// 初始化配置表等数据
+        /// </summary>
+        private void InitData()
+        {
             process = LauncherProcess.InitDataEnd;
         }
 
@@ -574,6 +584,8 @@ namespace Cyber
 
                     // 登录成功，显示进度条
                     process = LauncherProcess.InitProgressBegin;
+                    // 更新服务端时间
+                    GameManager.Timer.InitServerTime(msg.serverTimeStamp);
                 });
             }
         }

@@ -162,6 +162,7 @@ namespace HA
             {
                 _taskDic.Clear();
                 _delayedTaskDic.Clear();
+                _delayedTaskQueue.Clear();
             }
             // 释放非托管资源
             // ...
