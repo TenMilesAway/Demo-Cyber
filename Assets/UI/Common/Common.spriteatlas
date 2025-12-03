@@ -38,10 +38,8 @@ SpriteAtlas:
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites:
-  - {fileID: 21300000, guid: dcef70669ab0e264084ba0aa9a1b9de7, type: 3}
-  m_PackedSpriteNamesToIndex:
-  - BgGoodsItem2
+  m_PackedSprites: []
+  m_PackedSpriteNamesToIndex: []
   m_RenderDataMap: {}
   m_Tag: Common
   m_IsVariant: 0

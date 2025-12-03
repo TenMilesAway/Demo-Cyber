@@ -8,8 +8,6 @@ namespace HA
 {
     public class UnityObjectPool : IObjectPool<Object>, IDisposable
     {
-        public Object ItemPrefab;
-
         private readonly Queue<Object> _objects;
         private readonly Func<Object> _objectFactory;
         private Action<Object> _enterQueueHandle;
@@ -20,6 +18,9 @@ namespace HA
 
         private static Transform s_PoolRoot;
         private static readonly object locker = new object();
+
+        public Object _itemPrefab;
+
         public static Transform PoolRoot
         {
             get
@@ -31,7 +32,6 @@ namespace HA
                         if (s_PoolRoot == null)
                         {
                             s_PoolRoot = new GameObject("PoolRoot").transform;
-                            //s_PoolRoot.gameObject.AddComponent<Pool>
                         }
                     }
                 }
@@ -44,7 +44,7 @@ namespace HA
             Action<Object> enterQueueHandle = null, 
             Action<Object> deQueueHandle = null)
         {
-            ItemPrefab        = itemPrefab;
+            _itemPrefab        = itemPrefab;
             _poolName         = poolName;
             _objectFactory    = objectFactory;
             _enterQueueHandle = enterQueueHandle;
@@ -78,25 +78,51 @@ namespace HA
             }
         }
 
+        /// <summary>
+        /// 入池操作
+        /// </summary>
         public void EnqueueHandle(Object item)
         {
             if (item is GameObject obj)
             {
                 obj.SetActive(false);
                 obj.transform.SetParent(PoolRoot, false);
-                // GameEntry.Timer
+
+                long delayedUTCStamp = TimerUtil.GetLaterMillisecondsBySecond(WaitDestroyTime);
+                DateTime delayedUTCDateTime = TimerUtil.Milliseconds2DateTime(delayedUTCStamp);
+                string taskID = string.Format("PoolRoot-{0}", _poolName);
+
+                // 定时任务, 在指定时间后销毁池中对象
+                GameManager.Timer.AddTimeTask(delayedUTCDateTime, taskID, (ID) =>
+                {
+                    if (_objects.Count > 0)
+                    {
+                        Object obj = _objects.Dequeue();
+                        Object.Destroy(obj);
+                    }
+                });
             }
         }
 
+        /// <summary>
+        /// 出池操作
+        /// </summary>
         public void DequeueHandle(Object item)
         {
             if (item is GameObject obj)
             {
                 obj.SetActive(true);
-                // GameEntry.Timer
+
+                string taskID = string.Format("PoolRoot-{0}", _poolName);
+
+                // 移除定时销毁任务
+                GameManager.Timer.RemoveTimeTask(taskID);
             }
         }
 
+        /// <summary>
+        /// 出池操作
+        /// </summary>
         public void DequeueHandle(Object item, Vector3 vec)
         {
             if (item is GameObject obj)
@@ -106,7 +132,11 @@ namespace HA
                     obj.transform.position = vec;
                 }
                 obj.SetActive(true);
-                // GameEntry.Timer
+
+                string taskID = string.Format("PoolRoot-{0}", _poolName);
+
+                // 移除定时销毁任务
+                GameManager.Timer.RemoveTimeTask(taskID);
             }
         }
 
@@ -135,11 +165,16 @@ namespace HA
             return _objects;
         }
 
+        public Object GetItemPrefab()
+        {
+            return _itemPrefab;
+        }
+
         protected Object CreateObject()
         {
             var newObject = _objectFactory != null
                 ? _objectFactory()
-                : GameObject.Instantiate(ItemPrefab);
+                : GameObject.Instantiate(_itemPrefab);
 
             _enterQueueHandle?.Invoke(newObject);
 

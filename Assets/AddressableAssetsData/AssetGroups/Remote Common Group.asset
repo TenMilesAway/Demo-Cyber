@@ -16,7 +16,23 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: b31e2f9eb9b2ee7418f8bc8cbe8d6c3e
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 24d2f366845cada41a3af0262eab0d0e
+    m_Address: Assets/UI/Common/SpritesBig
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 922696d0c399cea448f5e92563dda1ad
+    m_Address: Assets/UI/Common/Common.spriteatlas
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ba82b880d7180a445bc6dc823333e155
+    m_Address: Assets/UI/Common/Prefabs
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 54fda626e91585b4b81a2a7297a9b7fe
+    m_Address: Assets/UI/Common/Others
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a21267dd150d19f4e9fc611b903aaf99, type: 2}
   m_SchemaSet:

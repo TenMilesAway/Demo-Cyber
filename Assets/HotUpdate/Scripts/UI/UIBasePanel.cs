@@ -30,7 +30,7 @@ namespace HA
 
         protected virtual void InitHandle(OpenUIParam param)
         {
-            // 音效播放
+            // 音效播放 ...
 
 
         }
@@ -40,12 +40,14 @@ namespace HA
         /// </summary>
         public void OnClose()
         {
-
+            OnHide();
+            // 定时回收面板逻辑 ...
+            CloseHandle();
         }
 
         protected virtual void CloseHandle()
         {
-            // 音效播放
+            // 音效播放 ...
 
         }
 
@@ -75,6 +77,11 @@ namespace HA
         protected virtual void HideHandle()
         {
 
+        }
+
+        protected virtual void OnDestroy()
+        {
+            GameManager.Resource.Release(GetInstanceID().ToString());
         }
     }
 }

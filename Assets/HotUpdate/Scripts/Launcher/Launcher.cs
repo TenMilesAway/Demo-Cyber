@@ -201,6 +201,7 @@ namespace Cyber
                     {
                         process = LauncherProcess.InitProgressIng;
 
+                        // 隐藏相关 GO
                         m_GOEventSystem.SetActive(false);
                         m_GOMainCamera.SetActive(false);
 
@@ -221,7 +222,7 @@ namespace Cyber
                     {
                         process = LauncherProcess.InitDataIng;
 
-                        InitData();
+                        await InitData();
                     }
                     break;
                 case LauncherProcess.InitDataIng:
@@ -370,8 +371,10 @@ namespace Cyber
         /// <summary>
         /// 初始化配置表等数据
         /// </summary>
-        private void InitData()
+        private async Task InitData()
         {
+            await HA.UIManager.GetInstance().Init();
+
             process = LauncherProcess.InitDataEnd;
         }
 

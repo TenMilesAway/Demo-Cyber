@@ -48,8 +48,11 @@ namespace HA
 
     public class ResourceComponent : BaseComponent
     {
+        // 加载任务组, 基本上以 Panel 的 InstanceID 为 _tag
         private List<LoadResourceTaskGroup> _taskGroups = new List<LoadResourceTaskGroup>();
+        // 已完成加载任务缓存
         private List<LoadResourceTask> _completedTaskCache = new List<LoadResourceTask>();
+        [SerializeField]
         private bool _isLogEnable = false;
 
         private void LateUpdate()
@@ -151,7 +154,7 @@ namespace HA
         /// <param name="key">资源名称</param>
         /// <param name="tag">资源标签, 调用 Release 时使用</param>
         /// <returns></returns>
-        public async Task<T> LoadAsset<T>(string key, string tag)
+        public async Task<T> LoadResource<T>(string key, string tag)
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(tag))
             {
@@ -161,7 +164,7 @@ namespace HA
 
             if (_isLogEnable)
             {
-                HADebug.LogFormat("分帧资源加载任务开始: key[{0}], tag[{1}]", key, tag);
+                HADebug.LogFormat("同步资源加载任务开始: key[{0}], tag[{1}]", key, tag);
             }
 
             // 查找缓存中是否存在该资源

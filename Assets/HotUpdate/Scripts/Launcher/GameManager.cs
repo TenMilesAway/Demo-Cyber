@@ -9,19 +9,45 @@ namespace HA
     {
         private static readonly List<BaseComponent> s_Components = new List<BaseComponent>();
 
+        /// <summary>
+        /// 网络
+        /// </summary>
         public static NetworkComponent Network { get; private set; }
 
+        /// <summary>
+        /// 事件
+        /// </summary>
         public static EventComponent Event { get; private set; }
 
+        /// <summary>
+        /// 时间
+        /// </summary>
         public static TimerComponent Timer { get; private set; }
 
+        /// <summary>
+        /// 延迟任务
+        /// </summary>
         public static DelayedTaskComponent DelayedTask { get; private set; }
 
+        /// <summary>
+        /// 配置表
+        /// </summary>
         public static DataTableComponent DataTable { get; private set; }
 
+        /// <summary>
+        /// 控制台输出
+        /// </summary>
         public static ConsoleComponent Console { get; private set; }
 
+        /// <summary>
+        /// 资源加载
+        /// </summary>
         public static ResourceComponent Resource { get; private set; }
+
+        /// <summary>
+        /// 音频(未完成)
+        /// </summary>
+        public static AudioComponent Audio { get; private set; }
 
         private void Start()
         {
@@ -65,6 +91,7 @@ namespace HA
             DataTable   = GetTargetComponent<DataTableComponent>();
             Console     = GetTargetComponent<ConsoleComponent>();
             Resource    = GetTargetComponent<ResourceComponent>();
+            Audio       = GetTargetComponent<AudioComponent>();
         }
 
         /// <summary>
