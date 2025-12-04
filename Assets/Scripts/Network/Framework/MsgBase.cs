@@ -29,7 +29,7 @@ public class MsgBase
 		Int16 len = (Int16) nameBytes.Length;
 		// 申请 bytes 数值
 		byte[] bytes = new byte[2 + len];
-		// 组装2字节的长度信息
+		// 组装 2 字节的长度信息
 		bytes[0] = (byte) (len % 256);
 		bytes[1] = (byte) (len / 256);
 		// 组装名字 bytes

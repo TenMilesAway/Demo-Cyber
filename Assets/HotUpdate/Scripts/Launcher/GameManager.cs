@@ -49,6 +49,16 @@ namespace HA
         /// </summary>
         public static AudioComponent Audio { get; private set; }
 
+        /// <summary>
+        /// 控制流程的有限状态机
+        /// </summary>
+        public static FsmComponent Fsm { get; private set; }
+
+        /// <summary>
+        /// 存储部分全局数据
+        /// </summary>
+        public static GlobalDataComponent GlobalData { get; private set; }
+
         private void Start()
         {
             InitComponents();
@@ -92,6 +102,8 @@ namespace HA
             Console     = GetTargetComponent<ConsoleComponent>();
             Resource    = GetTargetComponent<ResourceComponent>();
             Audio       = GetTargetComponent<AudioComponent>();
+            Fsm         = GetTargetComponent<FsmComponent>();
+            GlobalData  = GetTargetComponent<GlobalDataComponent>();
         }
 
         /// <summary>

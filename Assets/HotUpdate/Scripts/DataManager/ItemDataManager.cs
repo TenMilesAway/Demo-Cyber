@@ -5,23 +5,26 @@ using UnityEngine;
 
 namespace HA
 {
+    /// <summary>
+    /// 物品数据管理器
+    /// </summary>
     public class ItemDataManager : BaseManager<ItemDataManager>
     {
-        private readonly static Dictionary<int, ItemData> itemDataDic = new Dictionary<int, ItemData>();
+        private readonly static Dictionary<int, TBItemData> itemDataDic = new Dictionary<int, TBItemData>();
 
         public async void Init()
         {
             // 从 json 去读取数据
-            List<ItemData> items = await HAJsonData.LoadAsync<ItemData>("Assets/HotUpdate/TableData/tbitem.json");
+            List<TBItemData> items = await HAJsonData.LoadAsync<TBItemData>("Assets/HotUpdate/TableData/tbitem.json");
 
             // 存进 itemDataDic
-            foreach (ItemData item in items)
+            foreach (TBItemData item in items)
             {
                 itemDataDic[item.id] = item;
             }
         }
         
-        public ItemData GetData(int id)
+        public TBItemData GetData(int id)
         {
             return itemDataDic[id];
         }

@@ -39,12 +39,28 @@ SpriteAtlas:
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: 947574f1b1875cf4f9cda82492cbe331, type: 3}
+  - {fileID: 21300000, guid: f9bdfa03a09d2024293d91c74dbd76c5, type: 3}
+  - {fileID: 21300000, guid: 8a27033429d2b3a47a3206cbe76e8dbe, type: 3}
+  - {fileID: 21300000, guid: dcef70669ab0e264084ba0aa9a1b9de7, type: 3}
   - {fileID: 21300000, guid: ca9f71f61cdd94b4f856a9c555e4a8ff, type: 3}
+  - {fileID: 21300000, guid: 3d9713a7d570f9d44a75ce76933b24ff, type: 3}
+  - {fileID: 21300000, guid: 684540f7920e16b428dc93beeed56857, type: 3}
+  - {fileID: 21300000, guid: 39a9040b789d584489e558b081c22174, type: 3}
   - {fileID: 21300000, guid: 68d8265bab70eec43899bea177fe118d, type: 3}
+  - {fileID: 21300000, guid: 6f6f844c5c72c854b9a0b39f53db7c00, type: 3}
   - {fileID: 21300000, guid: fcb9fb5c7d50aee4b80bc2f177a91813, type: 3}
   m_PackedSpriteNamesToIndex:
+  - BgInventory
+  - squareBlue
+  - CloseBtn
+  - BgItemIcon
   - SpriteItem1000
+  - BgItemInfo2
+  - BgItemInfoDetail
+  - BgItemInfo
   - SpriteItem1001
+  - BgGroupItem
   - SpriteItem1002
   m_RenderDataMap: {}
   m_Tag: Items

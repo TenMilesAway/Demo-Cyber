@@ -2,8 +2,11 @@ using System;
 
 namespace HA
 {
+    /// <summary>
+    /// 道具配置信息
+    /// </summary>
     [Serializable]
-    public class ItemData
+    public class TBItemData
     {
         /// <summary>
         /// 道具 ID

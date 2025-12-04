@@ -76,7 +76,7 @@ namespace HA
         /// <param name="param">透传参数</param>
         /// <param name="action">回调函数</param>
         /// <returns></returns>
-        public async Task OpenPanel(string panelName, UILayer layer = UILayer.Mid, OpenUIParam param = null, Action action = null)
+        public async void OpenPanel(string panelName, UILayer layer = UILayer.Mid, OpenUIParam param = null, Action action = null)
         {
             // 如果此面板正在加载
             if (_loadingPanels.Contains(panelName)) return;
@@ -117,7 +117,7 @@ namespace HA
                     break;
             }
             panelGO.transform.localPosition = Vector3.zero;
-            panelGO.transform.localScale = Vector3.zero;
+            panelGO.transform.localScale = Vector3.one;
             (panelGO.transform as RectTransform).offsetMax = Vector2.zero;
             (panelGO.transform as RectTransform).offsetMin = Vector2.zero;
 

@@ -17,7 +17,7 @@ namespace HA
     /// <summary>
     /// UI »ùÀà
     /// </summary>
-    public class UIBasePanel : MonoBehaviour
+    public abstract class UIBasePanel : MonoBehaviour
     {
 
         /// <summary>
@@ -83,5 +83,7 @@ namespace HA
         {
             GameManager.Resource.Release(GetInstanceID().ToString());
         }
+
+        public abstract string GetPanelName();
     }
 }

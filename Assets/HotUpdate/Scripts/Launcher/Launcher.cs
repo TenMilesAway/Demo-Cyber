@@ -389,6 +389,15 @@ namespace Cyber
         }
 
         /// <summary>
+        /// 检查是否可以切换场景了
+        /// </summary>
+        private void CheckCanSwitchScene()
+        {
+            canSwitchScene = isInitDataOver
+                          && isLoadSceneOver;
+        }
+
+        /// <summary>
         /// 进度条更新
         /// </summary>
         /// <param name="value"></param>
@@ -415,17 +424,11 @@ namespace Cyber
                 {
                     m_GOLoginCanvas.SetActive(false);
                     gameObject.SetActive(false);
+
+                    // 切换完场景, 通过状态机控制流程
+                    GameManager.Fsm.StartFsmState(GlobalDefine.FsmStateSpawn);
                 });
             }
-        }
-
-        /// <summary>
-        /// 检查是否可以切换场景了
-        /// </summary>
-        private void CheckCanSwitchScene()
-        {
-            canSwitchScene = isInitDataOver
-                          && isLoadSceneOver;
         }
         #endregion
 
@@ -589,6 +592,8 @@ namespace Cyber
                     process = LauncherProcess.InitProgressBegin;
                     // 更新服务端时间
                     GameManager.Timer.InitServerTime(msg.serverTimeStamp);
+                    // 存储玩家 ID
+                    GameManager.GlobalData.PlayerID = txtLoginID.text;
                 });
             }
         }
