@@ -49,6 +49,8 @@ namespace HA
         [SerializeField]
         private Text _txtMaxEXP;
 
+        private PlayerInfo _playerInfo;
+
         public override string GetPanelName()
         {
             return GlobalDefine.MainPanel;
@@ -59,8 +61,8 @@ namespace HA
             base.InitHandle(param);
 
             MainPanelParam mainPanelParam = (MainPanelParam)param;
-            PlayerInfo info = mainPanelParam.data as PlayerInfo;
-            InitPlayerInfo(info);
+            _playerInfo = mainPanelParam.data as PlayerInfo;
+            InitPlayerInfo(_playerInfo);
 
             _btnBag.onClick.AddListener(OnClickBtnBag);
         }
@@ -85,10 +87,10 @@ namespace HA
         #region ¼àÌý·½·¨
         private void OnClickBtnBag()
         {
-            // ²âÊÔÇÐ»»×´Ì¬»ú
-            // GameManager.Fsm.StartFsmState(GlobalDefine.FsmStateForestMap);
+            InventoryParam param = new InventoryParam();
+            param.data = _playerInfo;
 
-            UIManager.GetInstance().OpenPanel(GlobalDefine.InventoryPanel);
+            UIManager.GetInstance().OpenPanel(GlobalDefine.InventoryPanel, UILayer.Mid, param);
         }
         #endregion
     }

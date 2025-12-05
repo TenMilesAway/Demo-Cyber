@@ -269,69 +269,76 @@ namespace HA
 
             // 选择一个待加载任务
             // 倒序, 保证后进资源优先加载
-            for (int i = _taskGroups.Count - 1; i >= 0; i--)
+            try
             {
-                LoadResourceTaskGroup group = _taskGroups[i];
-
-                // 任务组为空
-                if (group._tasks.Count == 0)
+                for (int i = _taskGroups.Count - 1; i >= 0; i--)
                 {
-                    _taskGroups.Remove(group);
-                    continue;
-                }
+                    LoadResourceTaskGroup group = _taskGroups[i];
 
-                // 任务组不为空
-                for (int j = 0; j < group._tasks.Count; j++)
-                {
-                    LoadResourceTask task = group._tasks[j];
-
-                    // 如果是将要释放或取消的任务
-                    if (task._state == LoadResourceTaskState.ToRelease ||
-                        task._state == LoadResourceTaskState.ToCancel)
+                    // 任务组为空
+                    if (group._tasks.Count == 0)
                     {
-                        j--;
-                        group._tasks.Remove(task);
-                        if (_isLogEnable)
-                        {
-                            HADebug.LogFormat("分帧资源加载已取消: key[{0}], tag[{1}]", task._key, task._tag);
-                        }
+                        _taskGroups.Remove(group);
                         continue;
                     }
-                    else if (task._state == LoadResourceTaskState.Normal)
+
+                    // 任务组不为空
+                    for (int j = 0; j < group._tasks.Count; j++)
                     {
-                        // 查找缓存中是否存在相同资源
-                        foreach (LoadResourceTask t in _completedTaskCache)
+                        LoadResourceTask task = group._tasks[j];
+
+                        // 如果是将要释放或取消的任务
+                        if (task._state == LoadResourceTaskState.ToRelease ||
+                            task._state == LoadResourceTaskState.ToCancel)
                         {
-                            if (t._tag == task._tag && t._key == task._key)
+                            j--;
+                            group._tasks.Remove(task);
+                            if (_isLogEnable)
                             {
-                                if (_isLogEnable)
-                                {
-                                    HADebug.LogFormat("从缓存中加载资源成功: key[{0}], tag[{1}]", t._key, t._tag);
-                                }
-                                t._refCount++;
-                                task._callback(t._handle.Result as Object, task._args);
-                                group._tasks.Remove(task);
-                                break;
+                                HADebug.LogFormat("分帧资源加载已取消: key[{0}], tag[{1}]", task._key, task._tag);
                             }
+                            continue;
                         }
-
-                        isDone = true;
-
-                        if (task._type == "UnityEngine.Sprite")
+                        else if (task._state == LoadResourceTaskState.Normal)
                         {
-                            task._handle = Addressables.LoadAssetAsync<UnityEngine.Sprite>(task._key);
-                            task._state = LoadResourceTaskState.Loading;
+                            // 查找缓存中是否存在相同资源
+                            foreach (LoadResourceTask t in _completedTaskCache)
+                            {
+                                if (t._tag == task._tag && t._key == task._key)
+                                {
+                                    if (_isLogEnable)
+                                    {
+                                        HADebug.LogFormat("从缓存中加载资源成功: key[{0}], tag[{1}]", t._key, t._tag);
+                                    }
+                                    t._refCount++;
+                                    task._callback(t._handle.Result as Object, task._args);
+                                    group._tasks.Remove(task);
+                                    break;
+                                }
+                            }
+
+                            isDone = true;
+
+                            if (task._type == "UnityEngine.Sprite")
+                            {
+                                task._handle = Addressables.LoadAssetAsync<UnityEngine.Sprite>(task._key);
+                                task._state = LoadResourceTaskState.Loading;
+                            }
+                            else
+                            {
+                                task._handle = Addressables.LoadAssetAsync<UnityEngine.Object>(task._key);
+                                task._state = LoadResourceTaskState.Loading;
+                            }
+                            break;
                         }
-                        else
-                        {
-                            task._handle = Addressables.LoadAssetAsync<UnityEngine.Object>(task._key);
-                            task._state = LoadResourceTaskState.Loading;
-                        }
-                        break;
                     }
-                }
 
-                if (isDone) break;
+                    if (isDone) break;
+                }
+            }
+            catch (Exception E)
+            {
+                HADebug.LogError(E.ToString());
             }
 
             // 检测加载是否完成
@@ -399,7 +406,7 @@ namespace HA
                 }
             }
 
-            // 资源释放检测
+            //资源释放检测
             for (int i = 0; i < _completedTaskCache.Count; i++)
             {
                 LoadResourceTask task = _completedTaskCache[i];

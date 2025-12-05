@@ -29,9 +29,14 @@ namespace HA
             return _playerInfo;
         }
 
-        public async Task<PlayerInfo> GetPlayerInfoAsync(int timeoutSeconds, float pollInterval = 1.0f)
+        /// <summary>
+        /// 异步获取玩家信息 (初始化阶段)
+        /// </summary>
+        /// <param name="timeoutSeconds">总请求时长</param>
+        /// <param name="pollInterval">每次请求间隔</param>
+        public async Task<PlayerInfo> GetPlayerInfoAsync(int timeoutSeconds = 1, float pollInterval = 0.02f)
         {
-            var startTime = Time.time;
+            float startTime = Time.time;
 
             while (Time.time - startTime < timeoutSeconds)
             {

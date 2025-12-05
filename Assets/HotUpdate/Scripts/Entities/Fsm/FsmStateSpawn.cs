@@ -9,13 +9,15 @@ namespace HA
     {
         public async void OnEnter()
         {
-            // 获取玩家信息
+            // --------- 初始化
             PlayerDataManager.GetInstance().Init();
+            InventoryDataManager.GetInstance().Init();
+            // ---------
 
-            Task<PlayerInfo> task = PlayerDataManager.GetInstance().GetPlayerInfoAsync(10, 0.1f);
 
+            // --------- 异步
+            Task<PlayerInfo> task = PlayerDataManager.GetInstance().GetPlayerInfoAsync(1, 0.02f);
             await task;
-
             MainPanelParam param = new MainPanelParam();
             param.data = task.Result;
 

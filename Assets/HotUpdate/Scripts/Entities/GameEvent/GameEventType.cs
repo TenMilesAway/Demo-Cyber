@@ -13,5 +13,6 @@ public enum GameEventType
 
     OneSecondEvent,       // 每秒触发事件
     PlayAudio,            // 播放音频
-
+    EnterItemCell,        // 鼠标进入物品格子
+    ExitItemCell,         // 鼠标离开物品格子
 }

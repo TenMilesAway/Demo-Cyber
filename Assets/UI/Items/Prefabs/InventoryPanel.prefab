@@ -743,6 +743,7 @@ GameObject:
   - component: {fileID: 383240821369755659}
   - component: {fileID: 383240821369755656}
   - component: {fileID: 383240821369755658}
+  - component: {fileID: 2746205636136647542}
   m_Layer: 5
   m_Name: Bg1
   m_TagString: Untagged
@@ -826,6 +827,51 @@ MonoBehaviour:
   m_EffectColor: {r: 1, g: 1, b: 1, a: 1}
   m_EffectDistance: {x: 5, y: -5}
   m_UseGraphicAlpha: 1
+--- !u!114 &2746205636136647542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 383240821369755662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99e12eb77d899aa42a77fcfb68232ced, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.25697228
+      value: 1.0245581
+      inSlope: 2.0108442
+      outSlope: 2.0108442
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &383240821405906578
 GameObject:
   m_ObjectHideFlags: 0
@@ -2278,6 +2324,7 @@ GameObject:
   - component: {fileID: 383240822063529445}
   - component: {fileID: 383240822063529466}
   - component: {fileID: 383240822063529444}
+  - component: {fileID: 7739740227632867656}
   m_Layer: 5
   m_Name: Bg2
   m_TagString: Untagged
@@ -2360,6 +2407,51 @@ MonoBehaviour:
   m_EffectColor: {r: 1, g: 1, b: 1, a: 1}
   m_EffectDistance: {x: 5, y: -5}
   m_UseGraphicAlpha: 1
+--- !u!114 &7739740227632867656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 383240822063529464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99e12eb77d899aa42a77fcfb68232ced, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.25697228
+      value: 1.0245581
+      inSlope: 2.0108442
+      outSlope: 2.0108442
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &383240822095452074
 GameObject:
   m_ObjectHideFlags: 0
@@ -3272,6 +3364,7 @@ GameObject:
   - component: {fileID: 383240822563269253}
   - component: {fileID: 383240822563269255}
   - component: {fileID: 383240822563269252}
+  - component: {fileID: 1515895056381441843}
   m_Layer: 5
   m_Name: InventoryPanel
   m_TagString: Untagged
@@ -3339,6 +3432,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1515895056381441843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 383240822563269274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 644c59584cfcaeb46879a2b487cb5d9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _btnClose: {fileID: 383240821492461298}
+  _itemContent: {fileID: 383240821415294873}
 --- !u!1 &383240822580834416
 GameObject:
   m_ObjectHideFlags: 0
