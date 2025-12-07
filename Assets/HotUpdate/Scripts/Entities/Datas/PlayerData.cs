@@ -44,7 +44,15 @@ namespace HA
             _maxEXP = 1000;
             _currentEXP = 0;
 
-            _items = new List<ItemInfo> { new ItemInfo { _id = 10000, _num = 1 } };
+            _items = new List<ItemInfo> { new ItemInfo { _id = 1000, _num = 1 },
+                                          new ItemInfo { _id = 1001, _num = 1 },
+                                          new ItemInfo { _id = 1002, _num = 1 },
+                                          new ItemInfo { _id = 1003, _num = 1 },
+                                          new ItemInfo { _id = 1004, _num = 1 },
+                                          new ItemInfo { _id = 1005, _num = 1 },
+                                          new ItemInfo { _id = 1006, _num = 5 },
+                                          new ItemInfo { _id = 1007, _num = 10 },
+                                          new ItemInfo { _id = 1008, _num = 13 },  };
             _equips = new List<ItemInfo> { new ItemInfo { _id = 4000, _num = 1 },
                                            new ItemInfo { _id = 5000, _num = 1 },
                                            new ItemInfo { _id = 6000, _num = 1 },

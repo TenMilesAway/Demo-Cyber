@@ -21,6 +21,8 @@ namespace HA
 
         [HideInInspector]
         public ItemInfo _itemInfo;      // 物品信息
+        [HideInInspector]
+        public string _imgItemPath;     // 物品图片路径
 
         private bool _isOpenDrag;
 
@@ -29,7 +31,7 @@ namespace HA
             _itemInfo = info;
 
             // 加载图片
-            string _imgItemPath = ItemDataManager.GetInstance().GetData(info._id).icon;
+            _imgItemPath = ItemDataManager.GetInstance().GetData(info._id).icon;
             GameManager.Resource.LoadResourceAsync<Sprite>(_imgItemPath, GetInstanceID().ToString(), (Object obj, object[] result) =>
             {
                 _imgItem.sprite = obj as Sprite;

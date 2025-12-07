@@ -153,9 +153,6 @@ namespace Cyber
             // 每帧处理非主线程调用
             ProcessMainThreadActions();
 
-            // 网络更新，先写在这里，后续可能更换位置
-            //if (isConnected) NetManager.Update();
-
             switch (process)
             {
                 case LauncherProcess.PreloadBegin:

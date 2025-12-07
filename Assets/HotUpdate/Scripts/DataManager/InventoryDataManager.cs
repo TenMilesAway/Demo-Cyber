@@ -35,7 +35,7 @@ namespace HA
 
             // 显示详细信息面板
             ItemDetailInfoParam param = new ItemDetailInfoParam();
-            param.data = itemCell._itemInfo;
+            param.data = itemCell;
 
             UIManager.GetInstance().OpenPanel(GlobalDefine.ItemDetailInfoPanel, UILayer.Mid, param);
         }
