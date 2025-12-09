@@ -15421,7 +15421,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 225078134}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 36.777275, y: 7.452342, z: 100.897514}
+  m_LocalPosition: {x: 36.777275, y: 7.452342, z: 96.597496}
   m_LocalScale: {x: 1.1148998, y: 1.1148998, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -22666,11 +22666,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 181891939113035475, guid: 8be431d8351b1de498bed754f9e9e3b2, type: 3}
   m_PrefabInstance: {fileID: 334247084}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &335361188 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1840347803955506820, guid: 3a04e11886dc58d459321a6d8d53dc3a, type: 3}
-  m_PrefabInstance: {fileID: 1534411641348321464}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &335375758
 PrefabInstance:
@@ -36268,6 +36263,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5159108068137956901, guid: d3b23cd105d55d443844a1cf197f12c6, type: 3}
+      propertyPath: m_Radius
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 5779152820881648896, guid: d3b23cd105d55d443844a1cf197f12c6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.0400009
@@ -36296,13 +36295,17 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.0075809285
       objectReference: {fileID: 0}
+    - target: {fileID: 6550309966379582448, guid: d3b23cd105d55d443844a1cf197f12c6, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8220667323232963786, guid: d3b23cd105d55d443844a1cf197f12c6, type: 3}
       propertyPath: m_HorizontalRecentering.m_RecenteringTime
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8220667323232963787, guid: d3b23cd105d55d443844a1cf197f12c6, type: 3}
       propertyPath: m_CameraDistance
-      value: 1.699979
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8220667324360017453, guid: d3b23cd105d55d443844a1cf197f12c6, type: 3}
       propertyPath: m_LocalPosition.y
@@ -36310,7 +36313,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8220667324360017453, guid: d3b23cd105d55d443844a1cf197f12c6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.6999817
+      value: -6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8493446213948847305, guid: d3b23cd105d55d443844a1cf197f12c6, type: 3}
+      propertyPath: _interactiveRadius
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8544326345733075259, guid: d3b23cd105d55d443844a1cf197f12c6, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8646362996467675560, guid: d3b23cd105d55d443844a1cf197f12c6, type: 3}
+      propertyPath: m_Radius
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d3b23cd105d55d443844a1cf197f12c6, type: 3}
@@ -130715,25 +130730,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1351618920150234174, guid: 3a04e11886dc58d459321a6d8d53dc3a, type: 3}
   m_PrefabInstance: {fileID: 1534411641348321464}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &543450652421522570
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 335361188}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: baa12227f0d0f974fa27660d363608c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialogueContainer: {fileID: 11400000, guid: 027240562a58aad4f89e8203e12c1f7b, type: 2}
-  dialogueGroup: {fileID: 11400000, guid: b074ffaa35e3c7a468fe36c6e642050d, type: 2}
-  dialogue: {fileID: 11400000, guid: 2dbdf6a6208df8b4fa425efccd9ac573, type: 2}
-  groupedDialogues: 0
-  startingDialogueOnly: 1
-  selectedDialogueGroupIndex: 0
-  selectedDialogueIndex: 0
 --- !u!4 &543450652787055002 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6390336305829913675, guid: d7870eec574207f458e5a0091d28ceb9, type: 3}
@@ -130903,6 +130899,14 @@ PrefabInstance:
     - target: {fileID: 5365542089291003095, guid: 3a04e11886dc58d459321a6d8d53dc3a, type: 3}
       propertyPath: dialogueStrings.Array.data[0].isQuestion
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724009384063447246, guid: 3a04e11886dc58d459321a6d8d53dc3a, type: 3}
+      propertyPath: m_Size.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724009384063447246, guid: 3a04e11886dc58d459321a6d8d53dc3a, type: 3}
+      propertyPath: m_Size.z
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a04e11886dc58d459321a6d8d53dc3a, type: 3}

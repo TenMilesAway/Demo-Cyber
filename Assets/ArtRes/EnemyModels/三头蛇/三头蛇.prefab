@@ -1522,9 +1522,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1351618920150234174}
-  - component: {fileID: 5365542089291003095}
   - component: {fileID: 6724009384063447246}
-  - component: {fileID: 919132148151770687}
+  - component: {fileID: 1951286391510334800}
   m_Layer: 0
   m_Name: "\u4E09\u5934\u86C7"
   m_TagString: Untagged
@@ -1548,56 +1547,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5365542089291003095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1840347803955506820}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac0f5f11b1a3805478f64a65c6eb9ab5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialogueStrings:
-  - text: Hi, my name is Shuo Li.
-    isQuestion: 1
-    dialogueChoices:
-    - answerOption: Next
-      optionIndexJump: 2
-      isEnd: 0
-      chooseEvent:
-        m_PersistentCalls:
-          m_Calls: []
-    - answerOption: Shop
-      optionIndexJump: 2
-      isEnd: 1
-      chooseEvent:
-        m_PersistentCalls:
-          m_Calls: []
-    startDialogueEvent:
-      m_PersistentCalls:
-        m_Calls: []
-    endDialogueEvent:
-      m_PersistentCalls:
-        m_Calls: []
-  - text: Whataya want from me?
-    isQuestion: 1
-    dialogueChoices:
-    - answerOption: None
-      optionIndexJump: 0
-      isEnd: 1
-      chooseEvent:
-        m_PersistentCalls:
-          m_Calls: []
-    startDialogueEvent:
-      m_PersistentCalls:
-        m_Calls: []
-    endDialogueEvent:
-      m_PersistentCalls:
-        m_Calls: []
-  NPCTransform: {fileID: 1351618920150234174}
 --- !u!65 &6724009384063447246
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1611,19 +1560,25 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 5, y: 3.6, z: 5}
   m_Center: {x: 0, y: 1.8, z: 0}
---- !u!65 &919132148151770687
-BoxCollider:
+--- !u!114 &1951286391510334800
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1840347803955506820}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 7, y: 3.6, z: 7}
-  m_Center: {x: 0, y: 1.8, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b9d227b3be37d5479cacd87be6a8675, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dialogueContainer: {fileID: 11400000, guid: 027240562a58aad4f89e8203e12c1f7b, type: 2}
+  _dialogueGroup: {fileID: 11400000, guid: b074ffaa35e3c7a468fe36c6e642050d, type: 2}
+  _dialogue: {fileID: 11400000, guid: cdc79609a6294a048ac3734222c4e40e, type: 2}
+  _groupedDialogues: 1
+  _startingDialogueOnly: 1
+  _selectedDialogueGroupIndex: 0
+  _selectedDialogueIndex: 0
 --- !u!1 &1857938919839040989
 GameObject:
   m_ObjectHideFlags: 0
