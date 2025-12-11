@@ -51,6 +51,8 @@ namespace HA
 
         private PlayerInfo _playerInfo;
 
+        private HADialogue _dialogue;
+
         public override string GetPanelName()
         {
             return GlobalDefine.MainPanel;
@@ -65,6 +67,9 @@ namespace HA
             InitPlayerInfo(_playerInfo);
 
             _btnBag.onClick.AddListener(OnClickBtnBag);
+            _btnForge.onClick.AddListener(OnClickBtnForge);
+
+            _dialogue = GetComponent<HADialogue>();
         }
 
         #region 主要方法
@@ -91,6 +96,13 @@ namespace HA
             param.data = _playerInfo;
 
             UIManager.GetInstance().OpenPanel(GlobalDefine.InventoryPanel, UILayer.Mid, param);
+        }
+
+        private void OnClickBtnForge()
+        {
+            DialoguePanelParam param = new DialoguePanelParam();
+            param.data = _dialogue;
+            UIManager.GetInstance().OpenPanel(GlobalDefine.DialoguePanel, UILayer.Mid, param);
         }
         #endregion
     }

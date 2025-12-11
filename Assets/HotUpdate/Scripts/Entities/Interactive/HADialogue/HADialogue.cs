@@ -23,6 +23,10 @@ namespace HA
         private const string _interactionPrompt = "按 F 进行对话"; // 交互提示语
         private bool _isInteractable;                             // 是否可交互
 
+        public DSDialogueContainerSO DialogueContainer { get { return _dialogueContainer; } }
+        public DSDialogueGroupSO DialogueGroup { get { return _dialogueGroup; } }
+        public DSDialogueSO Dialogue { get { return _dialogue; } }
+
         /// 供外部调用
         [HideInInspector] public string InteractionPrompt => _interactionPrompt;
         [HideInInspector] public bool IsInteractable => _isInteractable;

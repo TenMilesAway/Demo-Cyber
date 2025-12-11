@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Remote Dialogue Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Remote Dialogue Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: b79c5be0e4fe38149a848fcf3b51dc68
+  m_SerializeEntries:
+  - m_GUID: f9398bbdba012f24bae9ea232d4adede
+    m_Address: Assets/UI/Dialogue/Others
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b71c1af5eacc8024589e7fc1fa69f3b9
+    m_Address: Assets/UI/Dialogue/Prefabs
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 33ee6df951d06244f8b8ae51e9d8300e
+    m_Address: Assets/UI/Dialogue/SpritesBig
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e86a858d93dc20b4b8ceae9d4c494df1
+    m_Address: Assets/UI/Dialogue/Dialogue.spriteatlas
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: a21267dd150d19f4e9fc611b903aaf99, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: f3205a9d78be3324598b0650b57a2c26, type: 2}
+    - {fileID: 11400000, guid: 7799adc4cf36ee247a5e62259eec7b91, type: 2}

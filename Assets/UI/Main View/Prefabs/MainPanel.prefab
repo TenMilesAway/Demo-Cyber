@@ -1924,6 +1924,7 @@ GameObject:
   - component: {fileID: 5554817758914758497}
   - component: {fileID: 5554817758914758496}
   - component: {fileID: 2443565995522804579}
+  - component: {fileID: 3577739366301020752}
   m_Layer: 5
   m_Name: MainPanel
   m_TagString: Untagged
@@ -1990,6 +1991,25 @@ MonoBehaviour:
   _txtMaxMP: {fileID: 5554817760054714873}
   _txtCurrentEXP: {fileID: 5554817759336609195}
   _txtMaxEXP: {fileID: 5554817758232858288}
+--- !u!114 &3577739366301020752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5554817758914758498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b9d227b3be37d5479cacd87be6a8675, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dialogueContainer: {fileID: 11400000, guid: 027240562a58aad4f89e8203e12c1f7b, type: 2}
+  _dialogueGroup: {fileID: 11400000, guid: b074ffaa35e3c7a468fe36c6e642050d, type: 2}
+  _dialogue: {fileID: 11400000, guid: cdc79609a6294a048ac3734222c4e40e, type: 2}
+  _groupedDialogues: 1
+  _startingDialogueOnly: 1
+  _selectedDialogueGroupIndex: 0
+  _selectedDialogueIndex: 0
 --- !u!1 &5554817758948325664
 GameObject:
   m_ObjectHideFlags: 0
