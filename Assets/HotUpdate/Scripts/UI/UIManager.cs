@@ -142,6 +142,13 @@ namespace HA
             _loadingPanels.Remove(panelName);
         }
 
+        public UIBasePanel GetOpeningPanel(string panelName)
+        {
+            _panelDic.TryGetValue(panelName, out UIBasePanel panel);
+
+            return panel;
+        }
+
         /// <summary>
         /// 关闭面板 (目前未走定时逻辑, 后续修改)
         /// </summary>

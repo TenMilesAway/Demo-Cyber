@@ -9,12 +9,25 @@ namespace HA
         // 当前可交互物体
         private List<IInteractive> _interactives = new List<IInteractive>();
 
-        /// <summary>
-        /// 当前可交互物体 (只读)
-        /// </summary>
-        public IReadOnlyList<IInteractive> CurrentInteractives => _interactives;
+        public List<IInteractive> CurrentInteractives { get { return _interactives; } }
 
         #region 主要方法
+        /// <summary>
+        /// Update：是否有可交互物体
+        /// </summary>
+        public void UpdateForInteractives()
+        {
+            if (_interactives.Count == 0) return;
+        }
+
+        public void ClearInteractives()
+        {
+            _interactives.Clear();
+        }
+
+        /// <summary>
+        /// 添加可交互物体
+        /// </summary>
         public void AddInteractive(IInteractive obj)
         {
             if (!_interactives.Contains(obj))
@@ -24,6 +37,9 @@ namespace HA
             }
         }
 
+        /// <summary>
+        /// 移除可交互物体
+        /// </summary>
         public void RemoveInteractive(IInteractive obj)
         {
             if (_interactives.Contains(obj))

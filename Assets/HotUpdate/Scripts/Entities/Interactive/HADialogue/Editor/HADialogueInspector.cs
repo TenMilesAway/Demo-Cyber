@@ -10,6 +10,8 @@ namespace HA
     [CustomEditor(typeof(HADialogue))]
     public class HADialogueInspector : Editor
     {
+        private SerializedProperty npcNameProperty;
+
         private SerializedProperty dialogueContainerProperty;
         private SerializedProperty dialogueGroupProperty;
         private SerializedProperty dialogueProperty;
@@ -22,6 +24,8 @@ namespace HA
 
         private void OnEnable()
         {
+            npcNameProperty = serializedObject.FindProperty("_NPCName");
+
             dialogueContainerProperty = serializedObject.FindProperty("_dialogueContainer");
             dialogueGroupProperty = serializedObject.FindProperty("_dialogueGroup");
             dialogueProperty = serializedObject.FindProperty("_dialogue");
@@ -36,6 +40,8 @@ namespace HA
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
+
+            npcNameProperty.DrawPropertyField();
 
             // 绘制对话容器区域
             DrawDialogueContainerArea();

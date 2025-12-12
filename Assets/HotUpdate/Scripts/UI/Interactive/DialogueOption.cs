@@ -31,6 +31,12 @@ namespace HA
         {
             return _dialogueIndex;
         }
+
+        public void ClearAllListeners()
+        {
+            _btnDialogueOption.onClick.RemoveAllListeners();
+        }
+
         #region ¼àÌý·½·¨
         private void OnClickOptionButton(Action callback)
         {

@@ -15,7 +15,7 @@ namespace HA
             // ---------
 
 
-            // --------- 异步
+            // --------- 展示主界面 UI
             Task<PlayerInfo> task = PlayerDataManager.GetInstance().GetPlayerInfoAsync(1, 0.02f);
             await task;
             MainPanelParam param = new MainPanelParam();
@@ -26,12 +26,12 @@ namespace HA
 
         public void OnLeave()
         {
-            
+            InteractiveDataManager.GetInstance().ClearInteractives();
         }
 
         public void OnUpdate()
         {
-            
+            InteractiveDataManager.GetInstance().UpdateForInteractives();
         }
     }
 }

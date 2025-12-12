@@ -2003,6 +2003,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b9d227b3be37d5479cacd87be6a8675, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _NPCName: "\u8389\u8389"
   _dialogueContainer: {fileID: 11400000, guid: 027240562a58aad4f89e8203e12c1f7b, type: 2}
   _dialogueGroup: {fileID: 11400000, guid: b074ffaa35e3c7a468fe36c6e642050d, type: 2}
   _dialogue: {fileID: 11400000, guid: cdc79609a6294a048ac3734222c4e40e, type: 2}

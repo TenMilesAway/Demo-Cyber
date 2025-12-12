@@ -15,10 +15,15 @@ namespace HA
         Vector3 Position { get; }
 
         /// <summary>
-        /// 获取当前可交互物体的名称或提示文本
-        /// 例如："与 NPC 对话"、"打开宝箱"
+        /// 获取当前交互的提示文本
+        /// 例如："按 F 进入对话"、"按 F 开启物品"
         /// </summary>
         string InteractionPrompt { get; }
+
+        /// <summary>
+        /// 获取当前可交互物体的名称
+        /// </summary>
+        string InteractionName { get; }
 
         /// <summary>
         /// 获取当前对象是否可进行交互

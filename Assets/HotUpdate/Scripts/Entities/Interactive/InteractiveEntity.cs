@@ -9,16 +9,7 @@ namespace HA
     /// </summary>
     public interface IDialogue : IInteractive
     {
-        /// <summary>
-        /// 获取当前对话的唯一标识符或起始对话ID
-        /// </summary>
-        string DialogueID { get; }
-
-        /// <summary>
-        /// 开始一个对话流程
-        /// 调用 DialogueManager 并传入 DialogueID
-        /// </summary>
-        void StartDialogue();
+        
     }
 
     /// <summary>

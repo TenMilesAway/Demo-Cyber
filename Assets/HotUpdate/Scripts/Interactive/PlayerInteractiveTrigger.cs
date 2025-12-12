@@ -8,8 +8,6 @@ namespace HA
     {
         [SerializeField]
         private float _interactiveRadius = 2f;
-        [SerializeField]
-        private LayerMask _interactiveLayer;
 
         private void OnTriggerEnter(Collider other)
         {

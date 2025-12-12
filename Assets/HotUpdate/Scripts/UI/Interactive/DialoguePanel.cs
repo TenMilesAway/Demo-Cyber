@@ -34,7 +34,7 @@ namespace HA
             return GlobalDefine.DialoguePanel;
         }
 
-        protected override async void InitHandle(OpenUIParam param)
+        protected override void InitHandle(OpenUIParam param)
         {
             base.InitHandle(param);
 
@@ -43,9 +43,10 @@ namespace HA
             _dialogue = dialoguePanelParam.data as HADialogue;
             _currentDialogueSO = _dialogue.Dialogue;
 
-            AsyncOperationHandle optionHandle = Addressables.LoadAssetAsync<GameObject>(GlobalDefine.DialogueOption);
-            await optionHandle.Task;
-            _optionPrefab = optionHandle.Task.Result as GameObject;
+            GameManager.Resource.LoadResourceAsync<GameObject>(GlobalDefine.DialogueOption, GetInstanceID().ToString(), (Object obj, object[] result) =>
+            {
+                _optionPrefab = obj as GameObject;
+            });
 
             _btnDialogueCancel.onClick.AddListener(CancelDialogue);
 
@@ -79,13 +80,12 @@ namespace HA
             // 如果没有后续对话 (已经到达[结束对话])
             if (_currentDialogueSO.Choices.Count == 1 && _currentDialogueSO.Choices[0].NextDialogue == null)
             {
-                GameObject option = Instantiate(_optionPrefab);
-
-                _dialogueOptions.Add(option);
-
-                option.transform.SetParent(_dialogueOptionContainer, false);
-
-                option.GetComponent<DialogueOption>().Init("结束对话", 0, DialogueOver);
+                UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.DialogueOption, GetInstanceID().ToString(), (GameObject dialogueOption) =>
+                {
+                    _dialogueOptions.Add(dialogueOption);
+                    dialogueOption.transform.SetParent(_dialogueOptionContainer, false);
+                    dialogueOption.GetComponent<DialogueOption>().Init("结束对话", 0, DialogueOver);
+                });
 
                 return;
             }
@@ -93,31 +93,33 @@ namespace HA
             // 有后续选项
             for (int i = 0; i <  _currentDialogueSO.Choices.Count; i++)
             {
-                GameObject option = Instantiate(_optionPrefab);
-
-                _dialogueOptions.Add(option);
-
-                option.transform.SetParent(_dialogueOptionContainer, false);
-
-                // 防止闭包
                 int index = i;
-
-                option.GetComponent<DialogueOption>().Init(_currentDialogueSO.Choices[i].Text, index, () =>
+                // 这块的逻辑需要走对象池
+                UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.DialogueOption, GetInstanceID().ToString(), (GameObject dialogueOption) =>
                 {
-                    _nextDialogueSO = _currentDialogueSO.Choices[index].NextDialogue;
-
-                    ClearCurrentOptions();
-
-                    PlayNextDialogue();
+                    _dialogueOptions.Add(dialogueOption);
+                    dialogueOption.transform.SetParent(_dialogueOptionContainer, false);
+                    dialogueOption.GetComponent<DialogueOption>().Init(_currentDialogueSO.Choices[i].Text, index, () =>
+                    {
+                        _nextDialogueSO = _currentDialogueSO.Choices[index].NextDialogue;
+                        ClearCurrentOptions();
+                        PlayNextDialogue();
+                    });
                 });
             }
         }
 
+        /// <summary>
+        /// 清除当前的选项
+        /// </summary>
         private void ClearCurrentOptions()
         {
             foreach (GameObject option in _dialogueOptions)
             {
-                Destroy(option);
+                UnityObjectPoolFactory.GetInstance().PutItem(GlobalDefine.DialogueOption, option, () =>
+                {
+                    option.GetComponent<DialogueOption>().ClearAllListeners();
+                });
             }
 
             _dialogueOptions.Clear();
@@ -131,6 +133,7 @@ namespace HA
         public void CancelDialogue()
         {
             UIManager.GetInstance().ClosePanel(GlobalDefine.DialoguePanel);
+            ClearCurrentOptions();
         }
 
         /// <summary>
@@ -139,6 +142,7 @@ namespace HA
         private void DialogueOver()
         {
             UIManager.GetInstance().ClosePanel(GlobalDefine.DialoguePanel);
+            ClearCurrentOptions();
         }
         #endregion
     }

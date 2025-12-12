@@ -6,7 +6,7 @@ SpriteAtlas:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Dialogue
+  m_Name: Interactive
   serializedVersion: 2
   m_EditorData:
     serializedVersion: 2
@@ -38,9 +38,15 @@ SpriteAtlas:
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites: []
-  m_PackedSpriteNamesToIndex: []
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 15f02377f4d9ab941b08654164a1a8c3, type: 3}
+  - {fileID: 21300000, guid: 2574b577602aa7c4ab024969df5a7f20, type: 3}
+  - {fileID: 21300000, guid: 2355b1fffb935444ab90388e51b13ccf, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - DialogueCancelBg
+  - HeadIcon
+  - DialogueBg
   m_RenderDataMap: {}
-  m_Tag: Dialogue
+  m_Tag: Interactive
   m_IsVariant: 0
   m_IsPlaceholder: 0

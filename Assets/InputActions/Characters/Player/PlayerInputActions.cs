@@ -278,7 +278,7 @@ namespace Cyber
                 {
                     ""name"": """",
                     ""id"": ""d95779e8-fce5-4d81-805e-01a0e4d789f0"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

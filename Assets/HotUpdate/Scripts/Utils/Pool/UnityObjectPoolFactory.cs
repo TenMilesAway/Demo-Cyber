@@ -65,11 +65,12 @@ namespace HA
             }
         }
 
-        public void PutItem(string itemName, Object objectToReturn)
+        public void PutItem(string itemName, Object objectToReturn, Action callback = null)
         {
             if (_pools.TryGetValue(itemName, out var pool))
             {
                 pool.Put(objectToReturn);
+                callback?.Invoke();
             }
         }
         #endregion
