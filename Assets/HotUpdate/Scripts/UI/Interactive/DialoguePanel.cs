@@ -27,7 +27,6 @@ namespace HA
         private DSDialogueSO _currentDialogueSO;
         private DSDialogueSO _nextDialogueSO;
         private List<GameObject> _dialogueOptions = new List<GameObject>();
-        private GameObject _optionPrefab;
 
         public override string GetPanelName()
         {
@@ -42,11 +41,6 @@ namespace HA
             DialoguePanelParam dialoguePanelParam = param as DialoguePanelParam;
             _dialogue = dialoguePanelParam.data as HADialogue;
             _currentDialogueSO = _dialogue.Dialogue;
-
-            GameManager.Resource.LoadResourceAsync<GameObject>(GlobalDefine.DialogueOption, GetInstanceID().ToString(), (Object obj, object[] result) =>
-            {
-                _optionPrefab = obj as GameObject;
-            });
 
             _btnDialogueCancel.onClick.AddListener(CancelDialogue);
 
@@ -94,12 +88,12 @@ namespace HA
             for (int i = 0; i <  _currentDialogueSO.Choices.Count; i++)
             {
                 int index = i;
-                // 这块的逻辑需要走对象池
                 UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.DialogueOption, GetInstanceID().ToString(), (GameObject dialogueOption) =>
                 {
                     _dialogueOptions.Add(dialogueOption);
                     dialogueOption.transform.SetParent(_dialogueOptionContainer, false);
-                    dialogueOption.GetComponent<DialogueOption>().Init(_currentDialogueSO.Choices[i].Text, index, () =>
+                    // 记住，一定要排查闭包问题
+                    dialogueOption.GetComponent<DialogueOption>().Init(_currentDialogueSO.Choices[index].Text, index, () =>
                     {
                         _nextDialogueSO = _currentDialogueSO.Choices[index].NextDialogue;
                         ClearCurrentOptions();

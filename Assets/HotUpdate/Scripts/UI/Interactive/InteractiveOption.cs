@@ -11,11 +11,11 @@ namespace HA
         [SerializeField] private Image _imgSelect;
         [SerializeField] private Text _txtInteractiveOption;
 
-        public void Init(string npcName, Type type)
+        public void Init(string npcName, IInteractive obj, bool isShowImgSelect = false)
         {
-            _imgSelect.gameObject.SetActive(false);
+            _imgSelect.gameObject.SetActive(isShowImgSelect);
 
-            InitTextInteractiveOption(npcName, type);
+            InitTextInteractiveOption(npcName, obj);
         }
 
         #region 主要方法
@@ -30,23 +30,25 @@ namespace HA
         /// <summary>
         /// 更新交互选项文本
         /// </summary>
-        public void UpdateTextInteractiveOption(string npcName, Type type)
+        public void UpdateTextInteractiveOption(string npcName, IInteractive obj)
         {
-            if (type == typeof(IDialogue))
+            if (obj is IDialogue)
             {
+                HADebug.Log("这是一个对话可交互物体");
                 _txtInteractiveOption.text = string.Format("和<color=#28E1E5>{0}</color>对话", npcName);
             }
-            else if (type == typeof(ITreasure))
+            else if (obj is ITreasure)
             {
+                HADebug.Log("这是一个宝箱可交互物体");
                 _txtInteractiveOption.text = string.Format("开启<color=#28E1E5>{0}</color>", npcName);
             }
         }
         #endregion
 
         #region 辅助方法
-        private void InitTextInteractiveOption(string npcName, Type type)
+        private void InitTextInteractiveOption(string npcName, IInteractive obj)
         {
-            UpdateTextInteractiveOption(_imgSelect.name, type);
+            UpdateTextInteractiveOption(npcName, obj);
         }
         #endregion
     }

@@ -12,6 +12,7 @@ namespace HA
             // --------- ≥ı ºªØ
             PlayerDataManager.GetInstance().Init();
             InventoryDataManager.GetInstance().Init();
+            InteractiveDataManager.GetInstance().Init();
             // ---------
 
 
