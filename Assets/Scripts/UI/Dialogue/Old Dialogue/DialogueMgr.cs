@@ -41,7 +41,7 @@ namespace Cyber
                 // 显示交互提示面板
                 UIManager.GetInstance().ShowPanel<InteractionPanel>("InteractionPanel");
                 // 允许使用 E 交互对话
-                player.Input.PlayerActions.TalkInteraction.started += Talk;
+                player.Input.PlayerActions.Interaction.started += Talk;
             }
         }
 
@@ -52,7 +52,7 @@ namespace Cyber
                 UIManager.GetInstance().HidePanel("InteractionPanel");
 
             // 禁止使用 E 交互对话
-            player.Input.PlayerActions.TalkInteraction.started -= Talk;
+            player.Input.PlayerActions.Interaction.started -= Talk;
         }
 
         private void Talk(InputAction.CallbackContext call)
@@ -60,7 +60,7 @@ namespace Cyber
             // 正在对话
             isTalking = true;
             // 因为对话进行了，所以把事件先移除
-            player.Input.PlayerActions.TalkInteraction.started -= Talk;
+            player.Input.PlayerActions.Interaction.started -= Talk;
 
             // 禁用用户操作
             DisablePlayerActions();

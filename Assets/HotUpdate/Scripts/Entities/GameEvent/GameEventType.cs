@@ -10,12 +10,21 @@ public enum GameEventType
     Close = 3,                  // 连接关闭
     PacketIdEnd = 10000,
     // 网络消息预留区间
+    
+    // 玩家输入
+    DisablePlayerInput,         // 禁用玩家所有输入
+    EnablePlayerInput,          // 启用玩家所有输入
+    DisablePlayerFlipInput,     // 禁用玩家攻击
+    EnablePlayerFlipInput,      // 启用玩家攻击
+    DisableInteractiveInput,    // 禁用玩家交互
+    EnableInteractiveInput,     // 启用玩家交互
 
+    // 业务事件
     OneSecondEvent,             // 每秒触发事件
     PlayAudio,                  // 播放音频
     EnterItemCell,              // 鼠标进入物品格子
     ExitItemCell,               // 鼠标离开物品格子
     HasInteractiveObject,       // 有可交互物体
     NoneInteractiveObject,      // 无可交互物体
-    UpdateInteractiveList,    // 更新交互物体队列
+    UpdateInteractiveList,      // 更新交互物体队列
 }

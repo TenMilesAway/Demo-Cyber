@@ -78,7 +78,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "TalkInteraction",
+                    "name": "Interaction",
                     "type": "Button",
                     "id": "33e8a450-3fc5-4c9f-8edb-035ad9ada96b",
                     "expectedControlType": "Button",
@@ -90,6 +90,15 @@
                     "name": "Flip",
                     "type": "Button",
                     "id": "6566d193-63f8-42f7-a0c8-495b479d1c37",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "InteractiveOption",
+                    "type": "Button",
+                    "id": "1d48a85e-c966-4f6b-9e85-e761c11d5da7",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -258,7 +267,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "TalkInteraction",
+                    "action": "Interaction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -270,6 +279,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Flip",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d02b3b4b-53b9-46ab-b5a7-910551bdfb97",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InteractiveOption",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "167cf55e-8695-45c8-809a-0698908df94e",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InteractiveOption",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

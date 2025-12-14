@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using Cyber;
 
 namespace HA
 {
@@ -11,6 +12,9 @@ namespace HA
     public class PlayerDataManager : BaseManager<PlayerDataManager>
     {
         private PlayerInfo _playerInfo;
+        private PlayerInput _input;
+
+        private const string _playerTag = "Player";
 
         public void Init()
         {
@@ -18,6 +22,8 @@ namespace HA
             NetManager.AddMsgListener("HAMsgPlayerInfoUpload", RpsPlayerInfoUpload);
 
             ReqPlayerInfoLoad();
+
+            _input = GameObject.FindGameObjectWithTag(_playerTag).GetComponent<PlayerInput>();
         }
 
         #region 主要方法
@@ -27,6 +33,14 @@ namespace HA
         public PlayerInfo GetPlayerInfo()
         {
             return _playerInfo;
+        }
+
+        /// <summary>
+        /// 获取玩家输入组件
+        /// </summary>
+        public PlayerInput GetPlayerInput()
+        {
+            return _input;
         }
 
         /// <summary>

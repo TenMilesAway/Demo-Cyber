@@ -102,7 +102,7 @@ namespace Cyber
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""TalkInteraction"",
+                    ""name"": ""Interaction"",
                     ""type"": ""Button"",
                     ""id"": ""33e8a450-3fc5-4c9f-8edb-035ad9ada96b"",
                     ""expectedControlType"": ""Button"",
@@ -114,6 +114,15 @@ namespace Cyber
                     ""name"": ""Flip"",
                     ""type"": ""Button"",
                     ""id"": ""6566d193-63f8-42f7-a0c8-495b479d1c37"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""InteractiveOption"",
+                    ""type"": ""Button"",
+                    ""id"": ""1d48a85e-c966-4f6b-9e85-e761c11d5da7"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -282,7 +291,7 @@ namespace Cyber
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""TalkInteraction"",
+                    ""action"": ""Interaction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -294,6 +303,28 @@ namespace Cyber
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Flip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d02b3b4b-53b9-46ab-b5a7-910551bdfb97"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InteractiveOption"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""167cf55e-8695-45c8-809a-0698908df94e"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InteractiveOption"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -312,8 +343,9 @@ namespace Cyber
             m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
             m_Player_CursorToggle = m_Player.FindAction("CursorToggle", throwIfNotFound: true);
-            m_Player_TalkInteraction = m_Player.FindAction("TalkInteraction", throwIfNotFound: true);
+            m_Player_Interaction = m_Player.FindAction("Interaction", throwIfNotFound: true);
             m_Player_Flip = m_Player.FindAction("Flip", throwIfNotFound: true);
+            m_Player_InteractiveOption = m_Player.FindAction("InteractiveOption", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -383,8 +415,9 @@ namespace Cyber
         private readonly InputAction m_Player_Sprint;
         private readonly InputAction m_Player_Jump;
         private readonly InputAction m_Player_CursorToggle;
-        private readonly InputAction m_Player_TalkInteraction;
+        private readonly InputAction m_Player_Interaction;
         private readonly InputAction m_Player_Flip;
+        private readonly InputAction m_Player_InteractiveOption;
         public struct PlayerActions
         {
             private @PlayerInputActions m_Wrapper;
@@ -397,8 +430,9 @@ namespace Cyber
             public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
             public InputAction @Jump => m_Wrapper.m_Player_Jump;
             public InputAction @CursorToggle => m_Wrapper.m_Player_CursorToggle;
-            public InputAction @TalkInteraction => m_Wrapper.m_Player_TalkInteraction;
+            public InputAction @Interaction => m_Wrapper.m_Player_Interaction;
             public InputAction @Flip => m_Wrapper.m_Player_Flip;
+            public InputAction @InteractiveOption => m_Wrapper.m_Player_InteractiveOption;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -432,12 +466,15 @@ namespace Cyber
                 @CursorToggle.started += instance.OnCursorToggle;
                 @CursorToggle.performed += instance.OnCursorToggle;
                 @CursorToggle.canceled += instance.OnCursorToggle;
-                @TalkInteraction.started += instance.OnTalkInteraction;
-                @TalkInteraction.performed += instance.OnTalkInteraction;
-                @TalkInteraction.canceled += instance.OnTalkInteraction;
+                @Interaction.started += instance.OnInteraction;
+                @Interaction.performed += instance.OnInteraction;
+                @Interaction.canceled += instance.OnInteraction;
                 @Flip.started += instance.OnFlip;
                 @Flip.performed += instance.OnFlip;
                 @Flip.canceled += instance.OnFlip;
+                @InteractiveOption.started += instance.OnInteractiveOption;
+                @InteractiveOption.performed += instance.OnInteractiveOption;
+                @InteractiveOption.canceled += instance.OnInteractiveOption;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -466,12 +503,15 @@ namespace Cyber
                 @CursorToggle.started -= instance.OnCursorToggle;
                 @CursorToggle.performed -= instance.OnCursorToggle;
                 @CursorToggle.canceled -= instance.OnCursorToggle;
-                @TalkInteraction.started -= instance.OnTalkInteraction;
-                @TalkInteraction.performed -= instance.OnTalkInteraction;
-                @TalkInteraction.canceled -= instance.OnTalkInteraction;
+                @Interaction.started -= instance.OnInteraction;
+                @Interaction.performed -= instance.OnInteraction;
+                @Interaction.canceled -= instance.OnInteraction;
                 @Flip.started -= instance.OnFlip;
                 @Flip.performed -= instance.OnFlip;
                 @Flip.canceled -= instance.OnFlip;
+                @InteractiveOption.started -= instance.OnInteractiveOption;
+                @InteractiveOption.performed -= instance.OnInteractiveOption;
+                @InteractiveOption.canceled -= instance.OnInteractiveOption;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -499,8 +539,9 @@ namespace Cyber
             void OnSprint(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
             void OnCursorToggle(InputAction.CallbackContext context);
-            void OnTalkInteraction(InputAction.CallbackContext context);
+            void OnInteraction(InputAction.CallbackContext context);
             void OnFlip(InputAction.CallbackContext context);
+            void OnInteractiveOption(InputAction.CallbackContext context);
         }
     }
 }

@@ -1,6 +1,7 @@
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using HA;
 
 namespace Cyber
 {
@@ -46,6 +47,9 @@ namespace Cyber
         {
             Cursor.visible = !Cursor.visible;
 
+            if (Cursor.visible) GameManager.Event.Broadcast(GameEventType.DisablePlayerFlipInput);
+            else GameManager.Event.Broadcast(GameEventType.EnablePlayerFlipInput);
+
             if (!Cursor.visible)
             {
                 Cursor.lockState = CursorLockMode.Locked;
@@ -81,11 +85,6 @@ namespace Cyber
             if (disableCameraZoomOnCursorVisible)
             {
                 inputProvider.ZAxis.action.Disable();
-            }
-
-            if (disableStateAttack)
-            {
-                GameDataMgr.GetInstance().GetPlayer().Input.InputActions.Player.Flip.Disable();
             }
         }
     }

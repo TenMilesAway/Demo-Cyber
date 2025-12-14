@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using HA;
 
 namespace Cyber
 {
@@ -14,6 +15,13 @@ namespace Cyber
             InputActions = new PlayerInputActions();
 
             PlayerActions = InputActions.Player;
+
+            GameManager.Event.AddListener(GameEventType.EnablePlayerInput, InputActions.Enable);
+            GameManager.Event.AddListener(GameEventType.DisablePlayerInput, InputActions.Disable);
+            GameManager.Event.AddListener(GameEventType.EnablePlayerFlipInput, InputActions.Player.Flip.Enable);
+            GameManager.Event.AddListener(GameEventType.DisablePlayerFlipInput, InputActions.Player.Flip.Disable);
+            GameManager.Event.AddListener(GameEventType.EnableInteractiveInput, InputActions.Player.InteractiveOption.Enable);
+            GameManager.Event.AddListener(GameEventType.DisableInteractiveInput, InputActions.Player.InteractiveOption.Disable);
         }
 
         public void OnEnable()

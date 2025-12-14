@@ -1,7 +1,8 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.InputSystem;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 
@@ -17,10 +18,11 @@ namespace HA
         [SerializeField] private Text _txtPrompt;
         [SerializeField] private Transform _interactiveOptionContainer;
 
-        private List<IInteractive> _interactives;            // ¿É½»»¥ÎïÌå
-        private List<InteractiveOption> _interactiveOptions; // ¿É½»»¥ÎïÌå InteractiveOption
-        private int _lastSelectIndex;                        // ¸Õ²ÅÑ¡ÖĞµÄÑ¡Ïî
-        private int _currentSelectIndex;                     // ÏÖÔÚÑ¡ÖĞµÄÑ¡Ïî
+        private List<IInteractive> _interactives;            // å¯äº¤äº’ç‰©ä½“
+        private List<InteractiveOption> _interactiveOptions; // å¯äº¤äº’ç‰©ä½“ InteractiveOption
+        private Cyber.PlayerInput _playerInput;                    // ç”¨æˆ·è¾“å…¥ç»„ä»¶
+        private int _lastSelectIndex;                        // åˆšæ‰é€‰ä¸­çš„é€‰é¡¹
+        private int _currentSelectIndex;                     // ç°åœ¨é€‰ä¸­çš„é€‰é¡¹
 
         public override string GetPanelName()
         {
@@ -33,14 +35,16 @@ namespace HA
 
             _interactiveOptionContainer.gameObject.SetActive(false);
 
-            // ³õÊ¼»¯¿É½»»¥¶ÓÁĞ
+            // åˆå§‹åŒ–å¯äº¤äº’é˜Ÿåˆ—
             _interactives = new List<IInteractive>();
             _interactiveOptions = new List<InteractiveOption>();
+            _playerInput = PlayerDataManager.GetInstance().GetPlayerInput();
 
-            // ³õÊ¼»¯Ñ¡ÔñË÷Òı
+            // åˆå§‹åŒ–é€‰æ‹©ç´¢å¼•
             _currentSelectIndex = 0;
             _lastSelectIndex = 0;
 
+            // åˆå§‹åŒ–ä¸€äº›ç›‘å¬
             AddListeners();
         }
 
@@ -51,34 +55,41 @@ namespace HA
             RemoveListeners();
         }
 
-        #region Ö÷Òª·½·¨
+        #region ä¸»è¦æ–¹æ³•
+        /// <summary>
+        /// åˆ·æ–°å¯äº¤äº’ç‰©ä½“åˆ—è¡¨
+        /// </summary>
         private void UpdateInteractives(List<IInteractive> interactives)
         {
             int needToDestroy = _interactives.Count - interactives.Count;
 
-            // Èç¹ûµ±Ç° List µÄÊıÁ¿Ğ¡ÓÚÍâ²¿¸üĞÂµÄÊıÁ¿, ÔòĞèÒªÈ¥Éú³ÉĞÂµÄ prefab
+            // å¦‚æœå½“å‰ List çš„æ•°é‡å°äºå¤–éƒ¨æ›´æ–°çš„æ•°é‡, åˆ™éœ€è¦å»ç”Ÿæˆæ–°çš„ prefab
             if (needToDestroy < 0)
             {
                 int count = -needToDestroy;
                 for (int i = 0; i < count; i++)
                 {
+                    int index = i;
                     UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.InteractiveOption, GetInstanceID().ToString(), (GameObject interactiveOption) =>
                     {
                         interactiveOption.transform.SetParent(_interactiveOptionContainer, false);
                         _interactiveOptions.Add(interactiveOption.GetComponent<InteractiveOption>());
-                        if (!_interactiveOptionContainer.gameObject.activeSelf) _interactiveOptionContainer.gameObject.SetActive(true);
-
-                        _interactives = new List<IInteractive>(interactives);
-                        UpdateGOs();
+                        if (index == count - 1)
+                        {
+                            _interactives = new List<IInteractive>(interactives);
+                            UpdateGOs();
+                            if (!_interactiveOptionContainer.gameObject.activeSelf) _interactiveOptionContainer.gameObject.SetActive(true);
+                        }
                     });
                 }
+                
             }
-            // Èç¹û´óÓÚ»òµÈÓÚ, Ôò¸ù¾İÇé¿öÈ¥Ïú»Ù
+            // å¦‚æœå¤§äºæˆ–ç­‰äº, åˆ™æ ¹æ®æƒ…å†µå»é”€æ¯
             else
             {
                 for (int i = 0; i < needToDestroy; i++)
                 {
-                    // ÒÆ³ıÄ©Î²
+                    // ç§»é™¤æœ«å°¾
                     UnityObjectPoolFactory.GetInstance().PutItem(GlobalDefine.InteractiveOption, _interactiveOptions[_interactiveOptions.Count - 1].gameObject);
                     _interactiveOptions.RemoveAt(_interactiveOptions.Count - 1);
                 }
@@ -87,21 +98,71 @@ namespace HA
                 UpdateGOs();
             }
         }
+
+        private void OnInteractiveStarted(InputAction.CallbackContext context)
+        {
+            string controlName = context.control.name;
+
+            if (controlName == "upArrow")
+            {
+                // ä¸Šä¸€ä¸ªé€‰é¡¹
+                _interactiveOptions[_lastSelectIndex].Select(false);
+                _currentSelectIndex = _currentSelectIndex >= _interactives.Count - 1 ? _currentSelectIndex : _currentSelectIndex + 1;
+                _interactiveOptions[_currentSelectIndex].Select(true);
+                _lastSelectIndex = _currentSelectIndex;
+            }
+            else if (controlName == "downArrow")
+            {
+                // ä¸‹ä¸€ä¸ªé€‰é¡¹
+                _interactiveOptions[_lastSelectIndex].Select(false);
+                _currentSelectIndex = _currentSelectIndex <= 0 ? _currentSelectIndex : _currentSelectIndex - 1;
+                _interactiveOptions[_currentSelectIndex].Select(true);
+                _lastSelectIndex = _currentSelectIndex;
+            }
+        }
+
+        private void StartInteractive(InputAction.CallbackContext context)
+        {
+            GameManager.Event.Broadcast(GameEventType.DisablePlayerInput);
+            
+            // å¼€å§‹å¯¹è¯
+            if (_interactives[_currentSelectIndex] is IDialogue)
+            {
+                DialoguePanelParam param = new DialoguePanelParam();
+                param.data = _interactives[_currentSelectIndex] as HADialogue;
+                UIManager.GetInstance().OpenPanel(GlobalDefine.DialoguePanel, UILayer.Mid, param);
+            }
+
+            UIManager.GetInstance().ClosePanel(GetPanelName());
+        }
         #endregion
 
-        #region ¼àÌı·½·¨
+        #region ç›‘å¬æ–¹æ³•
         private void AddListeners()
         {
             GameManager.Event.AddListener<List<IInteractive>>(GameEventType.UpdateInteractiveList, UpdateInteractives);
+
+            GameManager.Event.Broadcast(GameEventType.EnableInteractiveInput);
+
+            _playerInput.PlayerActions.InteractiveOption.started += OnInteractiveStarted;
+            _playerInput.PlayerActions.Interaction.started += StartInteractive;
         }
 
         private void RemoveListeners()
         {
             GameManager.Event.RemoveListener<List<IInteractive>>(GameEventType.UpdateInteractiveList, UpdateInteractives);
+
+            GameManager.Event.Broadcast(GameEventType.DisableInteractiveInput);
+
+            _playerInput.PlayerActions.InteractiveOption.started -= OnInteractiveStarted;
+            _playerInput.PlayerActions.Interaction.started -= StartInteractive;
         }
         #endregion
 
-        #region ¸¨Öú·½·¨
+        #region è¾…åŠ©æ–¹æ³•
+        /// <summary>
+        /// æ›´æ–° InteractiveOption çš„æ•°æ®
+        /// </summary>
         private void UpdateGOs()
         {
             _currentSelectIndex = _currentSelectIndex >= _interactives.Count ? _interactives.Count - 1 : _currentSelectIndex;

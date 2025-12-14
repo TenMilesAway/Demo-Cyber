@@ -31,6 +31,11 @@ namespace HA
             _interactives.Clear();
         }
 
+        public List<IInteractive> GetInteractives()
+        {
+            return _interactives;
+        }
+
         /// <summary>
         /// 添加可交互物体
         /// </summary>

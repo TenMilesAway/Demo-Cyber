@@ -128,6 +128,8 @@ namespace HA
         {
             UIManager.GetInstance().ClosePanel(GlobalDefine.DialoguePanel);
             ClearCurrentOptions();
+            GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
+            GameManager.Event.Broadcast(GameEventType.HasInteractiveObject);
         }
 
         /// <summary>
@@ -137,6 +139,8 @@ namespace HA
         {
             UIManager.GetInstance().ClosePanel(GlobalDefine.DialoguePanel);
             ClearCurrentOptions();
+            GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
+            GameManager.Event.Broadcast(GameEventType.HasInteractiveObject);
         }
         #endregion
     }
