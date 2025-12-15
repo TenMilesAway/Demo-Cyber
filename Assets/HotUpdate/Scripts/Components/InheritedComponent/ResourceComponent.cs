@@ -265,14 +265,15 @@ namespace HA
         /// </summary>
         private void FrameByFrameLoad()
         {
-            bool isDone = false;
-
             // 选择一个待加载任务
             // 倒序, 保证后进资源优先加载
             try
             {
                 for (int i = _taskGroups.Count - 1; i >= 0; i--)
                 {
+#if UNITY_WEBGL
+                    bool taskIsDone = false;
+#endif
                     LoadResourceTaskGroup group = _taskGroups[i];
 
                     // 任务组为空
@@ -301,6 +302,8 @@ namespace HA
                         }
                         else if (task._state == LoadResourceTaskState.Normal)
                         {
+                            bool isInCache = false;
+
                             // 查找缓存中是否存在相同资源
                             foreach (LoadResourceTask t in _completedTaskCache)
                             {
@@ -313,27 +316,46 @@ namespace HA
                                     t._refCount++;
                                     task._callback(t._handle.Result as Object, task._args);
                                     group._tasks.Remove(task);
+                                    isInCache = true;
                                     break;
                                 }
                             }
 
-                            isDone = true;
-
-                            if (task._type == "UnityEngine.Sprite")
+                            // 如果已在缓存中, 跳过加载
+                            if (isInCache)
                             {
-                                task._handle = Addressables.LoadAssetAsync<UnityEngine.Sprite>(task._key);
-                                task._state = LoadResourceTaskState.Loading;
+                                j--;
+                                continue;
                             }
                             else
                             {
-                                task._handle = Addressables.LoadAssetAsync<UnityEngine.Object>(task._key);
-                                task._state = LoadResourceTaskState.Loading;
+                                try
+                                {
+                                    if (task._type == "UnityEngine.Sprite")
+                                    {
+                                        task._handle = Addressables.LoadAssetAsync<UnityEngine.Sprite>(task._key);
+                                        task._state = LoadResourceTaskState.Loading;
+                                    }
+                                    else
+                                    {
+                                        task._handle = Addressables.LoadAssetAsync<UnityEngine.Object>(task._key);
+                                        task._state = LoadResourceTaskState.Loading;
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    HADebug.LogErrorFormat("加载资源失败: key[{0}], tag[{1}], exception[{2}]", task._key, task._tag, e.ToString());
+                                }
+#if UNITY_WEBGL
+                                taskIsDone = true;
+#endif
+                                break;
                             }
-                            break;
                         }
                     }
-
-                    if (isDone) break;
+#if UNITY_WEBGL
+                    if (taskIsDone) break;
+#endif
                 }
             }
             catch (Exception E)
