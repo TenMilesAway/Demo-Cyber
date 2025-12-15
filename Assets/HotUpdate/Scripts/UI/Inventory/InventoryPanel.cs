@@ -68,6 +68,16 @@ namespace HA
         private void OnClickCloseBtn()
         {
             UIManager.GetInstance().ClosePanel(GlobalDefine.InventoryPanel);
+            if (UIManager.GetInstance().GetOpeningPanel(GlobalDefine.TreasurePanel) != null)
+            {
+                UIManager.GetInstance().ClosePanel(GlobalDefine.TreasurePanel);
+            }
+            if (UIManager.GetInstance().GetOpeningPanel(GlobalDefine.ItemDetailInfoPanel) != null)
+            {
+                UIManager.GetInstance().ClosePanel(GlobalDefine.ItemDetailInfoPanel);
+            }
+            GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
+            GameManager.Event.Broadcast(GameEventType.HasInteractiveObject);
         }
         #endregion
     }

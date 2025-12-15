@@ -14,5 +14,6 @@ public sealed partial class GlobalDefine
     public const string InteractiveOption = "Assets/UI/Interactive/Prefabs/InteractiveOption.prefab";
     public const string DialoguePanel = "Assets/UI/Interactive/Prefabs/DialoguePanel.prefab";
     public const string DialogueOption = "Assets/UI/Interactive/Prefabs/DialogueOption.prefab";
+    public const string TreasurePanel = "Assets/UI/Interactive/Prefabs/TreasurePanel.prefab";
 }
 

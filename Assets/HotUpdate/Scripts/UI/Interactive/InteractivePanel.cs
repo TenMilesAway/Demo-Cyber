@@ -128,9 +128,14 @@ namespace HA
             // 开始对话
             if (_interactives[_currentSelectIndex] is IDialogue)
             {
-                DialoguePanelParam param = new DialoguePanelParam();
-                param.data = _interactives[_currentSelectIndex] as HADialogue;
-                UIManager.GetInstance().OpenPanel(GlobalDefine.DialoguePanel, UILayer.Mid, param);
+                //DialoguePanelParam param = new DialoguePanelParam();
+                //param.data = _interactives[_currentSelectIndex] as HADialogue;
+                //UIManager.GetInstance().OpenPanel(GlobalDefine.DialoguePanel, UILayer.Mid, param);
+                (_interactives[_currentSelectIndex] as HADialogue).Interact();
+            }
+            else if (_interactives[_currentSelectIndex] is ITreasure)
+            {
+                (_interactives[_currentSelectIndex] as HATreasure).Interact();
             }
 
             UIManager.GetInstance().ClosePanel(GetPanelName());

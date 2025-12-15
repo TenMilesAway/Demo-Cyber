@@ -34,7 +34,7 @@ namespace HA
         /// <summary>
         /// 交互：对话
         /// </summary>
-        public void Interact(object interactor)
+        public void Interact(object interactor = null)
         {
             // 对话
             HADebug.LogFormat("开始对话 [{0}]", gameObject.name);
