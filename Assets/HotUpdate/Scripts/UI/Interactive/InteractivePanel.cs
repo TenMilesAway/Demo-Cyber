@@ -20,7 +20,7 @@ namespace HA
 
         private List<IInteractive> _interactives;            // 可交互物体
         private List<InteractiveOption> _interactiveOptions; // 可交互物体 InteractiveOption
-        private Cyber.PlayerInput _playerInput;                    // 用户输入组件
+        private Cyber.PlayerInput _playerInput;              // 用户输入组件
         private int _lastSelectIndex;                        // 刚才选中的选项
         private int _currentSelectIndex;                     // 现在选中的选项
 
@@ -110,6 +110,7 @@ namespace HA
                 _currentSelectIndex = _currentSelectIndex >= _interactives.Count - 1 ? _currentSelectIndex : _currentSelectIndex + 1;
                 _interactiveOptions[_currentSelectIndex].Select(true);
                 _lastSelectIndex = _currentSelectIndex;
+                _txtPrompt.text = _interactives[_currentSelectIndex].InteractionPrompt;
             }
             else if (controlName == "downArrow")
             {
@@ -118,6 +119,7 @@ namespace HA
                 _currentSelectIndex = _currentSelectIndex <= 0 ? _currentSelectIndex : _currentSelectIndex - 1;
                 _interactiveOptions[_currentSelectIndex].Select(true);
                 _lastSelectIndex = _currentSelectIndex;
+                _txtPrompt.text = _interactives[_currentSelectIndex].InteractionPrompt;
             }
         }
 

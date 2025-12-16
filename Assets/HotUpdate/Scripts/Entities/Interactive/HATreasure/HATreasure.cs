@@ -12,7 +12,7 @@ namespace HA
         // 宝藏 SO
         [SerializeField] private string _NPCName; // 宝藏名称
         // 内部变量
-        private const string _interactionPrompt = "按 F 开启宝藏";
+        private const string _interactionPrompt = "按 <color=red> F </color>开启宝藏";
         private bool _isInteractable;
 
         public string InteractionName { get { return _NPCName; } }
