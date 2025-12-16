@@ -12,6 +12,7 @@ namespace HA
             base.Awake();
 
             ItemDataManager.GetInstance().Init();
+            HATreasureDataManager.GetInstance().Init();
         }
     }
 }

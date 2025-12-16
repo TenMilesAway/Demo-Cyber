@@ -23,6 +23,7 @@ namespace HA
         private Cyber.PlayerInput _playerInput;              // 用户输入组件
         private int _lastSelectIndex;                        // 刚才选中的选项
         private int _currentSelectIndex;                     // 现在选中的选项
+        private bool _isFirstShow;                           // 是否为第一次显示 (用于对话提示更新)
 
         public override string GetPanelName()
         {
@@ -44,6 +45,8 @@ namespace HA
             _currentSelectIndex = 0;
             _lastSelectIndex = 0;
 
+            _isFirstShow = true;
+
             // 初始化一些监听
             AddListeners();
         }
@@ -62,6 +65,12 @@ namespace HA
         private void UpdateInteractives(List<IInteractive> interactives)
         {
             int needToDestroy = _interactives.Count - interactives.Count;
+
+            if (_isFirstShow)
+            {
+                _txtPrompt.text = interactives[0].InteractionPrompt;
+                _isFirstShow = false;
+            }
 
             // 如果当前 List 的数量小于外部更新的数量, 则需要去生成新的 prefab
             if (needToDestroy < 0)
@@ -173,6 +182,8 @@ namespace HA
         private void UpdateGOs()
         {
             _currentSelectIndex = _currentSelectIndex >= _interactives.Count ? _interactives.Count - 1 : _currentSelectIndex;
+            _lastSelectIndex = _lastSelectIndex >= _interactives.Count ? _interactives.Count - 1 : _lastSelectIndex;
+            _txtPrompt.text = _interactives[_currentSelectIndex].InteractionPrompt;
 
             for (int i = 0; i < _interactives.Count; i++)
             {

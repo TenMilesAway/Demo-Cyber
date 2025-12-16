@@ -49,10 +49,12 @@ namespace HA
                 // 如果在添加前, 可交互物体为 0
                 if (beforeAddCount == 0)
                 {
+                    // Pos: InteractiveDataManager
                     GameManager.Event.Broadcast(GameEventType.HasInteractiveObject);
                 }
                 else
                 {
+                    // Pos: InteractivePanel
                     GameManager.Event.Broadcast<List<IInteractive>>(GameEventType.UpdateInteractiveList, _interactives);
                 }
                 HADebug.LogFormat("添加一个可交互物体[{0}], 当前可交互物体总数[{1}]", obj.GetType().Name, _interactives.Count);
@@ -70,10 +72,12 @@ namespace HA
                 // 移除后, 可交互物体为 0
                 if (_interactives.Count == 0)
                 {
+                    // Pos: InteractiveDataManager
                     GameManager.Event.Broadcast(GameEventType.NoneInteractiveObject);
                 }
                 else
                 {
+                    // Pos: InteractivePanel
                     GameManager.Event.Broadcast<List<IInteractive>>(GameEventType.UpdateInteractiveList, _interactives);
                 }
                 HADebug.LogFormat("删除一个可交互物体[{0}], 当前可交互物体总数[{1}]", obj.GetType().Name, _interactives.Count);
@@ -88,6 +92,7 @@ namespace HA
         private void HasInteractiveObject()
         {
             UIManager.GetInstance().OpenPanel(GlobalDefine.InteractivePanel, UILayer.Top, null, () => {
+                // Pos: InteractivePanel
                 GameManager.Event.Broadcast<List<IInteractive>>(GameEventType.UpdateInteractiveList, _interactives);
             });
         }

@@ -4,6 +4,12 @@ using UnityEngine;
 
 namespace HA
 {
+    public class TreasurePanelParam : OpenUIParam
+    {
+        public bool isInteractable;
+        public List<HATreasureEntity> treasureEntities;
+    }
+
     public class TreasurePanel : UIBasePanel
     {
         public override string GetPanelName()

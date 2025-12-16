@@ -6,25 +6,22 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
-using static UnityEngine.UI.CanvasScaler;
 
 namespace HA
 {
     public class InventoryParam : OpenUIParam
     {
-
+        public bool isWithTreasurePanel;
     }
 
     public class InventoryPanel : UIBasePanel
     {
-        [SerializeField]
-        private Button _btnClose;
-
-        [SerializeField]
-        private Transform _itemContent;
+        [SerializeField] private Button _btnClose;
+        [SerializeField] private Transform _itemContent;
 
         private PlayerInfo _playerInfo;
         private List<ItemCell> _ShowList = new List<ItemCell>();
+        private bool _isWithTreasurePanel;
 
         public override string GetPanelName()
         {
@@ -37,6 +34,8 @@ namespace HA
 
             InventoryParam inventoryParam = (InventoryParam)param;
             _playerInfo = inventoryParam.data as PlayerInfo;
+            _isWithTreasurePanel = inventoryParam.isWithTreasurePanel;
+
             InitInventory(_playerInfo);
 
             _btnClose.onClick.AddListener(OnClickCloseBtn);
@@ -77,7 +76,8 @@ namespace HA
                 UIManager.GetInstance().ClosePanel(GlobalDefine.ItemDetailInfoPanel);
             }
             GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
-            GameManager.Event.Broadcast(GameEventType.HasInteractiveObject);
+            
+            if (_isWithTreasurePanel) GameManager.Event.Broadcast(GameEventType.HasInteractiveObject);
         }
         #endregion
     }

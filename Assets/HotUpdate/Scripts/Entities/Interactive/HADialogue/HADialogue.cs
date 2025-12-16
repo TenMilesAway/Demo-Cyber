@@ -20,7 +20,7 @@ namespace HA
         [SerializeField] private int _selectedDialogueGroupIndex;          // 分组对话索引
         [SerializeField] private int _selectedDialogueIndex;               // 对话索引
         // 内部变量
-        private const string _interactionPrompt = "按 F 进行对话";         // 交互提示语
+        private const string _interactionPrompt = "按<color=red> F </color>进行对话";         // 交互提示语
         private bool _isInteractable;                                      // 是否可交互
 
         public string InteractionName { get { return _NPCName; } }

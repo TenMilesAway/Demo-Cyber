@@ -4,18 +4,28 @@ using UnityEngine;
 
 namespace HA
 {
+    public class HATreasureEntity
+    {
+        public int _treasureID;
+        public int _treasureNum;
+        public int _treasureLevel;
+        public float _treasureDuration;
+    }
+
     /// <summary>
     /// 可交互宝藏
     /// </summary>
     public class HATreasure : MonoBehaviour, ITreasure
     {
         // 宝藏 SO
-        [SerializeField] private string _NPCName; // 宝藏名称
+        [SerializeField] private string _treasureName; // 宝藏名称
+        [SerializeField] private int _treasureID;      // 宝藏唯一 ID，用于初始化宝藏物品
         // 内部变量
-        private const string _interactionPrompt = "按 <color=red> F </color>开启宝藏";
-        private bool _isInteractable;
+        private List<HATreasureEntity> _treasureEntities = new List<HATreasureEntity>();
+        private const string _interactionPrompt = "按<color=red> F </color>开启宝藏";
+        private bool _isInteractable; // 在这里用来判断宝藏是否被打开过
 
-        public string InteractionName { get { return _NPCName; } }
+        public string InteractionName { get { return _treasureName; } }
         public string InteractionPrompt { get { return _interactionPrompt; } }
         public bool IsInteractable { get { return _isInteractable; } }
 
@@ -24,10 +34,21 @@ namespace HA
         /// </summary>
         public void Interact(object interactor = null)
         {
-            UIManager.GetInstance().OpenPanel(GlobalDefine.TreasurePanel);
+            if (!_isInteractable)
+            {
+                HATreasureDataManager.GetInstance().InitHATreasure(_treasureID);
+                _isInteractable = true;
+            }
+
+
+            TreasurePanelParam treasurePanelParam = new TreasurePanelParam();
+            treasurePanelParam.isInteractable = _isInteractable;
+            treasurePanelParam.treasureEntities = _treasureEntities;
+            UIManager.GetInstance().OpenPanel(GlobalDefine.TreasurePanel, UILayer.Mid, treasurePanelParam);
+
             InventoryParam param = new InventoryParam();
             param.data = PlayerDataManager.GetInstance().GetPlayerInfo();
-
+            param.isWithTreasurePanel = true;
             UIManager.GetInstance().OpenPanel(GlobalDefine.InventoryPanel, UILayer.Mid, param);
         }
 

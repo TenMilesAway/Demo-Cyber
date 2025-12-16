@@ -1443,6 +1443,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7929861246356848129, guid: 9a786778d6ce4d54eb495ded8ecb2f19, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a786778d6ce4d54eb495ded8ecb2f19, type: 3}
 --- !u!224 &480843457697797062 stripped
@@ -2069,6 +2073,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5037425179149272584}
     m_Modifications:
+    - target: {fileID: 2749572324182782710, guid: 9a786778d6ce4d54eb495ded8ecb2f19, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4847222373818299469, guid: 9a786778d6ce4d54eb495ded8ecb2f19, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4847222374050369097, guid: 9a786778d6ce4d54eb495ded8ecb2f19, type: 3}
       propertyPath: m_Name
       value: ItemCell
@@ -2156,6 +2168,14 @@ PrefabInstance:
     - target: {fileID: 4847222374050369102, guid: 9a786778d6ce4d54eb495ded8ecb2f19, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4847222374605066076, guid: 9a786778d6ce4d54eb495ded8ecb2f19, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7929861246356848129, guid: 9a786778d6ce4d54eb495ded8ecb2f19, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a786778d6ce4d54eb495ded8ecb2f19, type: 3}
@@ -3289,6 +3309,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4847222374050369102, guid: 9a786778d6ce4d54eb495ded8ecb2f19, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7929861246356848129, guid: 9a786778d6ce4d54eb495ded8ecb2f19, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

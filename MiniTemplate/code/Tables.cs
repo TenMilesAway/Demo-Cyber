@@ -14,17 +14,20 @@ namespace cfg
 public partial class Tables
 {
     public TbItem TbItem {get; }
+    public TbTreasure TbTreasure {get; }
 
 
       public Tables(System.Func<string, JArray> loader)
     {
         TbItem = new TbItem(loader("tbitem"));
+        TbTreasure = new TbTreasure(loader("tbtreasure"));
         ResolveRef();
     }
     
      private void ResolveRef()
     {
         TbItem.ResolveRef(this);
+        TbTreasure.ResolveRef(this);
     }
 }
 

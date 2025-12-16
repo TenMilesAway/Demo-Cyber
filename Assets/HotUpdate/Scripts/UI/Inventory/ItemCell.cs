@@ -53,6 +53,7 @@ namespace HA
             else
             {
                 _groupTreasure.SetActive(false);
+                //AddListeners();
             }
         }
 
@@ -94,6 +95,21 @@ namespace HA
         #endregion
 
         #region 监听方法
+        //private void AddListeners()
+        //{
+        //    EventTrigger eventTrigger = GetComponentInChildren<EventTrigger>();
+
+        //    EventTrigger.Entry pointerEnterEntry = new EventTrigger.Entry();
+        //    pointerEnterEntry.eventID = EventTriggerType.PointerEnter;
+        //    pointerEnterEntry.callback.AddListener(data => EnterItemCell(data));
+        //    eventTrigger.triggers.Add(pointerEnterEntry);
+
+        //    EventTrigger.Entry pointerExitEntry = new EventTrigger.Entry();
+        //    pointerExitEntry.eventID = EventTriggerType.PointerEnter;
+        //    pointerExitEntry.callback.AddListener(data => ExitItemCell(data));
+        //    eventTrigger.triggers.Add(pointerExitEntry);
+        //}
+
         /// <summary>
         /// 鼠标进入物品格子 (监听添加在外部)
         /// </summary>
