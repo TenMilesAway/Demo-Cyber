@@ -34,15 +34,14 @@ namespace HA
         /// </summary>
         public void Interact(object interactor = null)
         {
-            if (!_isInteractable)
-            {
-                HATreasureDataManager.GetInstance().InitHATreasure(_treasureID);
-                _isInteractable = true;
-            }
-
-
             TreasurePanelParam treasurePanelParam = new TreasurePanelParam();
             treasurePanelParam.isInteractable = _isInteractable;
+            // 未被打开过, 则初始化宝藏 Entities
+            if (!_isInteractable)
+            {
+                _treasureEntities = HATreasureDataManager.GetInstance().InitHATreasure(_treasureID);
+                _isInteractable = false;
+            }
             treasurePanelParam.treasureEntities = _treasureEntities;
             UIManager.GetInstance().OpenPanel(GlobalDefine.TreasurePanel, UILayer.Mid, treasurePanelParam);
 

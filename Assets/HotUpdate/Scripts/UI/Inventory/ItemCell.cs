@@ -26,34 +26,50 @@ namespace HA
         [HideInInspector] public ItemInfo _itemInfo;      // 物品信息
         [HideInInspector] public string _imgItemPath;     // 物品图片路径
 
+        private HATreasureEntity _treasureEntity;
+        private Sequence _searchSequence;
         private bool _isOpenDrag;
         private bool _isTreasure;
-        private Sequence _searchSequence;
         private float _radius = 20f;
 
-        public void Init(ItemInfo info, bool isTreasure = false)
+        public void Init(ItemInfo info, bool isTreasure = false, HATreasureEntity treasureEntity = null)
         {
-            _itemInfo = info;
             _isTreasure = isTreasure;
-            _txtNum.text = info._num.ToString();
 
-            // 加载图片
-            _imgItemPath = ItemDataManager.GetInstance().GetData(info._id).icon;
-            GameManager.Resource.LoadResourceAsync<Sprite>(_imgItemPath, GetInstanceID().ToString(), (Object obj, object[] result) =>
+            // 如果信息不为空
+            if (info != null)
             {
-                _imgItem.sprite = obj as Sprite;
-            });
+                _itemInfo = info;
+                _txtNum.text = info._num.ToString();
 
-            // 宝藏相关初始化
-            if (_isTreasure)
-            {
-                StartSearch();
-                _groupBag.SetActive(false);
+                // 加载图片
+                _imgItemPath = ItemDataManager.GetInstance().GetData(info._id).icon;
+                GameManager.Resource.LoadResourceAsync<Sprite>(_imgItemPath, GetInstanceID().ToString(), (Object obj, object[] result) =>
+                {
+                    _imgItem.sprite = obj as Sprite;
+                });
             }
+
+            // 如果是宝藏格子，且有信息
+            if (_isTreasure && info != null)
+            {
+                // 需要有一个合适的地方来顺序启动宝藏搜索动画
+                //StartSearch();
+                _groupBag.SetActive(false);
+                _imgItem.enabled = true;
+                _treasureEntity = treasureEntity;
+            }
+            // 如果是宝藏格子，且无信息
+            else if (_isTreasure)
+            {
+                _groupTreasure.SetActive(false);
+            }
+            // 如果不是宝藏格子
             else
             {
                 _groupTreasure.SetActive(false);
-                //AddListeners();
+                _imgItem.enabled = true;
+                AddListeners();
             }
         }
 
@@ -61,7 +77,7 @@ namespace HA
         /// <summary>
         /// 用于宝藏搜索动画
         /// </summary>
-        private void StartSearch()
+        public void StartSearch()
         {
             if (_searchSequence != null && _searchSequence.IsActive()) _searchSequence.Kill();
 
@@ -87,28 +103,33 @@ namespace HA
 
             RectTransform rect = _imgSearch.GetComponent<RectTransform>();
             rect.anchoredPosition = pathPoints[0];
-            _searchSequence.Append(rect.DOLocalPath(pathPoints, 2f, PathType.CatmullRom, PathMode.TopDown2D, 100)
+            _searchSequence.Append(rect.DOLocalPath(pathPoints, _treasureEntity._treasureDuration, PathType.CatmullRom, PathMode.TopDown2D, 100)
                 .SetOptions(true)
                 .SetEase(Ease.Linear)
                 .SetLoops(-1, LoopType.Restart));
+            _searchSequence.OnComplete(() =>
+            {
+                _groupTreasure.SetActive(false);
+                _groupBag.SetActive(true);
+            });
         }
         #endregion
 
         #region 监听方法
-        //private void AddListeners()
-        //{
-        //    EventTrigger eventTrigger = GetComponentInChildren<EventTrigger>();
+        private void AddListeners()
+        {
+            EventTrigger eventTrigger = GetComponentInChildren<EventTrigger>();
 
-        //    EventTrigger.Entry pointerEnterEntry = new EventTrigger.Entry();
-        //    pointerEnterEntry.eventID = EventTriggerType.PointerEnter;
-        //    pointerEnterEntry.callback.AddListener(data => EnterItemCell(data));
-        //    eventTrigger.triggers.Add(pointerEnterEntry);
+            EventTrigger.Entry pointerEnterEntry = new EventTrigger.Entry();
+            pointerEnterEntry.eventID = EventTriggerType.PointerEnter;
+            pointerEnterEntry.callback.AddListener(data => EnterItemCell(data));
+            eventTrigger.triggers.Add(pointerEnterEntry);
 
-        //    EventTrigger.Entry pointerExitEntry = new EventTrigger.Entry();
-        //    pointerExitEntry.eventID = EventTriggerType.PointerEnter;
-        //    pointerExitEntry.callback.AddListener(data => ExitItemCell(data));
-        //    eventTrigger.triggers.Add(pointerExitEntry);
-        //}
+            EventTrigger.Entry pointerExitEntry = new EventTrigger.Entry();
+            pointerExitEntry.eventID = EventTriggerType.PointerExit;
+            pointerExitEntry.callback.AddListener(data => ExitItemCell(data));
+            eventTrigger.triggers.Add(pointerExitEntry);
+        }
 
         /// <summary>
         /// 鼠标进入物品格子 (监听添加在外部)
