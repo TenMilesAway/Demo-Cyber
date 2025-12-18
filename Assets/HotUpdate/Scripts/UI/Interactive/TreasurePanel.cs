@@ -59,6 +59,7 @@ namespace HA
 
         private void InitItemCells()
         {
+            // 初始化宝藏格子
             for (int i = 0; i < _treasureEntities.Count; i++)
             {
                 int index = i;
@@ -72,10 +73,18 @@ namespace HA
                 {
                     _itemCells.Add(itemCell);
                     itemCell.transform.SetParent(_treasureContainer, false);
-                    itemCell.GetComponent<ItemCell>().Init(item, true);
+                    if (!_isInteractable)
+                    {
+                        itemCell.GetComponent<ItemCell>().Init(item, true, _treasureEntities[index]);
+                    }
+                    else
+                    {
+                        itemCell.GetComponent<ItemCell>().Init(item, true, null);
+                    }
                 });
             }
 
+            // 初始化非宝藏格子
             int leftCount = 15 - _treasureEntities.Count;
 
             for (int i = 0; i < leftCount; i++)
@@ -97,6 +106,8 @@ namespace HA
 
         private IEnumerator StartSearch()
         {
+            yield return new WaitForSeconds(0.5f);
+
             for (int i = 0; i < _treasureEntities.Count; i++)
             {
                 _itemCells[i].GetComponent<ItemCell>().StartSearch();

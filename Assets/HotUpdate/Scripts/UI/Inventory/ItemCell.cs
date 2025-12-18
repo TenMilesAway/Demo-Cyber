@@ -30,13 +30,19 @@ namespace HA
         private Sequence _searchSequence;
         private bool _isOpenDrag;
         private bool _isTreasure;
-        private float _radius = 20f;
+        private float _radius = 15f;
 
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="info">格子拥有物品的信息：ID & Num</param>
+        /// <param name="isTreasure">是否是宝藏面板的格子</param>
+        /// <param name="treasureEntity">宝藏信息，包含宝藏搜索需要的时间</param>
         public void Init(ItemInfo info, bool isTreasure = false, HATreasureEntity treasureEntity = null)
         {
             _isTreasure = isTreasure;
 
-            // 如果信息不为空
+            // 如果信息不为空，根据 info 加载物品
             if (info != null)
             {
                 _itemInfo = info;
@@ -51,16 +57,22 @@ namespace HA
             }
 
             // 如果是宝藏格子，且有信息
-            if (_isTreasure && info != null)
+            if (_isTreasure && info != null && treasureEntity != null)
             {
-                // 需要有一个合适的地方来顺序启动宝藏搜索动画
-                //StartSearch();
                 _groupBag.SetActive(false);
                 _imgItem.enabled = true;
                 _treasureEntity = treasureEntity;
             }
-            // 如果是宝藏格子，且无信息
-            else if (_isTreasure)
+            // 如果是宝藏格子，且无宝藏信息 (表示已经被搜索过了)
+            else if (_isTreasure && info != null && treasureEntity == null)
+            {
+                _groupTreasure.SetActive(false);
+                _groupBag.SetActive(true);
+                _imgItem.enabled = true;
+                AddListeners();
+            }
+            // 如果是宝藏格子，且无宝藏信息 (空格子)
+            else if (_isTreasure && info == null && treasureEntity == null)
             {
                 _groupTreasure.SetActive(false);
             }
@@ -103,14 +115,18 @@ namespace HA
 
             RectTransform rect = _imgSearch.GetComponent<RectTransform>();
             rect.anchoredPosition = pathPoints[0];
+            _imgSearch.gameObject.SetActive(true);
             _searchSequence.Append(rect.DOLocalPath(pathPoints, _treasureEntity._treasureDuration, PathType.CatmullRom, PathMode.TopDown2D, 100)
                 .SetOptions(true)
                 .SetEase(Ease.Linear)
-                .SetLoops(-1, LoopType.Restart));
+                .SetLoops(1, LoopType.Restart));
             _searchSequence.OnComplete(() =>
             {
                 _groupTreasure.SetActive(false);
                 _groupBag.SetActive(true);
+                _imgSearch.gameObject.SetActive(false);
+                AddListeners();
+                HADebug.LogFormat("结束搜索, 发现物品{0}", ItemDataManager.GetInstance().GetData(_treasureEntity._treasureID).name);
             });
         }
         #endregion

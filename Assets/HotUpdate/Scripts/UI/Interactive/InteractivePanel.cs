@@ -108,6 +108,9 @@ namespace HA
             }
         }
 
+        /// <summary>
+        /// 监听：通过上下箭头切换对话选择
+        /// </summary>
         private void OnInteractiveStarted(InputAction.CallbackContext context)
         {
             string controlName = context.control.name;
@@ -132,6 +135,9 @@ namespace HA
             }
         }
 
+        /// <summary>
+        /// 监听：触碰按键 F 开始对话
+        /// </summary>
         private void StartInteractive(InputAction.CallbackContext context)
         {
             GameManager.Event.Broadcast(GameEventType.DisablePlayerInput);

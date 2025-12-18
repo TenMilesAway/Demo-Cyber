@@ -40,7 +40,7 @@ namespace HA
             if (!_isInteractable)
             {
                 _treasureEntities = HATreasureDataManager.GetInstance().InitHATreasure(_treasureID);
-                _isInteractable = false;
+                _isInteractable = true;
             }
             treasurePanelParam.treasureEntities = _treasureEntities;
             UIManager.GetInstance().OpenPanel(GlobalDefine.TreasurePanel, UILayer.Mid, treasurePanelParam);
