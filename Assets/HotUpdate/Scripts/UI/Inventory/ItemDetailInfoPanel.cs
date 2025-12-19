@@ -58,35 +58,11 @@ namespace HA
                 _imgItemIcon.sprite = obj as Sprite;
             });
             _txtItem.text = data.name;
-            _txtTypeContent.text = GetItemDataType(data.type);
+            _txtTypeContent.text = InventoryDataManager.GetInstance().GetItemDataType(data.type);
             _txtSourceContent.text = data.source;
             _txtUsageContent.text = data.usage;
             _txtDescContent.text = data.desc;
             _txtPriceContent.text = data.price.ToString();
-        }
-
-        /// <summary>
-        /// 获得物品种类对应字符串
-        /// </summary>
-        private string GetItemDataType(int type)
-        {
-            string typeString = "未知";
-
-            switch (type)
-            {
-                case 0:
-                    typeString = "道具";
-                    break;
-                case 1:
-                    typeString = "装备";
-                    break;
-                case 2:
-                    typeString = "药剂";
-                    break;
-
-            }
-
-            return typeString;
         }
         #endregion
     }

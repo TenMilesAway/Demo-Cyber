@@ -39,13 +39,27 @@ SpriteAtlas:
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: 24f69951bf0622248aa60a13a72f85b0, type: 3}
+  - {fileID: 21300000, guid: f7099d122b8773745a53be6dfca077bd, type: 3}
+  - {fileID: 21300000, guid: a06d65a22b23e5448affc142409dbbb4, type: 3}
+  - {fileID: 21300000, guid: 49f9a413fbabe62448e4f3bd584c259d, type: 3}
+  - {fileID: 21300000, guid: 6bd80c644eceff041b5fbf669a4677b8, type: 3}
   - {fileID: 21300000, guid: 15f02377f4d9ab941b08654164a1a8c3, type: 3}
   - {fileID: 21300000, guid: 2574b577602aa7c4ab024969df5a7f20, type: 3}
+  - {fileID: 21300000, guid: cc691c8c5f9a8b748a4c1d32161cea79, type: 3}
+  - {fileID: 21300000, guid: 7422ccadba231e940ba5f029bb262225, type: 3}
   - {fileID: 21300000, guid: 2355b1fffb935444ab90388e51b13ccf, type: 3}
   m_PackedSpriteNamesToIndex:
-  - DialogueCancelBg
-  - HeadIcon
-  - DialogueBg
+  - BgTreasure
+  - BgTop
+  - IconTreasure
+  - BgSafeBox
+  - BgSafeBox3
+  - BgDialogueCancel
+  - IconHead
+  - BgSelect
+  - BgSafeBox2
+  - BgDialogue
   m_RenderDataMap: {}
   m_Tag: Interactive
   m_IsVariant: 0

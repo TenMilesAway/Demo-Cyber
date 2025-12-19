@@ -40,12 +40,19 @@ namespace HA
         /// <param name="treasureEntity">宝藏信息，包含宝藏搜索需要的时间</param>
         public void Init(ItemInfo info, bool isTreasure = false, HATreasureEntity treasureEntity = null)
         {
+            _groupBag.SetActive(false);
+            _groupTreasure.SetActive(false);
+            _imgBackSelected.enabled = false;
+            _imgItem.enabled = false;
+            _imgSearch.enabled = false;
+
             _isTreasure = isTreasure;
+            _itemInfo = info;
+            _treasureEntity = treasureEntity;
 
             // 如果信息不为空，根据 info 加载物品
             if (info != null)
             {
-                _itemInfo = info;
                 _txtNum.text = info._num.ToString();
 
                 // 加载图片
@@ -59,14 +66,12 @@ namespace HA
             // 如果是宝藏格子，且有信息
             if (_isTreasure && info != null && treasureEntity != null)
             {
-                _groupBag.SetActive(false);
+                _groupTreasure.SetActive(true);
                 _imgItem.enabled = true;
-                _treasureEntity = treasureEntity;
             }
             // 如果是宝藏格子，且无宝藏信息 (表示已经被搜索过了)
             else if (_isTreasure && info != null && treasureEntity == null)
             {
-                _groupTreasure.SetActive(false);
                 _groupBag.SetActive(true);
                 _imgItem.enabled = true;
                 AddPointerListeners();
@@ -75,13 +80,13 @@ namespace HA
             // 如果是宝藏格子，且无宝藏信息 (空格子)
             else if (_isTreasure && info == null && treasureEntity == null)
             {
-                _groupTreasure.SetActive(false);
+                AddPointerListeners();
                 AddDragListeners();
             }
             // 如果不是宝藏格子
             else
             {
-                _groupTreasure.SetActive(false);
+                _groupBag.SetActive(true);
                 _imgItem.enabled = true;
                 AddPointerListeners();
                 AddDragListeners();
@@ -118,7 +123,7 @@ namespace HA
 
             RectTransform rect = _imgSearch.GetComponent<RectTransform>();
             rect.anchoredPosition = pathPoints[0];
-            _imgSearch.gameObject.SetActive(true);
+            _imgSearch.enabled = true;
             _searchSequence.Append(rect.DOLocalPath(pathPoints, _treasureEntity._treasureDuration, PathType.CatmullRom, PathMode.TopDown2D, 100)
                 .SetOptions(true)
                 .SetEase(Ease.Linear)
@@ -127,11 +132,19 @@ namespace HA
             {
                 _groupTreasure.SetActive(false);
                 _groupBag.SetActive(true);
-                _imgSearch.gameObject.SetActive(false);
+                _imgSearch.enabled = false;
                 AddPointerListeners();
                 AddDragListeners();
                 HADebug.LogFormat("结束搜索, 发现物品{0}", ItemDataManager.GetInstance().GetData(_treasureEntity._treasureID).name);
             });
+        }
+
+        /// <summary>
+        /// 选中当前物体
+        /// </summary>
+        public void SelectItem(bool isSelect = true)
+        {
+            _imgBackSelected.enabled = isSelect;
         }
         #endregion
 
@@ -143,6 +156,7 @@ namespace HA
         {
             UIManager.GetInstance().AddCustomEventListener(_imgBack, EventTriggerType.PointerEnter, EnterItemCell);
             UIManager.GetInstance().AddCustomEventListener(_imgBack, EventTriggerType.PointerExit, ExitItemCell);
+            UIManager.GetInstance().AddCustomEventListener(_imgBack, EventTriggerType.PointerClick, ClickItemCell);
         }
 
         /// <summary>
@@ -162,6 +176,7 @@ namespace HA
         {
             UIManager.GetInstance().RemoveCustomEventListener(_imgBack, EventTriggerType.PointerEnter, EnterItemCell);
             UIManager.GetInstance().RemoveCustomEventListener(_imgBack, EventTriggerType.PointerExit, ExitItemCell);
+            UIManager.GetInstance().RemoveCustomEventListener(_imgBack, EventTriggerType.PointerClick, ClickItemCell);
         }
 
         /// <summary>
@@ -172,6 +187,15 @@ namespace HA
             UIManager.GetInstance().RemoveCustomEventListener(_imgBack, EventTriggerType.BeginDrag, BeginDragItemCell);
             UIManager.GetInstance().RemoveCustomEventListener(_imgBack, EventTriggerType.Drag, DragingItemCell);
             UIManager.GetInstance().RemoveCustomEventListener(_imgBack, EventTriggerType.EndDrag, EndDragItemCell);
+        }
+
+        /// <summary>
+        /// 移除所有监听
+        /// </summary>
+        public void RemoveAllListeners()
+        {
+            RemovePointerListeners();
+            RemoveDragListeners();
         }
 
         /// <summary>
@@ -188,6 +212,11 @@ namespace HA
         private void ExitItemCell(BaseEventData data)
         {
             GameManager.Event.Broadcast<ItemCell>(GameEventType.ExitItemCell, this);
+        }
+
+        private void ClickItemCell(BaseEventData data)
+        {
+            GameManager.Event.Broadcast<ItemCell>(GameEventType.ClickItemCell, this);
         }
 
         /// <summary>

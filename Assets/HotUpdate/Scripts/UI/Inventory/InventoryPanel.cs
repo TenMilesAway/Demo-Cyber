@@ -19,6 +19,9 @@ namespace HA
         [Header("上区域")]
         [SerializeField] private Button _btnClose;
         [SerializeField] private Transform _itemContainer;
+        [SerializeField] private Toggle _toggleItems;
+        [SerializeField] private Toggle _togglePotions;
+        [SerializeField] private Toggle _toggleEquips;
 
         [Header("下区域")]
         [SerializeField] private GameObject _groupNotSelected;
@@ -49,16 +52,89 @@ namespace HA
             _playerInfo = inventoryParam.data as PlayerInfo;
             _isWithTreasurePanel = inventoryParam.isWithTreasurePanel;
 
-            InitInventory(_playerInfo);
+            _groupSelelcted.SetActive(false);
+            _groupNotSelected.SetActive(true);
+
+            InitInventoryTab();
 
             AddListeners();
         }
 
+        protected override void CloseHandle()
+        {
+            base.CloseHandle();
+
+            GameManager.Event.RemoveListener<ItemInfo>(GameEventType.UpdateSelectedItemDetail, UpdateSelectedItemDetailInfo);
+            _btnClose.onClick.RemoveAllListeners();
+            _toggleItems.onValueChanged.RemoveAllListeners();
+            _toggleEquips.onValueChanged.RemoveAllListeners();
+            _togglePotions.onValueChanged.RemoveAllListeners();
+        }
+
         #region 主要方法
-        private void InitInventory(PlayerInfo info)
+        /// <summary>
+        /// 初始化页签
+        /// </summary>
+        private void InitInventoryTab()
         {
             // 默认显示为道具页签
-            foreach (ItemInfo itemInfo in info._items)
+            List<ItemInfo> infos = GetInfoByTabID(1);
+            SwitchTab(infos);
+        }
+
+        /// <summary>
+        /// 根据页签的 ID 获得物品列表
+        /// </summary>
+        /// <param name="tab">
+        /// 1: 物品页签
+        /// 2: 装备页签
+        /// 3: 药水页签
+        /// </param>
+        private List<ItemInfo> GetInfoByTabID(int tab)
+        {
+            List<ItemInfo> infos = new List<ItemInfo>();
+
+            switch(tab)
+            {
+                case 1:
+                    {
+                        infos = _playerInfo._items;
+                    }
+                    break;
+                case 2:
+                    {
+                        infos = _playerInfo._equips;
+                    }
+                    break;
+                case 3:
+                    {
+                        infos = _playerInfo._potions;
+                    }
+                    break;
+                default:
+                    {
+                        infos = _playerInfo._items;
+                    }
+                    break;
+            }
+
+            return infos;
+        }
+
+        /// <summary>
+        /// 真正切换页签
+        /// </summary>
+        /// <param name="infos"></param>
+        private void SwitchTab(List<ItemInfo> infos)
+        {
+            foreach(ItemCell nowCell in _showList)
+            {
+                UnityObjectPoolFactory.GetInstance().PutItem(GlobalDefine.ItemCell, nowCell.gameObject);
+            }
+
+            _showList.Clear();
+
+            foreach (ItemInfo itemInfo in infos)
             {
                 UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.ItemCell, GetInstanceID().ToString(), (GameObject itemCell) =>
                 {
@@ -70,12 +146,33 @@ namespace HA
             }
         }
 
-        private void SwitchTab(int tab)
+        private void UpdateSelectedItemDetailInfo(ItemInfo info)
         {
-            switch(tab)
+            _imgItem.enabled = false;
+
+            if (info == null)
             {
-                
+                _groupSelelcted.SetActive(false);
+                _groupNotSelected.SetActive(true);
+                return;
             }
+
+            _groupSelelcted.SetActive(true);
+            _groupNotSelected.SetActive(false);
+
+            TBItemData itemData = ItemDataManager.GetInstance().GetData(info._id);
+
+            GameManager.Resource.LoadResourceAsync<Sprite>(itemData.icon, GetInstanceID().ToString(), (obj, result) =>
+            {
+                _imgItem.sprite = obj as Sprite;
+                _imgItem.enabled = true;
+            });
+
+            _txtItem.text = itemData.name;
+            _txtTypeContent.text = InventoryDataManager.GetInstance().GetItemDataType(itemData.type);
+            _txtSourceContent.text = itemData.source;
+            _txtUsageContent.text = itemData.usage;
+            _txtDescContent.text = itemData.desc;
         }
         #endregion
 
@@ -85,7 +182,22 @@ namespace HA
         /// </summary>
         private void AddListeners()
         {
+            GameManager.Event.AddListener<ItemInfo>(GameEventType.UpdateSelectedItemDetail, UpdateSelectedItemDetailInfo);
+
             _btnClose.onClick.AddListener(OnClickCloseBtn);
+
+            _toggleItems.onValueChanged.AddListener((isOn) =>
+            {
+                if (isOn) SwitchTab(GetInfoByTabID(1));
+            });
+            _toggleEquips.onValueChanged.AddListener((isOn) =>
+            {
+                if (isOn) SwitchTab(GetInfoByTabID(2));
+            });
+            _togglePotions.onValueChanged.AddListener((isOn) =>
+            {
+                if (isOn) SwitchTab(GetInfoByTabID(3));
+            });
         }
 
         /// <summary>
@@ -95,8 +207,10 @@ namespace HA
         {
             foreach (var component in _showList)
             {
+                component.RemoveAllListeners();
                 UnityObjectPoolFactory.GetInstance().PutItem(GlobalDefine.ItemCell, component.gameObject);
             }
+            _showList.Clear();
 
             // 关闭当前窗口
             UIManager.GetInstance().ClosePanel(GlobalDefine.InventoryPanel);
@@ -113,6 +227,7 @@ namespace HA
                 UIManager.GetInstance().ClosePanel(GlobalDefine.TreasurePanel);
                 GameManager.Event.Broadcast(GameEventType.HasInteractiveObject);
                 GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
+                GameManager.Event.Broadcast(GameEventType.DisablePlayerFlipInput);
             }
         }
         #endregion

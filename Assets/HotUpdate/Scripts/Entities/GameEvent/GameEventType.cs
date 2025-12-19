@@ -24,9 +24,11 @@ public enum GameEventType
     PlayAudio,                  // 播放音频
     EnterItemCell,              // 鼠标进入物品格子
     ExitItemCell,               // 鼠标离开物品格子
+    ClickItemCell,              // 鼠标点击物品格子
     BeginDragItemCell,          // 鼠标开始拖动物品格子
     DragingItemCell,            // 鼠标正在拖动物品格子
     EndDragItemCell,            // 鼠标结束拖动物品格子
+    UpdateSelectedItemDetail,   // 选择物品后更新详情面板
     HasInteractiveObject,       // 有可交互物体
     NoneInteractiveObject,      // 无可交互物体
     UpdateInteractiveList,      // 更新交互物体队列

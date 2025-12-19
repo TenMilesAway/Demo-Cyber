@@ -3415,6 +3415,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _btnClose: {fileID: 383240821492461298}
   _itemContainer: {fileID: 383240821415294873}
+  _toggleItems: {fileID: 383240821065451014}
+  _togglePotions: {fileID: 383240822904244719}
+  _toggleEquips: {fileID: 383240821939144029}
   _groupNotSelected: {fileID: 383240822781041171}
   _groupSelelcted: {fileID: 383240822611399901}
   _btnUse: {fileID: 383240821041807555}

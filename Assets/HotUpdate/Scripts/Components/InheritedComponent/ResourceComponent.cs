@@ -390,7 +390,14 @@ namespace HA
                                 }
                                 if (task._type == "UnityEngine.Sprite")
                                 {
-                                    task._callback((UnityEngine.Sprite)task._handle.Result, task._args);
+                                    try
+                                    {
+                                        task._callback((UnityEngine.Sprite)task._handle.Result, task._args);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        HADebug.LogErrorFormat("º”‘ÿ Sprite ◊ ‘¥ ß∞‹: key[{0}], tag[{1}], exception[{2}]", task._key, task._tag, e.ToString());
+                                    }
                                 }
                                 else
                                 {
