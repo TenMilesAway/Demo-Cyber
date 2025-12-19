@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace HA
@@ -159,6 +161,59 @@ namespace HA
                 _panelDic[panelName].OnClose();
                 GameObject.Destroy(_panelDic[panelName].gameObject);
                 _panelDic.Remove(panelName);
+            }
+        }
+
+        /// <summary>
+        /// 控件添加自定义事件监听
+        /// </summary>
+        /// <param name="control">控件对象</param>
+        /// <param name="type">事件类型</param>
+        /// <param name="callback">事件的响应函数</param>
+        public void AddCustomEventListener(UIBehaviour control, EventTriggerType type, UnityAction<BaseEventData> callback)
+        {
+            EventTrigger trigger = control.GetComponent<EventTrigger>();
+            if (trigger == null) trigger = control.gameObject.AddComponent<EventTrigger>();
+
+            EventTrigger.Entry entry = new EventTrigger.Entry();
+            entry.eventID = type;
+            entry.callback.AddListener(callback);
+
+            trigger.triggers.Add(entry);
+        }
+
+        /// <summary>
+        /// 控件删除自定义事件监听
+        /// </summary>
+        /// <param name="control">控件对象</param>
+        /// <param name="type">事件类型</param>
+        /// <param name="callback">事件的响应函数</param>
+        public void RemoveCustomEventListener(UIBehaviour control, EventTriggerType type, UnityAction<BaseEventData> callback)
+        {
+            EventTrigger trigger = control.GetComponent<EventTrigger>();
+            if (trigger == null || trigger.triggers == null) return;
+
+            // 遍历查找指定类型的事件
+            for (int i = trigger.triggers.Count - 1; i >= 0; i--)
+            {
+                EventTrigger.Entry entry = trigger.triggers[i];
+                if (entry.eventID == type)
+                {
+                    // 移除指定回调
+                    entry.callback.RemoveListener(callback);
+
+                    if (entry.callback.GetPersistentEventCount() == 0)
+                    {
+                        trigger.triggers.RemoveAt(i);
+                    }
+                }
+            }
+
+            // 如果没有事件了，移除组件
+            if (trigger.triggers.Count == 0)
+            {
+                // 未来需要考虑性能消耗
+                GameObject.Destroy(trigger);
             }
         }
     }

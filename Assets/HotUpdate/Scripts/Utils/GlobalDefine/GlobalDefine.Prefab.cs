@@ -9,6 +9,7 @@ public sealed partial class GlobalDefine
     public const string ToastPanel = "Assets/UI/Start/Prefabs/ToastPanel.prefab";
     public const string InventoryPanel = "Assets/UI/Items/Prefabs/InventoryPanel.prefab";
     public const string ItemCell = "Assets/UI/Items/Prefabs/ItemCell.prefab";
+    public const string ItemImage = "Assets/UI/Items/Prefabs/ItemImage.prefab";
     public const string ItemDetailInfoPanel = "Assets/UI/Items/Prefabs/ItemDetailInfoPanel.prefab";
     public const string InteractivePanel = "Assets/UI/Interactive/Prefabs/InteractivePanel.prefab";
     public const string InteractiveOption = "Assets/UI/Interactive/Prefabs/InteractiveOption.prefab";

@@ -3414,7 +3414,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _btnClose: {fileID: 383240821492461298}
-  _itemContent: {fileID: 383240821415294873}
+  _itemContainer: {fileID: 383240821415294873}
+  _groupNotSelected: {fileID: 383240822781041171}
+  _groupSelelcted: {fileID: 383240822611399901}
+  _btnUse: {fileID: 383240821041807555}
+  _btnDiscard: {fileID: 383240822957236571}
+  _imgItem: {fileID: 8307101138098369633}
+  _txtItem: {fileID: 383240820911188092}
+  _txtTypeContent: {fileID: 383240821732078219}
+  _txtSourceContent: {fileID: 383240821423392682}
+  _txtUsageContent: {fileID: 383240821477524310}
+  _txtDescContent: {fileID: 383240822627727993}
 --- !u!1 &383240822580834416
 GameObject:
   m_ObjectHideFlags: 0

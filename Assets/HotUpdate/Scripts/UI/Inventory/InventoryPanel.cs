@@ -16,11 +16,24 @@ namespace HA
 
     public class InventoryPanel : UIBasePanel
     {
+        [Header("上区域")]
         [SerializeField] private Button _btnClose;
-        [SerializeField] private Transform _itemContent;
+        [SerializeField] private Transform _itemContainer;
+
+        [Header("下区域")]
+        [SerializeField] private GameObject _groupNotSelected;
+        [SerializeField] private GameObject _groupSelelcted;
+        [SerializeField] private GameObject _btnUse;
+        [SerializeField] private GameObject _btnDiscard;
+        [SerializeField] private Image _imgItem;
+        [SerializeField] private Text _txtItem;
+        [SerializeField] private Text _txtTypeContent;
+        [SerializeField] private Text _txtSourceContent;
+        [SerializeField] private Text _txtUsageContent;
+        [SerializeField] private Text _txtDescContent;
 
         private PlayerInfo _playerInfo;
-        private List<ItemCell> _ShowList = new List<ItemCell>();
+        private List<ItemCell> _showList = new List<ItemCell>();
         private bool _isWithTreasurePanel;
 
         public override string GetPanelName()
@@ -38,46 +51,69 @@ namespace HA
 
             InitInventory(_playerInfo);
 
-            _btnClose.onClick.AddListener(OnClickCloseBtn);
+            AddListeners();
         }
 
         #region 主要方法
-        private async void InitInventory(PlayerInfo info)
+        private void InitInventory(PlayerInfo info)
         {
             // 默认显示为道具页签
-            AsyncOperationHandle handle = Addressables.LoadAssetAsync<GameObject>(GlobalDefine.ItemCell);
-
-            await handle.Task;
-
-            GameObject itemCellPrefab = handle.Task.Result as GameObject;
-
             foreach (ItemInfo itemInfo in info._items)
             {
-                GameObject itemCell = Instantiate(itemCellPrefab);
-                ItemCell component = itemCell.GetComponent<ItemCell>();
-                component.transform.SetParent(_itemContent, false);
-                // 初始化信息
-                component.Init(itemInfo);
-                _ShowList.Add(component);
+                UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.ItemCell, GetInstanceID().ToString(), (GameObject itemCell) =>
+                {
+                    ItemCell component = itemCell.GetComponent<ItemCell>();
+                    component.transform.SetParent(_itemContainer, false);
+                    component.Init(itemInfo, false, null);
+                    _showList.Add(component);
+                });
+            }
+        }
+
+        private void SwitchTab(int tab)
+        {
+            switch(tab)
+            {
+                
             }
         }
         #endregion
 
         #region 监听方法
+        /// <summary>
+        /// 添加监听
+        /// </summary>
+        private void AddListeners()
+        {
+            _btnClose.onClick.AddListener(OnClickCloseBtn);
+        }
+
+        /// <summary>
+        /// 关闭按钮
+        /// </summary>
         private void OnClickCloseBtn()
         {
-            UIManager.GetInstance().ClosePanel(GlobalDefine.InventoryPanel);
-            if (UIManager.GetInstance().GetOpeningPanel(GlobalDefine.TreasurePanel) != null)
+            foreach (var component in _showList)
             {
-                UIManager.GetInstance().ClosePanel(GlobalDefine.TreasurePanel);
+                UnityObjectPoolFactory.GetInstance().PutItem(GlobalDefine.ItemCell, component.gameObject);
             }
+
+            // 关闭当前窗口
+            UIManager.GetInstance().ClosePanel(GlobalDefine.InventoryPanel);
+
+            // 关闭物品详情窗口
             if (UIManager.GetInstance().GetOpeningPanel(GlobalDefine.ItemDetailInfoPanel) != null)
             {
                 UIManager.GetInstance().ClosePanel(GlobalDefine.ItemDetailInfoPanel);
             }
-            GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
-            
-            if (_isWithTreasurePanel) GameManager.Event.Broadcast(GameEventType.HasInteractiveObject);
+
+            // 有宝藏窗口时
+            if (_isWithTreasurePanel)
+            {
+                UIManager.GetInstance().ClosePanel(GlobalDefine.TreasurePanel);
+                GameManager.Event.Broadcast(GameEventType.HasInteractiveObject);
+                GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
+            }
         }
         #endregion
     }

@@ -69,19 +69,22 @@ namespace HA
                 _groupTreasure.SetActive(false);
                 _groupBag.SetActive(true);
                 _imgItem.enabled = true;
-                AddListeners();
+                AddPointerListeners();
+                AddDragListeners();
             }
             // 如果是宝藏格子，且无宝藏信息 (空格子)
             else if (_isTreasure && info == null && treasureEntity == null)
             {
                 _groupTreasure.SetActive(false);
+                AddDragListeners();
             }
             // 如果不是宝藏格子
             else
             {
                 _groupTreasure.SetActive(false);
                 _imgItem.enabled = true;
-                AddListeners();
+                AddPointerListeners();
+                AddDragListeners();
             }
         }
 
@@ -125,42 +128,97 @@ namespace HA
                 _groupTreasure.SetActive(false);
                 _groupBag.SetActive(true);
                 _imgSearch.gameObject.SetActive(false);
-                AddListeners();
+                AddPointerListeners();
+                AddDragListeners();
                 HADebug.LogFormat("结束搜索, 发现物品{0}", ItemDataManager.GetInstance().GetData(_treasureEntity._treasureID).name);
             });
         }
         #endregion
 
         #region 监听方法
-        private void AddListeners()
+        /// <summary>
+        /// 添加鼠标进入退出的监听
+        /// </summary>
+        private void AddPointerListeners()
         {
-            EventTrigger eventTrigger = GetComponentInChildren<EventTrigger>();
-
-            EventTrigger.Entry pointerEnterEntry = new EventTrigger.Entry();
-            pointerEnterEntry.eventID = EventTriggerType.PointerEnter;
-            pointerEnterEntry.callback.AddListener(data => EnterItemCell(data));
-            eventTrigger.triggers.Add(pointerEnterEntry);
-
-            EventTrigger.Entry pointerExitEntry = new EventTrigger.Entry();
-            pointerExitEntry.eventID = EventTriggerType.PointerExit;
-            pointerExitEntry.callback.AddListener(data => ExitItemCell(data));
-            eventTrigger.triggers.Add(pointerExitEntry);
+            UIManager.GetInstance().AddCustomEventListener(_imgBack, EventTriggerType.PointerEnter, EnterItemCell);
+            UIManager.GetInstance().AddCustomEventListener(_imgBack, EventTriggerType.PointerExit, ExitItemCell);
         }
 
         /// <summary>
-        /// 鼠标进入物品格子 (监听添加在外部)
+        /// 添加鼠标拖动物品格子的监听
         /// </summary>
-        public void EnterItemCell(BaseEventData data)
+        private void AddDragListeners()
+        {
+            UIManager.GetInstance().AddCustomEventListener(_imgBack, EventTriggerType.BeginDrag, BeginDragItemCell);
+            UIManager.GetInstance().AddCustomEventListener(_imgBack, EventTriggerType.Drag, DragingItemCell);
+            UIManager.GetInstance().AddCustomEventListener(_imgBack, EventTriggerType.EndDrag, EndDragItemCell);
+        }
+
+        /// <summary>
+        /// 移除鼠标进入退出的监听
+        /// </summary>
+        private void RemovePointerListeners()
+        {
+            UIManager.GetInstance().RemoveCustomEventListener(_imgBack, EventTriggerType.PointerEnter, EnterItemCell);
+            UIManager.GetInstance().RemoveCustomEventListener(_imgBack, EventTriggerType.PointerExit, ExitItemCell);
+        }
+
+        /// <summary>
+        /// 移除鼠标拖动物品格子的监听
+        /// </summary>
+        private void RemoveDragListeners()
+        {
+            UIManager.GetInstance().RemoveCustomEventListener(_imgBack, EventTriggerType.BeginDrag, BeginDragItemCell);
+            UIManager.GetInstance().RemoveCustomEventListener(_imgBack, EventTriggerType.Drag, DragingItemCell);
+            UIManager.GetInstance().RemoveCustomEventListener(_imgBack, EventTriggerType.EndDrag, EndDragItemCell);
+        }
+
+        /// <summary>
+        /// 鼠标进入物品格子
+        /// </summary>
+        private void EnterItemCell(BaseEventData data)
         {
             GameManager.Event.Broadcast<ItemCell>(GameEventType.EnterItemCell, this);
         }
 
         /// <summary>
-        /// 鼠标离开物品格子 (监听添加在外部)
+        /// 鼠标离开物品格子
         /// </summary>
-        public void ExitItemCell(BaseEventData data)
+        private void ExitItemCell(BaseEventData data)
         {
             GameManager.Event.Broadcast<ItemCell>(GameEventType.ExitItemCell, this);
+        }
+
+        /// <summary>
+        /// 鼠标开始拖动物品格子
+        /// </summary>
+        private void BeginDragItemCell(BaseEventData data)
+        {
+            GameManager.Event.Broadcast<ItemCell>(GameEventType.BeginDragItemCell, this);
+        }
+
+        /// <summary>
+        /// 鼠标正在拖动物品格子
+        /// </summary>
+        private void DragingItemCell(BaseEventData data)
+        {
+            GameManager.Event.Broadcast<BaseEventData>(GameEventType.DragingItemCell, data);
+        }
+
+        /// <summary>
+        /// 鼠标结束拖动物品格子
+        /// </summary>
+        private void EndDragItemCell(BaseEventData data)
+        {
+            GameManager.Event.Broadcast<ItemCell>(GameEventType.EndDragItemCell, this);
+        }
+        #endregion
+
+        #region 辅助方法
+        public Image GetImage()
+        {
+            return _imgItem;
         }
         #endregion
     }
