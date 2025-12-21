@@ -58,7 +58,7 @@ namespace HA
                 _imgItemIcon.sprite = obj as Sprite;
             });
             _txtItem.text = data.name;
-            _txtTypeContent.text = InventoryDataManager.GetInstance().GetItemDataType(data.type);
+            _txtTypeContent.text = InventoryDataManager.GetInstance().GetItemTypeString(data.type);
             _txtSourceContent.text = data.source;
             _txtUsageContent.text = data.usage;
             _txtDescContent.text = data.desc;

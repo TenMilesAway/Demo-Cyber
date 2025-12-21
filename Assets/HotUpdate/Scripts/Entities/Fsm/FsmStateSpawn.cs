@@ -10,9 +10,10 @@ namespace HA
         public async void OnEnter()
         {
             // --------- 初始化
-            PlayerDataManager.GetInstance().Init();
-            InventoryDataManager.GetInstance().Init();
-            InteractiveDataManager.GetInstance().Init();
+            PlayerDataManager.GetInstance().Init();            // 玩家数据管理
+            InventoryDataManager.GetInstance().Init();         // 仓库数据管理
+            InteractiveDataManager.GetInstance().Init();       // 交互数据管理
+            Cyber.CameraController.GetInstance().Init();       // 相机组件
             // ---------
 
 

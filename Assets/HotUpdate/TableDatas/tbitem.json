@@ -9,7 +9,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem2]",
     "type": 0,
     "usable": 0,
-    "level": 1
+    "level": 1,
+    "attack": 0,
+    "armorPenetration": 0,
+    "defense": 0,
+    "damageAvoidance": 0,
+    "hp": 0,
+    "mp": 0
   },
   {
     "id": 3,
@@ -21,7 +27,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem3]",
     "type": 0,
     "usable": 0,
-    "level": 2
+    "level": 2,
+    "attack": 0,
+    "armorPenetration": 0,
+    "defense": 0,
+    "damageAvoidance": 0,
+    "hp": 0,
+    "mp": 0
   },
   {
     "id": 4,
@@ -33,7 +45,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem4]",
     "type": 0,
     "usable": 0,
-    "level": 3
+    "level": 3,
+    "attack": 0,
+    "armorPenetration": 0,
+    "defense": 0,
+    "damageAvoidance": 0,
+    "hp": 0,
+    "mp": 0
   },
   {
     "id": 1000,
@@ -45,7 +63,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem1000]",
     "type": 0,
     "usable": 0,
-    "level": 0
+    "level": 0,
+    "attack": 0,
+    "armorPenetration": 0,
+    "defense": 0,
+    "damageAvoidance": 0,
+    "hp": 0,
+    "mp": 0
   },
   {
     "id": 1001,
@@ -57,7 +81,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem1001]",
     "type": 0,
     "usable": 0,
-    "level": 1
+    "level": 1,
+    "attack": 0,
+    "armorPenetration": 0,
+    "defense": 0,
+    "damageAvoidance": 0,
+    "hp": 0,
+    "mp": 0
   },
   {
     "id": 1002,
@@ -69,7 +99,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem1002]",
     "type": 0,
     "usable": 0,
-    "level": 2
+    "level": 2,
+    "attack": 0,
+    "armorPenetration": 0,
+    "defense": 0,
+    "damageAvoidance": 0,
+    "hp": 0,
+    "mp": 0
   },
   {
     "id": 1003,
@@ -81,7 +117,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem1003]",
     "type": 0,
     "usable": 0,
-    "level": 0
+    "level": 0,
+    "attack": 0,
+    "armorPenetration": 0,
+    "defense": 0,
+    "damageAvoidance": 0,
+    "hp": 0,
+    "mp": 0
   },
   {
     "id": 1004,
@@ -93,7 +135,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem1004]",
     "type": 0,
     "usable": 0,
-    "level": 1
+    "level": 1,
+    "attack": 0,
+    "armorPenetration": 0,
+    "defense": 0,
+    "damageAvoidance": 0,
+    "hp": 0,
+    "mp": 0
   },
   {
     "id": 1005,
@@ -105,7 +153,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem1005]",
     "type": 0,
     "usable": 0,
-    "level": 2
+    "level": 2,
+    "attack": 0,
+    "armorPenetration": 0,
+    "defense": 0,
+    "damageAvoidance": 0,
+    "hp": 0,
+    "mp": 0
   },
   {
     "id": 1006,
@@ -117,7 +171,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem1006]",
     "type": 0,
     "usable": 0,
-    "level": 0
+    "level": 0,
+    "attack": 0,
+    "armorPenetration": 0,
+    "defense": 0,
+    "damageAvoidance": 0,
+    "hp": 0,
+    "mp": 0
   },
   {
     "id": 1007,
@@ -129,7 +189,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem1007]",
     "type": 0,
     "usable": 0,
-    "level": 1
+    "level": 1,
+    "attack": 0,
+    "armorPenetration": 0,
+    "defense": 0,
+    "damageAvoidance": 0,
+    "hp": 0,
+    "mp": 0
   },
   {
     "id": 1008,
@@ -141,7 +207,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem1008]",
     "type": 0,
     "usable": 0,
-    "level": 2
+    "level": 2,
+    "attack": 0,
+    "armorPenetration": 0,
+    "defense": 0,
+    "damageAvoidance": 0,
+    "hp": 0,
+    "mp": 0
   },
   {
     "id": 1009,
@@ -153,7 +225,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem1009]",
     "type": 0,
     "usable": 0,
-    "level": 0
+    "level": 0,
+    "attack": 0,
+    "armorPenetration": 0,
+    "defense": 0,
+    "damageAvoidance": 0,
+    "hp": 0,
+    "mp": 0
   },
   {
     "id": 1010,
@@ -165,7 +243,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem1010]",
     "type": 0,
     "usable": 0,
-    "level": 1
+    "level": 1,
+    "attack": 0,
+    "armorPenetration": 0,
+    "defense": 0,
+    "damageAvoidance": 0,
+    "hp": 0,
+    "mp": 0
   },
   {
     "id": 1011,
@@ -177,7 +261,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem1011]",
     "type": 0,
     "usable": 0,
-    "level": 2
+    "level": 2,
+    "attack": 0,
+    "armorPenetration": 0,
+    "defense": 0,
+    "damageAvoidance": 0,
+    "hp": 0,
+    "mp": 0
   },
   {
     "id": 3000,
@@ -189,7 +279,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem3000]",
     "type": 2,
     "usable": 1,
-    "level": 0
+    "level": 0,
+    "attack": 0,
+    "armorPenetration": 0,
+    "defense": 0,
+    "damageAvoidance": 0,
+    "hp": 0,
+    "mp": 0
   },
   {
     "id": 4000,
@@ -201,7 +297,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem4000]",
     "type": 1,
     "usable": 0,
-    "level": 0
+    "level": 0,
+    "attack": 10,
+    "armorPenetration": 0,
+    "defense": 0,
+    "damageAvoidance": 0,
+    "hp": 0,
+    "mp": 0
   },
   {
     "id": 5000,
@@ -213,7 +315,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem5000]",
     "type": 1,
     "usable": 0,
-    "level": 0
+    "level": 0,
+    "attack": 0,
+    "armorPenetration": 0,
+    "defense": 1,
+    "damageAvoidance": 0,
+    "hp": 6,
+    "mp": 4
   },
   {
     "id": 6000,
@@ -225,7 +333,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem6000]",
     "type": 1,
     "usable": 0,
-    "level": 0
+    "level": 0,
+    "attack": 0,
+    "armorPenetration": 0,
+    "defense": 1,
+    "damageAvoidance": 0,
+    "hp": 10,
+    "mp": 0
   },
   {
     "id": 7000,
@@ -237,7 +351,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem7000]",
     "type": 1,
     "usable": 0,
-    "level": 0
+    "level": 0,
+    "attack": 10,
+    "armorPenetration": 0,
+    "defense": 0,
+    "damageAvoidance": 0,
+    "hp": 0,
+    "mp": 0
   },
   {
     "id": 8000,
@@ -249,7 +369,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem8000]",
     "type": 1,
     "usable": 0,
-    "level": 0
+    "level": 0,
+    "attack": 0,
+    "armorPenetration": 0,
+    "defense": 1,
+    "damageAvoidance": 0,
+    "hp": 10,
+    "mp": 0
   },
   {
     "id": 9000,
@@ -261,7 +387,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem9000]",
     "type": 1,
     "usable": 0,
-    "level": 0
+    "level": 0,
+    "attack": 0,
+    "armorPenetration": 0,
+    "defense": 1,
+    "damageAvoidance": 0,
+    "hp": 4,
+    "mp": 6
   },
   {
     "id": 10000,
@@ -273,7 +405,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem10000]",
     "type": 0,
     "usable": 1,
-    "level": 1
+    "level": 1,
+    "attack": 0,
+    "armorPenetration": 0,
+    "defense": 0,
+    "damageAvoidance": 0,
+    "hp": 0,
+    "mp": 0
   },
   {
     "id": 10001,
@@ -285,7 +423,13 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem10001]",
     "type": 0,
     "usable": 1,
-    "level": 2
+    "level": 2,
+    "attack": 0,
+    "armorPenetration": 0,
+    "defense": 0,
+    "damageAvoidance": 0,
+    "hp": 0,
+    "mp": 0
   },
   {
     "id": 10002,
@@ -297,6 +441,12 @@
     "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem10002]",
     "type": 0,
     "usable": 1,
-    "level": 3
+    "level": 3,
+    "attack": 0,
+    "armorPenetration": 0,
+    "defense": 0,
+    "damageAvoidance": 0,
+    "hp": 0,
+    "mp": 0
   }
 ]

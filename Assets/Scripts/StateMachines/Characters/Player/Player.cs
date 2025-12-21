@@ -46,7 +46,7 @@ namespace Cyber
 
             movementStateMachine = new PlayerMovementStateMachine(this);
 
-            AddEventLiseners();
+            //AddEventLiseners();
         }
 
         private void Start()
@@ -60,8 +60,8 @@ namespace Cyber
 
             movementStateMachine.Update();
 
-            if (GameDataMgr.GetInstance().GetPlayerTempInfo() != null)
-                GameDataMgr.GetInstance().UpdateTempInfo(transform.position, transform.eulerAngles, movementStateMachine.GetCurrentState());
+            //if (GameDataMgr.GetInstance().GetPlayerTempInfo() != null)
+            //    GameDataMgr.GetInstance().UpdateTempInfo(transform.position, transform.eulerAngles, movementStateMachine.GetCurrentState());
         }
 
         private void FixedUpdate()

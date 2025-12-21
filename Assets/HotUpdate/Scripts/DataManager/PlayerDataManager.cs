@@ -133,5 +133,33 @@ namespace HA
             }
         }
         #endregion
+
+        #region ¸¨Öú·½·¨
+        public int GetItemNumByType(int type)
+        {
+            int num = 0;
+
+            switch(type)
+            {
+                case 1:
+                    {
+                        num = _playerInfo._inventoryItemNum;
+                    }
+                    break;
+                case 2:
+                    {
+                        num = _playerInfo._inventoryEquipNum;
+                    }
+                    break;
+                case 3:
+                    {
+                        num = _playerInfo._inventoryPotionNum;
+                    }
+                    break;
+            }
+
+            return num;
+        }
+        #endregion
     }
 }

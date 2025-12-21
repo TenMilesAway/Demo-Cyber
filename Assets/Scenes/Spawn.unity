@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: a885bf85bc8b97449b3d0abfd2da3cdd, type: 2}
 --- !u!1001 &1906547
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13707,7 +13707,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &197015900
 Transform:
   m_ObjectHideFlags: 0
@@ -36412,6 +36412,10 @@ PrefabInstance:
     - target: {fileID: 5779152820881648896, guid: d3b23cd105d55d443844a1cf197f12c6, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0.0075809285
+      objectReference: {fileID: 0}
+    - target: {fileID: 5779152821378610795, guid: d3b23cd105d55d443844a1cf197f12c6, type: 3}
+      propertyPath: m_Layer
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 6550309966379582448, guid: d3b23cd105d55d443844a1cf197f12c6, type: 3}
       propertyPath: m_IsTrigger
@@ -131147,45 +131151,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ec7ef69324df6b4a8fac670c604daf1, type: 3}
---- !u!1 &919132148511022995 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7861763339569139807, guid: d0832c6731b11a743a7378c87ff3db44, type: 3}
-  m_PrefabInstance: {fileID: 7051495496406339532}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &919132148511022998
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 919132148511022995}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 3.7699735, y: 2.4, z: 2.2855601}
-  m_Center: {x: 1.9235999e-13, y: 1.2, z: 0.55787665}
---- !u!114 &919132148511022999
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 919132148511022995}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8bbd0cc633cd114584cf399b7304c31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <NowPosition>k__BackingField: {fileID: 0}
-  <AniamtionData>k__BackingField:
-    idleParameterName: isIdling
-    walkParameterName: isWalking
-    runParameterName: isRunning
-    attackParameterName: isAttacking
-  hp: 200
-  defense: 20
-  attack: 50
 --- !u!1001 &1534411641348321464
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -131379,6 +131344,10 @@ PrefabInstance:
     - target: {fileID: 1163364570412753083, guid: d0832c6731b11a743a7378c87ff3db44, type: 3}
       propertyPath: m_Layer
       value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 1172203579716365813, guid: d0832c6731b11a743a7378c87ff3db44, type: 3}
+      propertyPath: <PlayerAttackLayer>k__BackingField.m_Bits
+      value: 16777216
       objectReference: {fileID: 0}
     - target: {fileID: 1216000148325777211, guid: d0832c6731b11a743a7378c87ff3db44, type: 3}
       propertyPath: m_Layer
@@ -131678,15 +131647,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7372754011528973029, guid: d0832c6731b11a743a7378c87ff3db44, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -35.95967
+      value: -9.459671
       objectReference: {fileID: 0}
     - target: {fileID: 7372754011528973029, guid: d0832c6731b11a743a7378c87ff3db44, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.29
+      value: 1.96
       objectReference: {fileID: 0}
     - target: {fileID: 7372754011528973029, guid: d0832c6731b11a743a7378c87ff3db44, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 25.570328
+      value: 36.570328
       objectReference: {fileID: 0}
     - target: {fileID: 7372754011528973029, guid: d0832c6731b11a743a7378c87ff3db44, type: 3}
       propertyPath: m_LocalRotation.w
@@ -131746,7 +131715,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7861763339569139807, guid: d0832c6731b11a743a7378c87ff3db44, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7920418901559027133, guid: d0832c6731b11a743a7378c87ff3db44, type: 3}
       propertyPath: m_Layer

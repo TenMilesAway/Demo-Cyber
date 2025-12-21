@@ -79,9 +79,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactiveRadius: 2
-  _interactiveLayer:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!135 &6550309966379582448
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -629,6 +626,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1905531185953389567}
     m_Modifications:
+    - target: {fileID: 5599876705366528133, guid: cbe9d3fad0458b641bb93edb424d7b8b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6493552510833938636, guid: cbe9d3fad0458b641bb93edb424d7b8b, type: 3}
       propertyPath: <CameraRecenteringUtility>k__BackingField.<VirtualCamera>k__BackingField
       value: 

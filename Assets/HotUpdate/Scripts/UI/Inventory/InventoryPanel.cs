@@ -22,6 +22,7 @@ namespace HA
         [SerializeField] private Toggle _toggleItems;
         [SerializeField] private Toggle _togglePotions;
         [SerializeField] private Toggle _toggleEquips;
+        [SerializeField] private Text _txtItemNum;
 
         [Header("下区域")]
         [SerializeField] private GameObject _groupNotSelected;
@@ -79,7 +80,7 @@ namespace HA
         {
             // 默认显示为道具页签
             List<ItemInfo> infos = GetInfoByTabID(1);
-            SwitchTab(infos);
+            SwitchTab(infos, 1);
         }
 
         /// <summary>
@@ -125,7 +126,7 @@ namespace HA
         /// 真正切换页签
         /// </summary>
         /// <param name="infos"></param>
-        private void SwitchTab(List<ItemInfo> infos)
+        private void SwitchTab(List<ItemInfo> infos, int infoType)
         {
             foreach(ItemCell nowCell in _showList)
             {
@@ -134,6 +135,11 @@ namespace HA
 
             _showList.Clear();
 
+            // 更新页签的仓库容量
+            int allItemCell = PlayerDataManager.GetInstance().GetItemNumByType(infoType);
+            int leftItemCell = allItemCell - infos.Count;
+            _txtItemNum.text = string.Format("{0} / <color=yellow>{1}</color>", infos.Count, allItemCell);
+
             foreach (ItemInfo itemInfo in infos)
             {
                 UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.ItemCell, GetInstanceID().ToString(), (GameObject itemCell) =>
@@ -141,6 +147,17 @@ namespace HA
                     ItemCell component = itemCell.GetComponent<ItemCell>();
                     component.transform.SetParent(_itemContainer, false);
                     component.Init(itemInfo, false, null);
+                    _showList.Add(component);
+                });
+            }
+
+            for (int i = 0; i < leftItemCell; i++)
+            {
+                UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.ItemCell, GetInstanceID().ToString(), (GameObject itemCell) =>
+                {
+                    ItemCell component = itemCell.GetComponent<ItemCell>();
+                    component.transform.SetParent(_itemContainer, false);
+                    component.Init(null, false, null);
                     _showList.Add(component);
                 });
             }
@@ -169,7 +186,7 @@ namespace HA
             });
 
             _txtItem.text = itemData.name;
-            _txtTypeContent.text = InventoryDataManager.GetInstance().GetItemDataType(itemData.type);
+            _txtTypeContent.text = InventoryDataManager.GetInstance().GetItemTypeString(itemData.type);
             _txtSourceContent.text = itemData.source;
             _txtUsageContent.text = itemData.usage;
             _txtDescContent.text = itemData.desc;
@@ -188,15 +205,15 @@ namespace HA
 
             _toggleItems.onValueChanged.AddListener((isOn) =>
             {
-                if (isOn) SwitchTab(GetInfoByTabID(1));
+                if (isOn) SwitchTab(GetInfoByTabID(1), 1);
             });
             _toggleEquips.onValueChanged.AddListener((isOn) =>
             {
-                if (isOn) SwitchTab(GetInfoByTabID(2));
+                if (isOn) SwitchTab(GetInfoByTabID(2), 2);
             });
             _togglePotions.onValueChanged.AddListener((isOn) =>
             {
-                if (isOn) SwitchTab(GetInfoByTabID(3));
+                if (isOn) SwitchTab(GetInfoByTabID(3), 3);
             });
         }
 

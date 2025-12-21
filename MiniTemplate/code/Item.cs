@@ -30,6 +30,12 @@ public sealed partial class Item : Luban.BeanBase
         Type = (int)_obj.GetValue("type");
         Usable = (int)_obj.GetValue("usable");
         Level = (int)_obj.GetValue("level");
+        Attack = (int)_obj.GetValue("attack");
+        ArmorPenetration = (int)_obj.GetValue("armorPenetration");
+        Defense = (int)_obj.GetValue("defense");
+        DamageAvoidance = (int)_obj.GetValue("damageAvoidance");
+        Hp = (int)_obj.GetValue("hp");
+        Mp = (int)_obj.GetValue("mp");
     }
 
     public static Item DeserializeItem(JToken _buf)
@@ -77,6 +83,30 @@ public sealed partial class Item : Luban.BeanBase
     /// 物品品阶
     /// </summary>
     public readonly int Level;
+    /// <summary>
+    /// 攻击力
+    /// </summary>
+    public readonly int Attack;
+    /// <summary>
+    /// 破甲值
+    /// </summary>
+    public readonly int ArmorPenetration;
+    /// <summary>
+    /// 防御力
+    /// </summary>
+    public readonly int Defense;
+    /// <summary>
+    /// 免伤值
+    /// </summary>
+    public readonly int DamageAvoidance;
+    /// <summary>
+    /// 生命值
+    /// </summary>
+    public readonly int Hp;
+    /// <summary>
+    /// 魔力值
+    /// </summary>
+    public readonly int Mp;
 
 
     public const int __ID__ = 2289459;
@@ -99,6 +129,12 @@ public sealed partial class Item : Luban.BeanBase
         + "type:" + Type + ","
         + "usable:" + Usable + ","
         + "level:" + Level + ","
+        + "attack:" + Attack + ","
+        + "armorPenetration:" + ArmorPenetration + ","
+        + "defense:" + Defense + ","
+        + "damageAvoidance:" + DamageAvoidance + ","
+        + "hp:" + Hp + ","
+        + "mp:" + Mp + ","
         + "}";
     }
 }

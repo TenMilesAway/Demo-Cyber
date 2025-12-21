@@ -17,14 +17,15 @@ namespace HA
         [SerializeField] private Text _txtNum;
 
         [Header("类型")]
-        [SerializeField] private EquipType _equipType;    // 装备类型, 默认为 None
+        [SerializeField] private ItemCellType _itemCellType;    // 格子类型, 默认为 None
+        [SerializeField] private ItemType _itemType;            // 物品类型：物品、装备、药水
 
         [Header("组别")]
         [SerializeField] private GameObject _groupBag;
         [SerializeField] private GameObject _groupTreasure;
 
-        [HideInInspector] public ItemInfo _itemInfo;      // 物品信息
-        [HideInInspector] public string _imgItemPath;     // 物品图片路径
+        [HideInInspector] public ItemInfo _itemInfo;            // 物品信息
+        [HideInInspector] public string _imgItemPath;           // 物品图片路径
 
         private HATreasureEntity _treasureEntity;
         private Sequence _searchSequence;
@@ -45,6 +46,7 @@ namespace HA
             _imgBackSelected.enabled = false;
             _imgItem.enabled = false;
             _imgSearch.enabled = false;
+            _txtNum.enabled = false;
 
             _isTreasure = isTreasure;
             _itemInfo = info;
@@ -55,8 +57,10 @@ namespace HA
             {
                 _txtNum.text = info._num.ToString();
 
-                // 加载图片
-                _imgItemPath = ItemDataManager.GetInstance().GetData(info._id).icon;
+                TBItemData data = ItemDataManager.GetInstance().GetData(info._id);
+                _itemType = InventoryDataManager.GetInstance().GetItemType(data.type);
+                _itemCellType = ItemCellType.None;
+                _imgItemPath = data.icon;
                 GameManager.Resource.LoadResourceAsync<Sprite>(_imgItemPath, GetInstanceID().ToString(), (Object obj, object[] result) =>
                 {
                     _imgItem.sprite = obj as Sprite;
@@ -74,6 +78,7 @@ namespace HA
             {
                 _groupBag.SetActive(true);
                 _imgItem.enabled = true;
+                _txtNum.enabled = true;
                 AddPointerListeners();
                 AddDragListeners();
             }
@@ -83,11 +88,19 @@ namespace HA
                 AddPointerListeners();
                 AddDragListeners();
             }
-            // 如果不是宝藏格子
+            // 如果不是宝藏格子，且无物品信息（空格子）
+            else if (!_isTreasure && info == null && treasureEntity == null)
+            {
+                _groupBag.SetActive(true);
+                AddPointerListeners();
+                AddDragListeners();
+            }
+            // 如果不是宝藏格子，且有信息
             else
             {
                 _groupBag.SetActive(true);
                 _imgItem.enabled = true;
+                _txtNum.enabled = true;
                 AddPointerListeners();
                 AddDragListeners();
             }
@@ -133,6 +146,7 @@ namespace HA
                 _groupTreasure.SetActive(false);
                 _groupBag.SetActive(true);
                 _imgSearch.enabled = false;
+                _txtNum.enabled = true;
                 AddPointerListeners();
                 AddDragListeners();
                 HADebug.LogFormat("结束搜索, 发现物品{0}", ItemDataManager.GetInstance().GetData(_treasureEntity._treasureID).name);
@@ -248,6 +262,11 @@ namespace HA
         public Image GetImage()
         {
             return _imgItem;
+        }
+
+        public ItemCellType GetItemCellType()
+        {
+            return _itemCellType;
         }
         #endregion
     }

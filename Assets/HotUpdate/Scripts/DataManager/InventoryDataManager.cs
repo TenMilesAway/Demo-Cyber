@@ -26,6 +26,7 @@ namespace HA
             GameManager.Event.AddListener<ItemCell>(GameEventType.EndDragItemCell, EndDragItemCell);
         }
 
+        #region 监听方法
         /// <summary>
         /// 鼠标进入物品格子时, 显示详细信息
         /// </summary>
@@ -141,12 +142,25 @@ namespace HA
             UnityObjectPoolFactory.GetInstance().PutItem(GlobalDefine.ItemImage, _nowSelectItemCellImg.gameObject);
             _nowSelectItemCellImg = null;
         }
+        #endregion
 
         #region 辅助方法
         /// <summary>
+        /// 交换格子位置
+        /// </summary>
+        private void ChangeItemCell()
+        {
+            // 如果是 Item, 交换格子位置
+            if (_nowInItemCell != null && _nowInItemCell.GetItemCellType() == ItemCellType.None)
+            {
+
+            }
+        }
+
+        /// <summary>
         /// 获得物品种类对应字符串
         /// </summary>
-        public string GetItemDataType(int type)
+        public string GetItemTypeString(int type)
         {
             string typeString = "未知";
 
@@ -165,6 +179,32 @@ namespace HA
             }
 
             return typeString;
+        }
+
+        public ItemType GetItemType(int type)
+        {
+            ItemType result = ItemType.Item;
+
+            switch(type)
+            {
+                case 0:
+                    {
+                        result = ItemType.Item;
+                    }
+                    break;
+                case 1:
+                    {
+                        result = ItemType.Equip;
+                    }
+                    break;
+                case 2:
+                    {
+                        result = ItemType.Potion;
+                    }
+                    break;
+            }
+
+            return result;
         }
         #endregion
     }

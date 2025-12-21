@@ -27,7 +27,7 @@ namespace HA
     /// <summary>
     /// 装备细分类型
     /// </summary>
-    public enum EquipType
+    public enum ItemCellType
     {
         None = 0,         // 非装备
         Weapon,           // 武器

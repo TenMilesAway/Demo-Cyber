@@ -100,9 +100,7 @@ namespace HA
 
         private void OnClickBtnForge()
         {
-            DialoguePanelParam param = new DialoguePanelParam();
-            param.data = _dialogue;
-            UIManager.GetInstance().OpenPanel(GlobalDefine.DialoguePanel, UILayer.Mid, param);
+            
         }
         #endregion
     }

@@ -17,18 +17,6 @@ namespace HA
             }
         }
 
-        private void OnTriggerStay(Collider other)
-        {
-            //if (other.TryGetComponent(out IInteractive interactiveObject))
-            //{
-            //    if (!UIManager.GetInstance().GetOpeningPanel(GlobalDefine.DialoguePanel) &&
-            //    !UIManager.GetInstance().GetOpeningPanel(GlobalDefine.InteractivePanel))
-            //    {
-            //        UIManager.GetInstance().OpenPanel(GlobalDefine.InteractivePanel);
-            //    }
-            //}
-        }
-
         private void OnTriggerExit(Collider other)
         {
             if (other.TryGetComponent(out IInteractive interactiveObject))

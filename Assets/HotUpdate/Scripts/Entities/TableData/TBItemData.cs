@@ -57,5 +57,35 @@ namespace HA
         /// 道具品阶: 0普通 1优秀 2精良 3史诗 4传说 5神圣
         /// </summary>
         public int level;
+
+        /// <summary>
+        /// 攻击力
+        /// </summary>
+        public int attack;
+
+        /// <summary>
+        /// 破甲值
+        /// </summary>
+        public int armorPenetration;
+
+        /// <summary>
+        /// 防御力
+        /// </summary>
+        public int defense;
+
+        /// <summary>
+        /// 免伤值
+        /// </summary>
+        public int damageAvoidance;
+
+        /// <summary>
+        /// 生命值
+        /// </summary>
+        public int hp;
+
+        /// <summary>
+        /// 魔力值
+        /// </summary>
+        public int mp;
     }
 }
