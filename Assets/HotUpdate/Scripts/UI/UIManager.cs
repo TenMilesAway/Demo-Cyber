@@ -96,11 +96,13 @@ namespace HA
             }
 
             // 字典中不存在此面板, 从 AA 中加载
-            AsyncOperationHandle panelHandle = Addressables.LoadAssetAsync<GameObject>(panelName);
+            GameObject panelGO = await UnityObjectPoolFactory.GetInstance().GetItem<GameObject>(panelName, GetInstance().ToString());
 
-            await panelHandle.Task;
+            //AsyncOperationHandle panelHandle = Addressables.LoadAssetAsync<GameObject>(panelName);
 
-            GameObject panelGO = GameObject.Instantiate(panelHandle.Result as GameObject);
+            //await panelHandle.Task;
+
+            //GameObject panelGO = GameObject.Instantiate(panelHandle.Result as GameObject);
 
             // 设置父对象, 设置相对位置和大小
             switch (layer)
