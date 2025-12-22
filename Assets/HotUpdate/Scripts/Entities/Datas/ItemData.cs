@@ -37,4 +37,14 @@ namespace HA
         Cuish,            // 腿甲
         Shoes,            // 鞋子
     }
+
+    /// <summary>
+    /// 物品格子父类
+    /// </summary>
+    public enum ItemCellParent
+    {
+        Inventory,        // 仓库
+        Treasure,         // 宝藏
+        Safebox,          // 安全箱
+    }
 }

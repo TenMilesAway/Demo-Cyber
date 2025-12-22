@@ -79,7 +79,11 @@ namespace HA
         private void InitInventoryTab()
         {
             // 默认显示为道具页签
-            List<ItemInfo> infos = GetInfoByTabID(1);
+            //List<ItemInfo> infos = GetInfoByTabID(1);
+            // 修改：将物品、装备、药水集中在物品栏内
+            List<ItemInfo> infos = new List<ItemInfo>(_playerInfo._items);
+            infos.AddRange(_playerInfo._equips);
+            infos.AddRange(_playerInfo._potions);
             SwitchTab(infos, 1);
         }
 

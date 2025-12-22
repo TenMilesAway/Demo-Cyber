@@ -86,11 +86,11 @@ namespace HA
                     itemCell.transform.SetParent(_treasureContainer, false);
                     if (!_isInteractable)
                     {
-                        itemCell.GetComponent<ItemCell>().Init(item, true, _treasureEntities[index]);
+                        itemCell.GetComponent<ItemCell>().Init(item, true, _treasureEntities[index], ItemCellParent.Treasure);
                     }
                     else
                     {
-                        itemCell.GetComponent<ItemCell>().Init(item, true, null);
+                        itemCell.GetComponent<ItemCell>().Init(item, true, null, ItemCellParent.Treasure);
                     }
                 });
             }
@@ -105,7 +105,7 @@ namespace HA
                 {
                     _itemCells.Add(itemCell);
                     itemCell.transform.SetParent(_treasureContainer, false);
-                    itemCell.GetComponent<ItemCell>().Init(null, true);
+                    itemCell.GetComponent<ItemCell>().Init(null, true, null, ItemCellParent.Treasure);
                 });
             }
         }

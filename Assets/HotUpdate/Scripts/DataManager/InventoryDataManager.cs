@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -9,6 +10,8 @@ namespace HA
 {
     public class InventoryDataManager : BaseManager<InventoryDataManager>
     {
+        
+
         private ItemCell _nowDragItemCell;    // 当前拖动的格子
         private ItemCell _nowInItemCell;      // 当前鼠标进入的格子
         private ItemCell _lastSelectItemCell; // 之前选择的格子
@@ -133,6 +136,8 @@ namespace HA
         {
             _isDraging = false;
 
+            ChangeItemCell();
+
             // 结束拖动，置空信息
             _nowDragItemCell = null;
             _nowInItemCell = null;
@@ -153,8 +158,27 @@ namespace HA
             // 如果是 Item, 交换格子位置
             if (_nowInItemCell != null && _nowInItemCell.GetItemCellType() == ItemCellType.None)
             {
-
+                SwapAndUpdateItemCell();
             }
+        }
+
+        private void SwapAndUpdateItemCell()
+        {
+            // 如果两个物品 ID 相同，则叠加
+            if (_nowInItemCell._itemInfo != null && _nowDragItemCell._itemInfo._id == _nowInItemCell._itemInfo._id)
+            {
+                _nowInItemCell._itemInfo._num += _nowDragItemCell._itemInfo._num;
+                _nowDragItemCell._itemInfo = null;
+            }
+            else
+            {
+                ItemInfo temp = _nowDragItemCell._itemInfo;
+                _nowDragItemCell._itemInfo = _nowInItemCell._itemInfo;
+                _nowInItemCell._itemInfo = temp;
+            }
+
+            _nowDragItemCell.UpdateItemCellInfo();
+            _nowInItemCell.UpdateItemCellInfo();
         }
 
         /// <summary>

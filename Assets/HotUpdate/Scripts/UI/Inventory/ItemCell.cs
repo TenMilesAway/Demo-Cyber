@@ -19,6 +19,7 @@ namespace HA
         [Header("类型")]
         [SerializeField] private ItemCellType _itemCellType;    // 格子类型, 默认为 None
         [SerializeField] private ItemType _itemType;            // 物品类型：物品、装备、药水
+        [SerializeField] private ItemCellParent _itemCellParent;// 格子的父类
 
         [Header("组别")]
         [SerializeField] private GameObject _groupBag;
@@ -39,7 +40,7 @@ namespace HA
         /// <param name="info">格子拥有物品的信息：ID & Num</param>
         /// <param name="isTreasure">是否是宝藏面板的格子</param>
         /// <param name="treasureEntity">宝藏信息，包含宝藏搜索需要的时间</param>
-        public void Init(ItemInfo info, bool isTreasure = false, HATreasureEntity treasureEntity = null)
+        public void Init(ItemInfo info, bool isTreasure = false, HATreasureEntity treasureEntity = null, ItemCellParent parent = ItemCellParent.Inventory)
         {
             _groupBag.SetActive(false);
             _groupTreasure.SetActive(false);
@@ -51,6 +52,7 @@ namespace HA
             _isTreasure = isTreasure;
             _itemInfo = info;
             _treasureEntity = treasureEntity;
+            _itemCellParent = parent;
 
             // 如果信息不为空，根据 info 加载物品
             if (info != null)
@@ -267,6 +269,38 @@ namespace HA
         public ItemCellType GetItemCellType()
         {
             return _itemCellType;
+        }
+
+        public ItemCellParent GetItemCellParent()
+        {
+            return _itemCellParent;
+        }
+
+        public void UpdateItemCellInfo()
+        {
+            if (_itemInfo == null)
+            {
+                _groupBag.SetActive(false);
+                _groupTreasure.SetActive(false);
+                _imgBackSelected.enabled = false;
+                _imgItem.enabled = false;
+                _imgSearch.enabled = false;
+                _txtNum.enabled = false;
+                return;
+            }
+
+            _groupBag.SetActive(true);
+            _imgItem.enabled = true;
+            _txtNum.enabled = true;
+
+            TBItemData data = ItemDataManager.GetInstance().GetData(_itemInfo._id);
+            _itemType = InventoryDataManager.GetInstance().GetItemType(data.type);
+            _imgItemPath = data.icon;
+            _txtNum.text = _itemInfo._num.ToString();
+            GameManager.Resource.LoadResourceAsync<Sprite>(_imgItemPath, GetInstanceID().ToString(), (Object obj, object[] result) =>
+            {
+                _imgItem.sprite = obj as Sprite;
+            });
         }
         #endregion
     }
