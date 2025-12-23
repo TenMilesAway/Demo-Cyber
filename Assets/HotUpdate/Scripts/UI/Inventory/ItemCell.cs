@@ -27,13 +27,14 @@ namespace HA
 
         [HideInInspector] public ItemInfo _itemInfo;            // 物品信息
         [HideInInspector] public string _imgItemPath;           // 物品图片路径
+        [HideInInspector] public int _id = -1;                  // 格子在父类中的 ID
+        [HideInInspector] public int _parentInstanceID = 0;     // 物品格子在父类中的 ID
 
         private HATreasureEntity _treasureEntity;
         private Sequence _searchSequence;
         private bool _isOpenDrag;
         private bool _isTreasure;
         private float _radius = 15f;
-        public int _id = 0;
 
         /// <summary>
         /// 初始化
@@ -41,7 +42,10 @@ namespace HA
         /// <param name="info">格子拥有物品的信息：ID & Num</param>
         /// <param name="isTreasure">是否是宝藏面板的格子</param>
         /// <param name="treasureEntity">宝藏信息，包含宝藏搜索需要的时间</param>
-        public void Init(ItemInfo info, bool isTreasure = false, HATreasureEntity treasureEntity = null, ItemCellParent parent = ItemCellParent.Inventory, int id = 0)
+        /// <param name="parent">物品格子的父类</param>
+        /// <param name="id">物品格子在父类中的 ID</param>
+        public void Init(ItemInfo info, bool isTreasure = false, HATreasureEntity treasureEntity = null, 
+                         ItemCellParent parent = ItemCellParent.Inventory, int id = -1, int parentInstanceID = 0)
         {
             _groupBag.SetActive(false);
             _groupTreasure.SetActive(false);
@@ -54,6 +58,8 @@ namespace HA
             _itemInfo = info;
             _treasureEntity = treasureEntity;
             _itemCellParent = parent;
+            _id = id;
+            _parentInstanceID = parentInstanceID;
 
             // 如果信息不为空，根据 info 加载物品
             if (info != null && info._id != 0)
@@ -115,6 +121,8 @@ namespace HA
         /// </summary>
         public void StartSearch()
         {
+            if (_groupTreasure.activeSelf == false) return;
+
             if (_searchSequence != null && _searchSequence.IsActive()) _searchSequence.Kill();
 
             _searchSequence = DOTween.Sequence();
@@ -314,7 +322,8 @@ namespace HA
             return _isTreasure && 
                    _itemInfo != null && 
                    _itemInfo._id != 0 && 
-                   _treasureEntity != null;
+                   _treasureEntity != null &&
+                   _treasureEntity._treasureID != 0;
         }
 
         /// <summary>
@@ -325,7 +334,7 @@ namespace HA
             return _isTreasure &&
                    _itemInfo != null &&
                    _itemInfo._id != 0 &&
-                   _treasureEntity == null;
+                   (_treasureEntity == null || _treasureEntity._treasureID == 0);
         }
 
         /// <summary>
@@ -335,7 +344,7 @@ namespace HA
         {
             return _isTreasure &&
                    (_itemInfo == null || _itemInfo._id == 0) &&
-                   _treasureEntity == null;
+                   (_treasureEntity == null || _treasureEntity._treasureID == 0);
         }
 
         /// <summary>

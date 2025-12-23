@@ -8,6 +8,7 @@ namespace HA
 {
     public class TreasurePanelParam : OpenUIParam
     {
+        public int parentInstanceID;
         public bool isInteractable;
         public List<HATreasureEntity> treasureEntities;
     }
@@ -22,6 +23,7 @@ namespace HA
         private List<HATreasureEntity> _treasureEntities;
         private List<GameObject> _itemCells = new List<GameObject>();
         private bool _isInteractable;
+        private int _parentInstanceID;
         private Coroutine _searchCo;
         public override string GetPanelName()
         {
@@ -36,6 +38,7 @@ namespace HA
             treasurePanelParam = param as TreasurePanelParam;
             _isInteractable = treasurePanelParam.isInteractable;
             _treasureEntities = treasurePanelParam.treasureEntities;
+            _parentInstanceID = treasurePanelParam.parentInstanceID;
 
             // 先初始化 15 个槽位
             // 将指定槽位数初始化为 Treasure
@@ -86,11 +89,11 @@ namespace HA
                     itemCell.transform.SetParent(_treasureContainer, false);
                     if (!_isInteractable)
                     {
-                        itemCell.GetComponent<ItemCell>().Init(item, true, _treasureEntities[index], ItemCellParent.Treasure);
+                        itemCell.GetComponent<ItemCell>().Init(item, true, _treasureEntities[index], ItemCellParent.Treasure, index, _parentInstanceID);
                     }
                     else
                     {
-                        itemCell.GetComponent<ItemCell>().Init(item, true, null, ItemCellParent.Treasure);
+                        itemCell.GetComponent<ItemCell>().Init(item, true, null, ItemCellParent.Treasure, index, _parentInstanceID);
                     }
                 });
             }
@@ -105,7 +108,7 @@ namespace HA
                 {
                     _itemCells.Add(itemCell);
                     itemCell.transform.SetParent(_treasureContainer, false);
-                    itemCell.GetComponent<ItemCell>().Init(null, true, null, ItemCellParent.Treasure);
+                    itemCell.GetComponent<ItemCell>().Init(null, true, null, ItemCellParent.Treasure, index, _parentInstanceID);
                 });
             }
         }
@@ -121,7 +124,12 @@ namespace HA
 
             for (int i = 0; i < _treasureEntities.Count; i++)
             {
-                _itemCells[i].GetComponent<ItemCell>().StartSearch();
+                ItemCell temp = _itemCells[i].GetComponent<ItemCell>();
+
+                // 这里还需要修改,
+                if (temp._itemInfo._id == 0) break;
+
+                temp.StartSearch();
 
                 yield return new WaitForSeconds(_treasureEntities[i]._treasureDuration);
             }

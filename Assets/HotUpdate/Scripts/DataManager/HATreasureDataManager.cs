@@ -8,6 +8,9 @@ namespace HA
     public class HATreasureDataManager : BaseManager<HATreasureDataManager>
     {
         private readonly static Dictionary<int, TBTreasureData> treasureDataDic = new Dictionary<int, TBTreasureData>();
+        private Dictionary<int, List<HATreasureEntity>> _nowHATreasureEntitiesDic = new Dictionary<int, List<HATreasureEntity>>();
+
+        private const int _maxItemNum = 15; // 宝藏最多数量
 
         public async void Init()
         {
@@ -21,6 +24,10 @@ namespace HA
             }
         }
 
+        #region 主要方法
+        /// <summary>
+        /// 获得预设宝藏配置
+        /// </summary>
         public TBTreasureData GetData(int id)
         {
             return treasureDataDic[id];
@@ -89,13 +96,27 @@ namespace HA
                 result.Add(entity);
             }
 
+            // 将剩下的格子物品 ID 初始化为 0
+            int leftNum = _maxItemNum - itemNum;
+            for (int i = 0; i < leftNum; i++)
+            {
+                HATreasureEntity entity = new HATreasureEntity
+                {
+                    _treasureID = 0,
+                    _treasureNum = 0,
+                };
+                result.Add(entity);
+            }
+
             return result;
         }
+        #endregion
 
+        #region 辅助方法
         /// <summary>
         /// 根据宝藏权重来随机一个物品
         /// </summary>
-        public TBTreasureItem RandomSelectATreasureItem(List<TBTreasureItem> items)
+        private TBTreasureItem RandomSelectATreasureItem(List<TBTreasureItem> items)
         {
             // 计算总权重
             int totalWeight = items.Sum(item => item.weight);
@@ -115,44 +136,66 @@ namespace HA
 
             return items[items.Count - 1];
         }
-
+        
+        /// <summary>
+        /// 根据物品等级获取搜索时间
+        /// </summary>
         private float GetDurationByLevel(int level)
         {
-            float duration = 0.2f;
+            float duration = 0.5f;
             switch(level)
             {
                 case 0:
                     {
-                        duration = 0.2f;
+                        duration = 0.5f;
                     }
                     break;
                 case 1:
                     {
-                        duration = 0.3f;
+                        duration = 0.8f;
                     }
                     break;
                 case 2:
                     {
-                        duration = 0.5f;
+                        duration = 1.0f;
                     }
                     break;
                 case 3:
                     {
-                        duration = 1f;
+                        duration = 1.5f;
                     }
                     break;
                 case 4:
                     {
-                        duration = 2f;
+                        duration = 2.0f;
                     }
                     break;
                 case 5:
                     {
-                        duration = 3f;
+                        duration = 3.0f;
                     }
                     break;
             }
             return duration;
         }
+        #endregion
+
+        #region 已打开过的宝藏数据管理
+        /// <summary>
+        /// 将 List<HATreasureEntity> 存入字典中
+        /// </summary>
+        public void AddHATreasureListToDic(int instanceID, List<HATreasureEntity> HATreasureEntities)
+        {
+            _nowHATreasureEntitiesDic.Add(instanceID, HATreasureEntities);
+        }
+
+        /// <summary>
+        /// 从字典中取出 List<HATreasureEntity>
+        /// </summary>
+        public List<HATreasureEntity> GetHATreasureListFromDic(int instanceID)
+        {
+            return _nowHATreasureEntitiesDic[instanceID];
+        }
+        #endregion
     }
 }

@@ -24,6 +24,7 @@ namespace HA
         private List<HATreasureEntity> _treasureEntities = new List<HATreasureEntity>();
         private const string _interactionPrompt = "按<color=red> F </color>开启宝藏";
         private bool _isInteractable; // 在这里用来判断宝藏是否被打开过
+        private int _instanceID;
 
         public string InteractionName { get { return _treasureName; } }
         public string InteractionPrompt { get { return _interactionPrompt; } }
@@ -39,9 +40,12 @@ namespace HA
             // 未被打开过, 则初始化宝藏 Entities
             if (!_isInteractable)
             {
+                _instanceID = GetInstanceID();
                 _treasureEntities = HATreasureDataManager.GetInstance().InitHATreasure(_treasureID);
                 _isInteractable = true;
+                HATreasureDataManager.GetInstance().AddHATreasureListToDic(_instanceID, _treasureEntities);
             }
+            treasurePanelParam.parentInstanceID = _instanceID;
             treasurePanelParam.treasureEntities = _treasureEntities;
             UIManager.GetInstance().OpenPanel(GlobalDefine.TreasurePanel, UILayer.Mid, treasurePanelParam);
 

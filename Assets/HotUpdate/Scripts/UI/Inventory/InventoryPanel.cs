@@ -78,50 +78,9 @@ namespace HA
         /// </summary>
         private void InitInventoryTab()
         {
-            // 默认显示为道具页签
-            //List<ItemInfo> infos = GetInfoByTabID(1);
             // 修改：将物品、装备、药水集中在物品栏内
             List<ItemInfo> infos = new List<ItemInfo>(_playerInfo._allItems);
             SwitchTab(infos, 1);
-        }
-
-        /// <summary>
-        /// 根据页签的 ID 获得物品列表
-        /// </summary>
-        /// <param name="tab">
-        /// 1: 物品页签
-        /// 2: 装备页签
-        /// 3: 药水页签
-        /// </param>
-        private List<ItemInfo> GetInfoByTabID(int tab)
-        {
-            List<ItemInfo> infos = new List<ItemInfo>();
-
-            switch(tab)
-            {
-                case 1:
-                    {
-                        infos = _playerInfo._allItems;
-                    }
-                    break;
-                case 2:
-                    {
-                        infos = _playerInfo._equips;
-                    }
-                    break;
-                case 3:
-                    {
-                        infos = _playerInfo._potions;
-                    }
-                    break;
-                default:
-                    {
-                        infos = _playerInfo._items;
-                    }
-                    break;
-            }
-
-            return infos;
         }
 
         /// <summary>
@@ -139,29 +98,32 @@ namespace HA
 
             // 更新页签的仓库容量
             int allItemCell = PlayerDataManager.GetInstance().GetItemNumByType(infoType);
-            int leftItemCell = allItemCell - infos.Count;
-            _txtItemNum.text = string.Format("{0} / <color=yellow>{1}</color>", infos.Count, allItemCell);
+            int nowCount = 0;
 
             for (int i = 0; i < infos.Count; i++)
             {
-                int index = i + 1;
+                int index = i;
+                if (infos[i]._id != 0) nowCount++;
                 UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.ItemCell, GetInstanceID().ToString(), (GameObject itemCell) =>
                 {
                     ItemCell component = itemCell.GetComponent<ItemCell>();
                     component.transform.SetParent(_itemContainer, false);
-                    component.Init(infos[index - 1], false, null, ItemCellParent.Inventory, index);
+                    component.Init(infos[index], false, null, ItemCellParent.Inventory, index);
                     _showList.Add(component);
                 });
             }
 
+            _txtItemNum.text = string.Format("{0} / <color=yellow>{1}</color>", nowCount, allItemCell);
+
             for (int i = infos.Count; i < allItemCell; i++)
             {
-                int index = i + 1;
+                int index = i;
                 UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.ItemCell, GetInstanceID().ToString(), (GameObject itemCell) =>
                 {
                     ItemCell component = itemCell.GetComponent<ItemCell>();
                     component.transform.SetParent(_itemContainer, false);
-                    component.Init(null, false, null, ItemCellParent.Inventory, index);
+                    ItemInfo temp = new ItemInfo { _id = 0, _num = 0 };
+                    component.Init(temp, false, null, ItemCellParent.Inventory, index);
                     _showList.Add(component);
                 });
             }
@@ -206,19 +168,6 @@ namespace HA
             GameManager.Event.AddListener<ItemInfo>(GameEventType.UpdateSelectedItemDetail, UpdateSelectedItemDetailInfo);
 
             _btnClose.onClick.AddListener(OnClickCloseBtn);
-
-            _toggleItems.onValueChanged.AddListener((isOn) =>
-            {
-                if (isOn) SwitchTab(GetInfoByTabID(1), 1);
-            });
-            _toggleEquips.onValueChanged.AddListener((isOn) =>
-            {
-                if (isOn) SwitchTab(GetInfoByTabID(2), 2);
-            });
-            _togglePotions.onValueChanged.AddListener((isOn) =>
-            {
-                if (isOn) SwitchTab(GetInfoByTabID(3), 3);
-            });
         }
 
         /// <summary>

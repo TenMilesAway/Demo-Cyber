@@ -27,9 +27,6 @@ namespace HA
         public int _pDamageAvoidance;     // 玩家免伤值
         
         [Header("玩家背包相关")]
-        public List<ItemInfo> _items;     // 玩家拥有物品
-        public List<ItemInfo> _equips;    // 玩家拥有装备
-        public List<ItemInfo> _potions;   // 玩家拥有药水
         public List<ItemInfo> _nowEquips; // 玩家当前已装备
         public List<ItemInfo> _allItems;  // 玩家拥有的所有物品
         public int _inventoryItemNum;     // 玩家仓库：物品格子数
@@ -59,31 +56,10 @@ namespace HA
             _pDefense           = 0;
             _pDamageAvoidance   = 0;
 
-            _inventoryItemNum   = 20;
+            _inventoryItemNum   = 40;
             _inventoryEquipNum  = 20;
             _inventoryPotionNum = 10;
             _safeboxNum         = 1;
-
-            _items = new List<ItemInfo> { new ItemInfo { _id = 1000, _num = 1 },
-                                          new ItemInfo { _id = 0, _num = 0 }, // 空物体
-                                          new ItemInfo { _id = 1001, _num = 1 },
-                                          new ItemInfo { _id = 0, _num = 0 }, // 空物体
-                                          new ItemInfo { _id = 1002, _num = 1 },
-                                          new ItemInfo { _id = 0, _num = 0 }, // 空物体
-                                          new ItemInfo { _id = 1003, _num = 1 },
-                                          new ItemInfo { _id = 0, _num = 0 }, // 空物体
-                                          new ItemInfo { _id = 1004, _num = 1 },
-                                          new ItemInfo { _id = 1005, _num = 1 },
-                                          new ItemInfo { _id = 1006, _num = 5 },
-                                          new ItemInfo { _id = 1007, _num = 10 },
-                                          new ItemInfo { _id = 1008, _num = 13 },  };
-            _equips = new List<ItemInfo> { new ItemInfo { _id = 4000, _num = 1 },
-                                           new ItemInfo { _id = 5000, _num = 1 },
-                                           new ItemInfo { _id = 6000, _num = 1 },
-                                           new ItemInfo { _id = 7000, _num = 1 },
-                                           new ItemInfo { _id = 8000, _num = 1 },
-                                           new ItemInfo { _id = 9000, _num = 1 } };
-            _potions = new List<ItemInfo> { new ItemInfo { _id = 3000, _num = 5 } };
 
             _allItems = new List<ItemInfo> { new ItemInfo { _id = 1000, _num = 1 },
                                              new ItemInfo { _id = 0, _num = 0 }, // 空物体
@@ -105,6 +81,12 @@ namespace HA
                                              new ItemInfo { _id = 8000, _num = 1 },
                                              new ItemInfo { _id = 9000, _num = 1 },
                                              new ItemInfo { _id = 3000, _num = 5 } };
+
+            int leftItems = _inventoryItemNum - _allItems.Count;
+            for (int i = 0; i < leftItems; i++)
+            {
+                _allItems.Add(new ItemInfo { _id = 0, _num = 0 });
+            }
         }
     }
 }

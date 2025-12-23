@@ -110,9 +110,6 @@ namespace HA
             {
                 HADebug.Log("[客户端] 角色信息获取成功!");
                 _playerInfo = msg.playerInfo;
-
-                // 分发数据至必须位置
-                GameManager.Event.Broadcast<PlayerInfo>(GameEventType.UpdateInventoryItemList, _playerInfo);
             }
             else
             {
@@ -120,6 +117,9 @@ namespace HA
                 _playerInfo = new PlayerInfo(true);
                 GameManager.Event.Broadcast(GameEventType.ReqPlayerInfoUpload);
             }
+
+            // 分发数据至必须位置
+            GameManager.Event.Broadcast<PlayerInfo>(GameEventType.UpdateInventoryItemList, _playerInfo);
         }
 
         /// <summary>
@@ -141,6 +141,9 @@ namespace HA
         #endregion
 
         #region 辅助方法
+        /// <summary>
+        /// 获得类型的仓库容量，目前只有 ItemNun 了
+        /// </summary>
         public int GetItemNumByType(int type)
         {
             int num = 0;

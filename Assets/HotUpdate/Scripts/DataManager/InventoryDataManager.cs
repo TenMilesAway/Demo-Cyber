@@ -187,8 +187,43 @@ namespace HA
                 _nowInItemCell._itemInfo = temp;
             }
 
+            // 更新 UI
             _nowDragItemCell.UpdateItemCellInfo();
             _nowInItemCell.UpdateItemCellInfo();
+
+            // 更新数据
+            ItemCellParent nowDragParent = _nowDragItemCell.GetItemCellParent();
+            ItemCellParent nowInParent = _nowInItemCell.GetItemCellParent();
+
+            if (nowDragParent == ItemCellParent.Inventory)
+            {
+                _itemInfos[_nowDragItemCell._id] = _nowDragItemCell._itemInfo;
+            }
+            else if (nowDragParent == ItemCellParent.Treasure)
+            {
+                List<HATreasureEntity> treasure = HATreasureDataManager.GetInstance().GetHATreasureListFromDic(_nowDragItemCell._parentInstanceID);
+                treasure[_nowDragItemCell._id] = new HATreasureEntity
+                {
+                    _treasureID = _nowDragItemCell._itemInfo == null ? 0 : _nowDragItemCell._itemInfo._id,
+                    _treasureNum = _nowDragItemCell._itemInfo == null ? 0 : _nowDragItemCell._itemInfo._num,
+                };
+            }
+
+            if (nowInParent == ItemCellParent.Inventory)
+            {
+                _itemInfos[_nowInItemCell._id] =  _nowInItemCell._itemInfo;
+            }
+            else if (nowInParent == ItemCellParent.Treasure)
+            {
+                List<HATreasureEntity> treasure = HATreasureDataManager.GetInstance().GetHATreasureListFromDic(_nowInItemCell._parentInstanceID);
+                treasure[_nowInItemCell._id] = new HATreasureEntity
+                {
+                    _treasureID = _nowInItemCell._itemInfo == null ? 0 : _nowInItemCell._itemInfo._id,
+                    _treasureNum = _nowInItemCell._itemInfo == null ? 0 : _nowInItemCell._itemInfo._num,
+                };
+            }
+
+            GameManager.Event.Broadcast(GameEventType.ReqPlayerInfoUpload);
         }
 
         /// <summary>
