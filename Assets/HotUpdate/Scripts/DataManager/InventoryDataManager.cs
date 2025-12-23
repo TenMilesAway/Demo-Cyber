@@ -10,7 +10,7 @@ namespace HA
 {
     public class InventoryDataManager : BaseManager<InventoryDataManager>
     {
-        
+        public List<ItemInfo> _itemInfos = new List<ItemInfo>();
 
         private ItemCell _nowDragItemCell;    // 当前拖动的格子
         private ItemCell _nowInItemCell;      // 当前鼠标进入的格子
@@ -21,6 +21,8 @@ namespace HA
 
         public void Init()
         {
+            GameManager.Event.AddListener<PlayerInfo>(GameEventType.UpdateInventoryItemList, UpdateInventoryItemList);
+
             GameManager.Event.AddListener<ItemCell>(GameEventType.EnterItemCell, EnterItemCell);
             GameManager.Event.AddListener<ItemCell>(GameEventType.ExitItemCell, ExitItemCell);
             GameManager.Event.AddListener<ItemCell>(GameEventType.ClickItemCell, ClickItemCell);
@@ -30,6 +32,11 @@ namespace HA
         }
 
         #region 监听方法
+        private void UpdateInventoryItemList(PlayerInfo info)
+        {
+            _itemInfos = info._allItems;
+        }
+
         /// <summary>
         /// 鼠标进入物品格子时, 显示详细信息
         /// </summary>
@@ -42,7 +49,7 @@ namespace HA
                 return;
             }
 
-            if (itemCell._itemInfo == null) return;
+            if (itemCell._itemInfo == null || itemCell._itemInfo._id == 0) return;
 
             // 显示详细信息面板
             ItemDetailInfoParam param = new ItemDetailInfoParam();
@@ -63,7 +70,7 @@ namespace HA
                 return;
             }
 
-            if (itemCell._itemInfo == null) return;
+            if (itemCell._itemInfo == null || itemCell._itemInfo._id == 0) return;
 
             // 隐藏详细信息面板
             UIManager.GetInstance().ClosePanel(GlobalDefine.ItemDetailInfoPanel);
@@ -74,7 +81,7 @@ namespace HA
         /// </summary>
         private void ClickItemCell(ItemCell itemCell)
         {
-            if (itemCell._itemInfo == null) return;
+            if (itemCell._itemInfo == null || itemCell._itemInfo._id == 0) return;
 
             if (_lastSelectItemCell != null) _lastSelectItemCell.SelectItem(false);
 
@@ -88,7 +95,7 @@ namespace HA
         /// </summary>
         private void BeginDragItemCell(ItemCell itemCell)
         {
-            if (itemCell._itemInfo == null) return;
+            if (itemCell._itemInfo == null || itemCell._itemInfo._id == 0) return;
 
             // 开始拖动时，隐藏 ItemDetailInfoPanel
             UIManager.GetInstance().ClosePanel(GlobalDefine.ItemDetailInfoPanel);
@@ -132,6 +139,9 @@ namespace HA
             _nowSelectItemCellImg.transform.localPosition = localPos;
         }
 
+        /// <summary>
+        /// 结束拖动物品格子
+        /// </summary>
         private void EndDragItemCell(ItemCell itemCell)
         {
             _isDraging = false;

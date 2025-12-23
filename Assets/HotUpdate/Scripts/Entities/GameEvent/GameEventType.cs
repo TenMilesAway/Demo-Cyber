@@ -10,6 +10,10 @@ public enum GameEventType
     Close = 3,                  // 连接关闭
     PacketIdEnd = 10000,
     /** 网络消息预留区间 **/
+    HAMsgPlayerInfoLoad,        // 玩家信息加载
+    ReqPlayerInfoLoad,          // 请求加载玩家信息
+    HAMsgPlayerInfoUpload,      // 玩家信息上传
+    ReqPlayerInfoUpload,        // 请求上传玩家信息
     
     /** 玩家输入 **/
     DisablePlayerInput,         // 禁用玩家所有输入
@@ -32,4 +36,5 @@ public enum GameEventType
     HasInteractiveObject,       // 有可交互物体
     NoneInteractiveObject,      // 无可交互物体
     UpdateInteractiveList,      // 更新交互物体队列
+    UpdateInventoryItemList,    // 更新仓库显示物品序列
 }

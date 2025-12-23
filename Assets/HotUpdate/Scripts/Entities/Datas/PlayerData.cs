@@ -31,6 +31,7 @@ namespace HA
         public List<ItemInfo> _equips;    // 玩家拥有装备
         public List<ItemInfo> _potions;   // 玩家拥有药水
         public List<ItemInfo> _nowEquips; // 玩家当前已装备
+        public List<ItemInfo> _allItems;  // 玩家拥有的所有物品
         public int _inventoryItemNum;     // 玩家仓库：物品格子数
         public int _inventoryEquipNum;    // 玩家仓库：装备格子数
         public int _inventoryPotionNum;   // 玩家仓库：药水格子数
@@ -64,9 +65,13 @@ namespace HA
             _safeboxNum         = 1;
 
             _items = new List<ItemInfo> { new ItemInfo { _id = 1000, _num = 1 },
+                                          new ItemInfo { _id = 0, _num = 0 }, // 空物体
                                           new ItemInfo { _id = 1001, _num = 1 },
+                                          new ItemInfo { _id = 0, _num = 0 }, // 空物体
                                           new ItemInfo { _id = 1002, _num = 1 },
+                                          new ItemInfo { _id = 0, _num = 0 }, // 空物体
                                           new ItemInfo { _id = 1003, _num = 1 },
+                                          new ItemInfo { _id = 0, _num = 0 }, // 空物体
                                           new ItemInfo { _id = 1004, _num = 1 },
                                           new ItemInfo { _id = 1005, _num = 1 },
                                           new ItemInfo { _id = 1006, _num = 5 },
@@ -79,6 +84,27 @@ namespace HA
                                            new ItemInfo { _id = 8000, _num = 1 },
                                            new ItemInfo { _id = 9000, _num = 1 } };
             _potions = new List<ItemInfo> { new ItemInfo { _id = 3000, _num = 5 } };
+
+            _allItems = new List<ItemInfo> { new ItemInfo { _id = 1000, _num = 1 },
+                                             new ItemInfo { _id = 0, _num = 0 }, // 空物体
+                                             new ItemInfo { _id = 1001, _num = 1 },
+                                             new ItemInfo { _id = 0, _num = 0 }, // 空物体
+                                             new ItemInfo { _id = 1002, _num = 1 },
+                                             new ItemInfo { _id = 0, _num = 0 }, // 空物体
+                                             new ItemInfo { _id = 1003, _num = 1 },
+                                             new ItemInfo { _id = 0, _num = 0 }, // 空物体
+                                             new ItemInfo { _id = 1004, _num = 1 },
+                                             new ItemInfo { _id = 1005, _num = 1 },
+                                             new ItemInfo { _id = 1006, _num = 5 },
+                                             new ItemInfo { _id = 1007, _num = 10 },
+                                             new ItemInfo { _id = 1008, _num = 13 },
+                                             new ItemInfo { _id = 4000, _num = 1 },
+                                             new ItemInfo { _id = 5000, _num = 1 },
+                                             new ItemInfo { _id = 6000, _num = 1 },
+                                             new ItemInfo { _id = 7000, _num = 1 },
+                                             new ItemInfo { _id = 8000, _num = 1 },
+                                             new ItemInfo { _id = 9000, _num = 1 },
+                                             new ItemInfo { _id = 3000, _num = 5 } };
         }
     }
 }

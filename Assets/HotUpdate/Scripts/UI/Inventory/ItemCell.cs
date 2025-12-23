@@ -33,6 +33,7 @@ namespace HA
         private bool _isOpenDrag;
         private bool _isTreasure;
         private float _radius = 15f;
+        public int _id = 0;
 
         /// <summary>
         /// 初始化
@@ -40,7 +41,7 @@ namespace HA
         /// <param name="info">格子拥有物品的信息：ID & Num</param>
         /// <param name="isTreasure">是否是宝藏面板的格子</param>
         /// <param name="treasureEntity">宝藏信息，包含宝藏搜索需要的时间</param>
-        public void Init(ItemInfo info, bool isTreasure = false, HATreasureEntity treasureEntity = null, ItemCellParent parent = ItemCellParent.Inventory)
+        public void Init(ItemInfo info, bool isTreasure = false, HATreasureEntity treasureEntity = null, ItemCellParent parent = ItemCellParent.Inventory, int id = 0)
         {
             _groupBag.SetActive(false);
             _groupTreasure.SetActive(false);
@@ -55,7 +56,7 @@ namespace HA
             _itemCellParent = parent;
 
             // 如果信息不为空，根据 info 加载物品
-            if (info != null)
+            if (info != null && info._id != 0)
             {
                 _txtNum.text = info._num.ToString();
 
@@ -70,13 +71,13 @@ namespace HA
             }
 
             // 如果是宝藏格子，且有信息
-            if (_isTreasure && info != null && treasureEntity != null)
+            if (IsTreasureAndNotSearched())
             {
                 _groupTreasure.SetActive(true);
                 _imgItem.enabled = true;
             }
             // 如果是宝藏格子，且无宝藏信息 (表示已经被搜索过了)
-            else if (_isTreasure && info != null && treasureEntity == null)
+            else if (IsTreasureButSearched())
             {
                 _groupBag.SetActive(true);
                 _imgItem.enabled = true;
@@ -85,13 +86,13 @@ namespace HA
                 AddDragListeners();
             }
             // 如果是宝藏格子，且无宝藏信息 (空格子)
-            else if (_isTreasure && info == null && treasureEntity == null)
+            else if (IsTreasureButNoItemInfo())
             {
                 AddPointerListeners();
                 AddDragListeners();
             }
             // 如果不是宝藏格子，且无物品信息（空格子）
-            else if (!_isTreasure && info == null && treasureEntity == null)
+            else if (IsInventoryButNoItemInfo())
             {
                 _groupBag.SetActive(true);
                 AddPointerListeners();
@@ -278,7 +279,7 @@ namespace HA
 
         public void UpdateItemCellInfo()
         {
-            if (_itemInfo == null)
+            if (_itemInfo == null || _itemInfo._id == 0)
             {
                 _groupBag.SetActive(false);
                 _groupTreasure.SetActive(false);
@@ -301,6 +302,50 @@ namespace HA
             {
                 _imgItem.sprite = obj as Sprite;
             });
+        }
+        #endregion
+
+        #region 格子类型判断
+        /// <summary>
+        /// 宝藏格子，未被搜索过
+        /// </summary>
+        public bool IsTreasureAndNotSearched()
+        {
+            return _isTreasure && 
+                   _itemInfo != null && 
+                   _itemInfo._id != 0 && 
+                   _treasureEntity != null;
+        }
+
+        /// <summary>
+        /// 宝藏格子，但被搜索过了
+        /// </summary>
+        public bool IsTreasureButSearched()
+        {
+            return _isTreasure &&
+                   _itemInfo != null &&
+                   _itemInfo._id != 0 &&
+                   _treasureEntity == null;
+        }
+
+        /// <summary>
+        /// 宝藏格子，但是没有物品信息
+        /// </summary>
+        public bool IsTreasureButNoItemInfo()
+        {
+            return _isTreasure &&
+                   (_itemInfo == null || _itemInfo._id == 0) &&
+                   _treasureEntity == null;
+        }
+
+        /// <summary>
+        /// 物品格子，但是没有物品信息
+        /// </summary>
+        public bool IsInventoryButNoItemInfo()
+        {
+            return !_isTreasure &&
+                   (_itemInfo == null || _itemInfo._id == 0) &&
+                   _treasureEntity == null;
         }
         #endregion
     }

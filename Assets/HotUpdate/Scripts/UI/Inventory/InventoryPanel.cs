@@ -81,9 +81,7 @@ namespace HA
             // 默认显示为道具页签
             //List<ItemInfo> infos = GetInfoByTabID(1);
             // 修改：将物品、装备、药水集中在物品栏内
-            List<ItemInfo> infos = new List<ItemInfo>(_playerInfo._items);
-            infos.AddRange(_playerInfo._equips);
-            infos.AddRange(_playerInfo._potions);
+            List<ItemInfo> infos = new List<ItemInfo>(_playerInfo._allItems);
             SwitchTab(infos, 1);
         }
 
@@ -103,7 +101,7 @@ namespace HA
             {
                 case 1:
                     {
-                        infos = _playerInfo._items;
+                        infos = _playerInfo._allItems;
                     }
                     break;
                 case 2:
@@ -144,24 +142,26 @@ namespace HA
             int leftItemCell = allItemCell - infos.Count;
             _txtItemNum.text = string.Format("{0} / <color=yellow>{1}</color>", infos.Count, allItemCell);
 
-            foreach (ItemInfo itemInfo in infos)
+            for (int i = 0; i < infos.Count; i++)
             {
+                int index = i + 1;
                 UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.ItemCell, GetInstanceID().ToString(), (GameObject itemCell) =>
                 {
                     ItemCell component = itemCell.GetComponent<ItemCell>();
                     component.transform.SetParent(_itemContainer, false);
-                    component.Init(itemInfo, false, null);
+                    component.Init(infos[index - 1], false, null, ItemCellParent.Inventory, index);
                     _showList.Add(component);
                 });
             }
 
-            for (int i = 0; i < leftItemCell; i++)
+            for (int i = infos.Count; i < allItemCell; i++)
             {
+                int index = i + 1;
                 UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.ItemCell, GetInstanceID().ToString(), (GameObject itemCell) =>
                 {
                     ItemCell component = itemCell.GetComponent<ItemCell>();
                     component.transform.SetParent(_itemContainer, false);
-                    component.Init(null, false, null);
+                    component.Init(null, false, null, ItemCellParent.Inventory, index);
                     _showList.Add(component);
                 });
             }

@@ -18,10 +18,13 @@ namespace HA
 
         public void Init()
         {
-            NetManager.AddMsgListener("HAMsgPlayerInfoLoad", RpsPlayerInfoLoad);
-            NetManager.AddMsgListener("HAMsgPlayerInfoUpload", RpsPlayerInfoUpload);
+            NetManager.AddMsgListener(GameEventType.HAMsgPlayerInfoLoad.ToString(), RpsPlayerInfoLoad);
+            NetManager.AddMsgListener(GameEventType.HAMsgPlayerInfoUpload.ToString(), RpsPlayerInfoUpload);
+            GameManager.Event.AddListener(GameEventType.ReqPlayerInfoLoad, ReqPlayerInfoLoad);
+            GameManager.Event.AddListener(GameEventType.ReqPlayerInfoUpload, ReqPlayerInfoUpload);
 
-            ReqPlayerInfoLoad();
+            // 请求玩家数据
+            GameManager.Event.Broadcast(GameEventType.ReqPlayerInfoLoad);
 
             _input = GameObject.FindGameObjectWithTag(_playerTag).GetComponent<PlayerInput>();
         }
@@ -107,12 +110,15 @@ namespace HA
             {
                 HADebug.Log("[客户端] 角色信息获取成功!");
                 _playerInfo = msg.playerInfo;
+
+                // 分发数据至必须位置
+                GameManager.Event.Broadcast<PlayerInfo>(GameEventType.UpdateInventoryItemList, _playerInfo);
             }
             else
             {
                 HADebug.LogWarning("[客户端] 角色信息获取失败，生成默认数据并进行存储");
                 _playerInfo = new PlayerInfo(true);
-                ReqPlayerInfoUpload();
+                GameManager.Event.Broadcast(GameEventType.ReqPlayerInfoUpload);
             }
         }
 
