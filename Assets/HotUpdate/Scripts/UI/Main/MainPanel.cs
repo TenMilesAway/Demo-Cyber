@@ -66,14 +66,56 @@ namespace HA
             _playerInfo = mainPanelParam.data as PlayerInfo;
             InitPlayerInfo(_playerInfo);
 
-            _btnBag.onClick.AddListener(OnClickBtnBag);
-            _btnForge.onClick.AddListener(OnClickBtnForge);
-
             _dialogue = GetComponent<HADialogue>();
+
+            AddListeners();
+        }
+
+        protected override void CloseHandle()
+        {
+            base.CloseHandle();
+
+            RemoveListeners();
         }
 
         #region 主要方法
         private void InitPlayerInfo(PlayerInfo info)
+        {
+            UpdateUI(info);
+        }
+        #endregion
+
+        #region 监听方法
+        private void AddListeners()
+        {
+            GameManager.Event.AddListener<PlayerInfo>(GameEventType.UpdateMainPanelUI, UpdateUI);
+
+            _btnBag.onClick.AddListener(OnClickBtnBag);
+            _btnForge.onClick.AddListener(OnClickBtnForge);
+        }
+
+        private void RemoveListeners()
+        {
+            GameManager.Event.RemoveListener<PlayerInfo>(GameEventType.UpdateMainPanelUI, UpdateUI);
+
+            _btnBag.onClick.RemoveAllListeners();
+            _btnForge.onClick.RemoveAllListeners();
+        }
+
+        private void OnClickBtnBag()
+        {
+            InventoryParam param = new InventoryParam();
+            param.data = _playerInfo;
+
+            UIManager.GetInstance().OpenPanel(GlobalDefine.InventoryPanel, UILayer.Mid, param);
+        }
+
+        private void OnClickBtnForge()
+        {
+            
+        }
+
+        private void UpdateUI(PlayerInfo info)
         {
             if (info == default) return;
 
@@ -86,21 +128,6 @@ namespace HA
             _txtMaxMP.text          = info._maxMP.ToString();
             _txtCurrentEXP.text     = info._currentEXP.ToString();
             _txtMaxEXP.text         = info._maxEXP.ToString();
-        }
-        #endregion
-
-        #region 监听方法
-        private void OnClickBtnBag()
-        {
-            InventoryParam param = new InventoryParam();
-            param.data = _playerInfo;
-
-            UIManager.GetInstance().OpenPanel(GlobalDefine.InventoryPanel, UILayer.Mid, param);
-        }
-
-        private void OnClickBtnForge()
-        {
-            
         }
         #endregion
     }

@@ -15,12 +15,14 @@ public partial class Tables
 {
     public TbItem TbItem {get; }
     public TbTreasure TbTreasure {get; }
+    public TbLevel TbLevel {get; }
 
 
       public Tables(System.Func<string, JArray> loader)
     {
         TbItem = new TbItem(loader("tbitem"));
         TbTreasure = new TbTreasure(loader("tbtreasure"));
+        TbLevel = new TbLevel(loader("tblevel"));
         ResolveRef();
     }
     
@@ -28,6 +30,7 @@ public partial class Tables
     {
         TbItem.ResolveRef(this);
         TbTreasure.ResolveRef(this);
+        TbLevel.ResolveRef(this);
     }
 }
 

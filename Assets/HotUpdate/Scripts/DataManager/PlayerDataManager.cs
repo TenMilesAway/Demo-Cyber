@@ -73,6 +73,28 @@ namespace HA
         }
 
         /// <summary>
+        /// 玩家获得经验值
+        /// </summary>
+        public void SendEXPToPlayer(int exp)
+        {
+            _playerInfo._currentEXP += exp;
+            RefreshLevel();
+            ReqPlayerInfoUpload();
+        }
+
+        private void RefreshLevel()
+        {
+            int nowLevel = _playerInfo._level;
+            int nowMaxExp = LevelDataManager.GetInstance().GetData(nowLevel).exp;
+
+            if (_playerInfo._currentEXP > nowMaxExp)
+            {
+                _playerInfo._level += 1;
+                _playerInfo._currentEXP -= nowMaxExp;
+            }
+        }
+
+        /// <summary>
         /// 向服务器请求获取玩家信息
         /// </summary>
         private void ReqPlayerInfoLoad()
@@ -120,6 +142,7 @@ namespace HA
 
             // 分发数据至必须位置
             GameManager.Event.Broadcast<PlayerInfo>(GameEventType.UpdateInventoryItemList, _playerInfo);
+            GameManager.Event.Broadcast<PlayerInfo>(GameEventType.UpdateMainPanelUI, _playerInfo);
         }
 
         /// <summary>

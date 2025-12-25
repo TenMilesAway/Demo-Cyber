@@ -36,6 +36,10 @@ public sealed partial class Item : Luban.BeanBase
         DamageAvoidance = (int)_obj.GetValue("damageAvoidance");
         Hp = (int)_obj.GetValue("hp");
         Mp = (int)_obj.GetValue("mp");
+        Cp = (float)_obj.GetValue("cp");
+        Cm = (float)_obj.GetValue("cm");
+        Sp = (float)_obj.GetValue("sp");
+        Sm = (float)_obj.GetValue("sm");
     }
 
     public static Item DeserializeItem(JToken _buf)
@@ -107,6 +111,22 @@ public sealed partial class Item : Luban.BeanBase
     /// 魔力值
     /// </summary>
     public readonly int Mp;
+    /// <summary>
+    /// 暴击率
+    /// </summary>
+    public readonly float Cp;
+    /// <summary>
+    /// 暴击倍率
+    /// </summary>
+    public readonly float Cm;
+    /// <summary>
+    /// 吸血率
+    /// </summary>
+    public readonly float Sp;
+    /// <summary>
+    /// 暴击倍率
+    /// </summary>
+    public readonly float Sm;
 
 
     public const int __ID__ = 2289459;
@@ -135,6 +155,10 @@ public sealed partial class Item : Luban.BeanBase
         + "damageAvoidance:" + DamageAvoidance + ","
         + "hp:" + Hp + ","
         + "mp:" + Mp + ","
+        + "cp:" + Cp + ","
+        + "cm:" + Cm + ","
+        + "sp:" + Sp + ","
+        + "sm:" + Sm + ","
         + "}";
     }
 }

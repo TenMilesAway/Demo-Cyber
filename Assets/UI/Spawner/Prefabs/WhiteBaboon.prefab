@@ -2795,7 +2795,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e919507e08c218f43858ad26ec1fe4c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <PlayerAttackLayer>k__BackingField:
+  _enemyData: {fileID: 11400000, guid: 8634f2592d7363a46984c131c9d11bd9, type: 2}
+  _playerAttackLayer:
     serializedVersion: 2
     m_Bits: 16777216
   _waypoints: {fileID: 1890179262}

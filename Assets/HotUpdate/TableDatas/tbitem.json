@@ -15,7 +15,11 @@
     "defense": 0,
     "damageAvoidance": 0,
     "hp": 0,
-    "mp": 0
+    "mp": 0,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 3,
@@ -33,7 +37,11 @@
     "defense": 0,
     "damageAvoidance": 0,
     "hp": 0,
-    "mp": 0
+    "mp": 0,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 4,
@@ -51,7 +59,11 @@
     "defense": 0,
     "damageAvoidance": 0,
     "hp": 0,
-    "mp": 0
+    "mp": 0,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 1000,
@@ -69,7 +81,11 @@
     "defense": 0,
     "damageAvoidance": 0,
     "hp": 0,
-    "mp": 0
+    "mp": 0,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 1001,
@@ -87,7 +103,11 @@
     "defense": 0,
     "damageAvoidance": 0,
     "hp": 0,
-    "mp": 0
+    "mp": 0,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 1002,
@@ -105,7 +125,11 @@
     "defense": 0,
     "damageAvoidance": 0,
     "hp": 0,
-    "mp": 0
+    "mp": 0,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 1003,
@@ -123,7 +147,11 @@
     "defense": 0,
     "damageAvoidance": 0,
     "hp": 0,
-    "mp": 0
+    "mp": 0,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 1004,
@@ -141,7 +169,11 @@
     "defense": 0,
     "damageAvoidance": 0,
     "hp": 0,
-    "mp": 0
+    "mp": 0,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 1005,
@@ -159,7 +191,11 @@
     "defense": 0,
     "damageAvoidance": 0,
     "hp": 0,
-    "mp": 0
+    "mp": 0,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 1006,
@@ -177,7 +213,11 @@
     "defense": 0,
     "damageAvoidance": 0,
     "hp": 0,
-    "mp": 0
+    "mp": 0,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 1007,
@@ -195,7 +235,11 @@
     "defense": 0,
     "damageAvoidance": 0,
     "hp": 0,
-    "mp": 0
+    "mp": 0,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 1008,
@@ -213,7 +257,11 @@
     "defense": 0,
     "damageAvoidance": 0,
     "hp": 0,
-    "mp": 0
+    "mp": 0,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 1009,
@@ -231,7 +279,11 @@
     "defense": 0,
     "damageAvoidance": 0,
     "hp": 0,
-    "mp": 0
+    "mp": 0,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 1010,
@@ -249,7 +301,11 @@
     "defense": 0,
     "damageAvoidance": 0,
     "hp": 0,
-    "mp": 0
+    "mp": 0,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 1011,
@@ -267,7 +323,11 @@
     "defense": 0,
     "damageAvoidance": 0,
     "hp": 0,
-    "mp": 0
+    "mp": 0,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 3000,
@@ -285,7 +345,11 @@
     "defense": 0,
     "damageAvoidance": 0,
     "hp": 0,
-    "mp": 0
+    "mp": 0,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 4000,
@@ -303,7 +367,11 @@
     "defense": 0,
     "damageAvoidance": 0,
     "hp": 0,
-    "mp": 0
+    "mp": 0,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 5000,
@@ -321,7 +389,11 @@
     "defense": 1,
     "damageAvoidance": 0,
     "hp": 6,
-    "mp": 4
+    "mp": 4,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 6000,
@@ -339,7 +411,11 @@
     "defense": 1,
     "damageAvoidance": 0,
     "hp": 10,
-    "mp": 0
+    "mp": 0,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 7000,
@@ -357,7 +433,11 @@
     "defense": 0,
     "damageAvoidance": 0,
     "hp": 0,
-    "mp": 0
+    "mp": 0,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 8000,
@@ -375,7 +455,11 @@
     "defense": 1,
     "damageAvoidance": 0,
     "hp": 10,
-    "mp": 0
+    "mp": 0,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 9000,
@@ -393,7 +477,11 @@
     "defense": 1,
     "damageAvoidance": 0,
     "hp": 4,
-    "mp": 6
+    "mp": 6,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 10000,
@@ -411,7 +499,11 @@
     "defense": 0,
     "damageAvoidance": 0,
     "hp": 0,
-    "mp": 0
+    "mp": 0,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 10001,
@@ -429,7 +521,11 @@
     "defense": 0,
     "damageAvoidance": 0,
     "hp": 0,
-    "mp": 0
+    "mp": 0,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   },
   {
     "id": 10002,
@@ -447,6 +543,10 @@
     "defense": 0,
     "damageAvoidance": 0,
     "hp": 0,
-    "mp": 0
+    "mp": 0,
+    "cp": 0,
+    "cm": 0,
+    "sp": 0,
+    "sm": 0
   }
 ]

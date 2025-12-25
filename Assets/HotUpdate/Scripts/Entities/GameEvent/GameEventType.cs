@@ -38,4 +38,6 @@ public enum GameEventType
     UpdateInteractiveList,      // 更新交互物体队列
     UpdateInventoryItemList,    // 更新仓库显示物品序列
     UpdateEntityInfoAfterSpawn, // 刷怪操作完成后更新信息
+    UpdateMainPanelUI,          // 刷新主要面板 UI
+    GetEXPFromEnemy,            // 怪物死亡后，玩家获得经验
 }

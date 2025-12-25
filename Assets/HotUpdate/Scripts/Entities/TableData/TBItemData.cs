@@ -87,5 +87,25 @@ namespace HA
         /// 魔力值
         /// </summary>
         public int mp;
+
+        /// <summary>
+        /// 暴击率
+        /// </summary>
+        public float cp;
+
+        /// <summary>
+        /// 暴击倍率
+        /// </summary>
+        public float cm;
+
+        /// <summary>
+        /// 吸血率
+        /// </summary>
+        public float sp;
+
+        /// <summary>
+        /// 吸血倍率
+        /// </summary>
+        public float sm;
     }
 }

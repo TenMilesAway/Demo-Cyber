@@ -9,77 +9,85 @@ namespace Cyber
 {
     public class BTForEnemy : MonoBehaviour
     {
-        [HideInInspector] public NavMeshAgent Agent { get; private set; }
-        [HideInInspector] public Animator Animator { get; private set; }
-        [HideInInspector] public BehaviorTree BT { get; private set; }
-        [field: SerializeField] public LayerMask PlayerAttackLayer { get; private set; }
+        [Header("怪物信息SO")]
+        [SerializeField] private EnemyData _enemyData;
+        [Header("受击层级")]
+        [SerializeField] private LayerMask _playerAttackLayer;
 
-        public GameObject _waypoints;
-        public GameObject _waypoint1;
-        public GameObject _waypoint2;
-        public GameObject _waypoint3;
-        public GameObject _waypoint4;
+        [Header("AI 路径点")]
+        [SerializeField] private GameObject _waypoints;
+        [SerializeField] private GameObject _waypoint1;
+        [SerializeField] private GameObject _waypoint2;
+        [SerializeField] private GameObject _waypoint3;
+        [SerializeField] private GameObject _waypoint4;
 
+        private NavMeshAgent _agent;                        // AI Agent
+        private Animator _animator;                         // 动画状态机
+        private BehaviorTree BT;                            // 行为树
+                                                            
+        private bool _isInit;                               // 是否已经被初始化过 (路径点)
         private bool _isIdling;
         private bool _isWandering;
-        private bool _isInit;
 
-        private float _patrolRadius = 5f;
-        private float _attackInterval = 2f;
+        private float _patrolRadius = 5f;                   // 巡逻半径
+        private float _attackInterval = 2f;                 // 攻击间隔
 
-        private Vector3[] _waypointArray = new Vector3[4];
-        private Coroutine _animatorCo;
+        // 属性
+        private int _currentHP = 1;
+        private int _currentMP = 0;
+
+        private Vector3[] _waypointArray = new Vector3[4];  // 路径点
+        private Coroutine _animatorReactionCo;              // 受击动画协程
 
         private void Awake()
         {
-            Agent = GetComponent<NavMeshAgent>();
-            Animator = GetComponentInChildren<Animator>();
+            _agent = GetComponent<NavMeshAgent>();
+            _animator = GetComponentInChildren<Animator>();
             BT = GetComponent<BehaviorTree>();
 
             InitVariables();
-            GameManager.Event.AddListener(GameEventType.UpdateEntityInfoAfterSpawn, GenerateWaypoints);
-        }
 
-        private void Start()
-        {
-            
+            _currentHP = _enemyData._maxHP;
+            _currentMP = _enemyData._maxMP;
+
+            AddListeners();
         }
 
         private void Update()
         {
-            // 如果是巡逻状态
-            if (_isWandering)
-            {
-
-            }
-
-            BT.GetVariable("_velocity").SetValue(Agent.velocity.magnitude);
-
-            if (BT.GetVariable("_player").GetValue() != null)
-            {
-                Debug.Log("看到目标了");
-            }
+            BT.GetVariable("_velocity").SetValue(_agent.velocity.magnitude);
         }
 
         private void OnTriggerEnter(Collider collider)
         {
             // 如果碰到的物体中有 PlayerAttack 层
             int layer = collider.gameObject.layer;
-            if ((1 << layer & PlayerAttackLayer) != 0)
+            if ((1 << layer & _playerAttackLayer) != 0)
             {
-                Animator.SetTrigger("reaction");
-                if (_animatorCo != null) StopCoroutine(SimualteReaction());
-                _animatorCo = StartCoroutine(SimualteReaction());
+                // 受伤
+                OnReaction(PlayerDataManager.GetInstance().GetPlayerInfo()._pAttack);
+
+                _animator.SetTrigger("reaction");
+                if (_animatorReactionCo != null) StopCoroutine(SimualteReaction());
+                _animatorReactionCo = StartCoroutine(SimualteReaction());
             }
         }
 
         #region 状态变化方法
+        /// <summary>
+        /// 攻击
+        /// </summary>
+        public void ChangeStateToAttack()
+        {
+            _animator.SetTrigger("attack");
+        }
+
         public void ChangeStateToWander()
         {
             ResetAllBool();
             ResetAllAnimatorBool();
 
-            Animator.SetBool("isWalking", true);
+            _animator.SetBool("isWalking", true);
             _isWandering = true;
         }
 
@@ -90,14 +98,38 @@ namespace Cyber
 
             _isIdling = true;
         }
-
-        public void ChangeStateToAttack()
-        {
-            Animator.SetTrigger("attack");
-        }
         #endregion
 
         #region 主要方法
+        private void OnReaction(int attack)
+        {
+            _currentHP -= attack;
+
+            HADebug.LogFormat("怪物 {0} 受到伤害 {1}, 当前剩余血量 {2}", gameObject.name, attack, _currentHP);
+
+            if (_currentHP <= 0)
+            {
+                OnDeath();
+            }
+        }
+
+        /// <summary>
+        /// 死亡触发事件
+        /// </summary>
+        private void OnDeath()
+        {
+            PlayerDataManager.GetInstance().SendEXPToPlayer(_enemyData._EXP);
+            Destroy(this.gameObject);
+        }
+
+        /// <summary>
+        /// 初始化变量
+        /// </summary>
+        private void InitVariables()
+        {
+            BT.GetVariable("_attackInterval").SetValue(_attackInterval);
+        }
+
         private void ResetAllBool()
         {
             _isWandering = false;
@@ -106,13 +138,8 @@ namespace Cyber
 
         private void ResetAllAnimatorBool()
         {
-            Animator.SetBool("isWalking", false);
-            Animator.SetBool("isIdling", false);
-        }
-
-        private void InitVariables()
-        {
-            BT.GetVariable("_attackInterval").SetValue(_attackInterval);
+            _animator.SetBool("isWalking", false);
+            _animator.SetBool("isIdling", false);
         }
 
         /// <summary>
@@ -146,6 +173,32 @@ namespace Cyber
         #endregion
 
         #region 辅助方法
+        private void AddListeners()
+        {
+            GameManager.Event.AddListener(GameEventType.UpdateEntityInfoAfterSpawn, GenerateWaypoints);
+        }
+
+        public void RemoveAllListeners()
+        {
+            GameManager.Event.RemoveListener(GameEventType.UpdateEntityInfoAfterSpawn, GenerateWaypoints);
+        }
+
+        private IEnumerator SimualteReaction()
+        {
+            _animator.speed = 0.01f;
+
+            yield return new WaitForSeconds(0.1f);
+
+            _animator.speed = 1f;
+
+            _animatorReactionCo = null;
+        }
+        #endregion
+
+        #region 监听方法
+        /// <summary>
+        /// 初始化路径点
+        /// </summary>
         private void GenerateWaypoints()
         {
             if (_isInit) return;
@@ -153,22 +206,6 @@ namespace Cyber
             HADebug.Log("开始初始化路径点");
             _isInit = true;
             GenerateWaypoints(_patrolRadius);
-        }
-
-        private IEnumerator SimualteReaction()
-        {
-            Animator.speed = 0.01f;
-
-            yield return new WaitForSeconds(0.1f);
-
-            Animator.speed = 1f;
-
-            _animatorCo = null;
-        }
-
-        public void RemoveAllListeners()
-        {
-            GameManager.Event.RemoveListener(GameEventType.UpdateEntityInfoAfterSpawn, GenerateWaypoints);
         }
         #endregion
     }
