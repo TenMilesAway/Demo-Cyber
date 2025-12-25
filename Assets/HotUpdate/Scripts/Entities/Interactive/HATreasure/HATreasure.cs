@@ -15,6 +15,7 @@ namespace HA
     /// <summary>
     /// ¿É½»»¥±¦²Ø
     /// </summary>
+    [RequireComponent(typeof(BoxCollider))]
     public class HATreasure : MonoBehaviour, ITreasure
     {
         // ±¦²Ø SO

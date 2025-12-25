@@ -1,10 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 
+[Serializable]
 public sealed partial class GlobalDefine
 {
+    // UI
     public const string MainPanel = "Assets/UI/Main View/Prefabs/MainPanel.prefab";
     public const string ToastPanel = "Assets/UI/Start/Prefabs/ToastPanel.prefab";
     public const string InventoryPanel = "Assets/UI/Items/Prefabs/InventoryPanel.prefab";
@@ -16,5 +20,48 @@ public sealed partial class GlobalDefine
     public const string DialoguePanel = "Assets/UI/Interactive/Prefabs/DialoguePanel.prefab";
     public const string DialogueOption = "Assets/UI/Interactive/Prefabs/DialogueOption.prefab";
     public const string TreasurePanel = "Assets/UI/Interactive/Prefabs/TreasurePanel.prefab";
+
+    // 敌人
+    public const string WhiteBaboon = "Assets/UI/Spawner/Prefabs/WhiteBaboon.prefab";
+
+    // 宝箱
+    public const string FeiCuiLinHaiTreasure1 = "Assets/UI/Spawner/Prefabs/PrettyTreasure_1.prefab";
+    public const string FeiCuiLinHaiTreasure2 = "Assets/UI/Spawner/Prefabs/PrettyTreasure_2.prefab";
+
+    private static Dictionary<string, string> _pathCache = null;
+
+    private static void InitializeCache()
+    {
+        if (_pathCache != null) return;
+
+        _pathCache = new Dictionary<string, string>();
+
+        Type type = typeof(GlobalDefine);
+        FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+
+        foreach (FieldInfo field in fields)
+        {
+            if (field.FieldType == typeof(string))
+            {
+                string fieldName = field.Name;
+                string fieldValue = field.GetValue(null) as string;
+                _pathCache[fieldName] = fieldValue;
+            }
+        }
+    }
+
+    public static string GetPath(string name)
+    {
+        // 这一步很耗时间，考虑预热
+        InitializeCache();
+
+        if (_pathCache.TryGetValue(name, out string path))
+        {
+            return path;
+        }
+
+        HADebug.LogErrorFormat("未找到 {0} 预制体的路径", name);
+        return string.Empty;
+    }
 }
 

@@ -380,7 +380,8 @@ namespace Cyber
         /// </summary>
         private async Task LoadScene()
         {
-            AsyncOperationHandle<SceneInstance> asyncOperation = Addressables.LoadSceneAsync("Spawn", LoadSceneMode.Additive);
+            //AsyncOperationHandle<SceneInstance> asyncOperation = Addressables.LoadSceneAsync("Spawn", LoadSceneMode.Additive);
+            AsyncOperationHandle<SceneInstance> asyncOperation = Addressables.LoadSceneAsync("FirstLevel", LoadSceneMode.Additive);
             await asyncOperation.Task;
             SceneManager.SetActiveScene(asyncOperation.Result.Scene);
         }
@@ -423,7 +424,8 @@ namespace Cyber
                     gameObject.SetActive(false);
 
                     // 切换完场景, 通过状态机控制流程
-                    GameManager.Fsm.StartFsmState(GlobalDefine.FsmStateSpawn);
+                    //GameManager.Fsm.StartFsmState(GlobalDefine.FsmStateSpawn);
+                    GameManager.Fsm.StartFsmState(GlobalDefine.FsmStateForestMap);
                 });
             }
         }

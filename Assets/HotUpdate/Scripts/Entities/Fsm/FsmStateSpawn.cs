@@ -7,13 +7,14 @@ namespace HA
 {
     public class FsmStateSpawn : IFsmState
     {
-        public async void OnEnter()
+        public async void OnEnterAsync()
         {
             // --------- 初始化
             PlayerDataManager.GetInstance().Init();            // 玩家数据管理
             InventoryDataManager.GetInstance().Init();         // 仓库数据管理
             InteractiveDataManager.GetInstance().Init();       // 交互数据管理
             Cyber.CameraController.GetInstance().Init();       // 相机组件
+            GlobalDefine.GetPath("MainPanel");                 // 预热
             // ---------
 
 

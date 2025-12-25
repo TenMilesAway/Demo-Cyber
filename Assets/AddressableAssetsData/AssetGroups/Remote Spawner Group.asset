@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Remote Spawner Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Remote Spawner Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 0e2dd26e950557d429d5de2649d3ba82
+  m_SerializeEntries:
+  - m_GUID: 4382ce2b3aec206448384d6ff47d7e98
+    m_Address: Assets/UI/Spawner/Others
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b9d792fabae84ae4e932e41225bc3beb
+    m_Address: Assets/UI/Spawner/Prefabs
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2f3245ca3cd129f4bad4c5d4c34e31d4
+    m_Address: Assets/UI/Spawner/SpritesBig
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a92aca07b3b4a5e48938c1fbc5c12a31
+    m_Address: Assets/UI/Spawner/Spawner.spriteatlas
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: a21267dd150d19f4e9fc611b903aaf99, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 5da117c32392f364193662fe1a24932c, type: 2}
+    - {fileID: 11400000, guid: 06d736f0c2f0ec044ae9ddcf50d6d30d, type: 2}

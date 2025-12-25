@@ -93,7 +93,7 @@ namespace HA
             if (_currentState != null) _currentState.OnLeave();
 
             _currentState = _fsmStates[stateName];
-            _currentState.OnEnter();
+            _currentState.OnEnterAsync();
             return true;
         }
 
@@ -108,7 +108,7 @@ namespace HA
     /// </summary>
     public interface IFsmState
     {
-        public void OnEnter();
+        public void OnEnterAsync();
 
         public void OnUpdate();
 

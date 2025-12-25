@@ -37,4 +37,5 @@ public enum GameEventType
     NoneInteractiveObject,      // 无可交互物体
     UpdateInteractiveList,      // 更新交互物体队列
     UpdateInventoryItemList,    // 更新仓库显示物品序列
+    UpdateEntityInfoAfterSpawn, // 刷怪操作完成后更新信息
 }
