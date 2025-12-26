@@ -32,6 +32,11 @@ namespace HA
         /// 最大物品数
         /// </summary>
         public int maxNum;
+
+        /// <summary>
+        /// 宝箱对应的预制体
+        /// </summary>
+        public string globalDefine;
     }
 
     /// <summary>

@@ -171,6 +171,26 @@ namespace HA
         {
             _imgBackSelected.enabled = isSelect;
         }
+
+        /// <summary>
+        /// 丢弃物品
+        /// </summary>
+        public void DiscardItem()
+        {
+            _itemInfo = new ItemInfo();
+            _imgItem.enabled = false;
+            _txtNum.enabled = false;
+
+            if (_itemCellParent == ItemCellParent.Inventory)
+            {
+                // 从 playerInfo 中删除这条
+                PlayerInfo playerInfo = PlayerDataManager.GetInstance().GetPlayerInfo();
+                playerInfo._allItems[_id] = new ItemInfo { _id = 0, _num = 0 };
+
+                GameManager.Event.Broadcast<PlayerInfo>(GameEventType.UpdateInventoryItemList, playerInfo);
+                GameManager.Event.Broadcast(GameEventType.ReqPlayerInfoUpload);
+            }
+        }
         #endregion
 
         #region 监听方法

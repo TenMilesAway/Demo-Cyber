@@ -10,6 +10,7 @@ namespace HA
         [Header("基础信息")]
         public string _name;
         public string _enemyIconPath;
+        public string _prefabPath;
         public EnemyType _type;
         public EnemyBehavior _behavior;
         [TextArea(3, 5)] public string _description = "敌人的描述信息";

@@ -1,3 +1,4 @@
+using Cyber;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -96,6 +97,9 @@ namespace HA
 
                 UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.GetPath(data._prefabPath), GetInstanceID().ToString(), (GameObject entity) =>
                 {
+                    BTForEnemy enemy = entity.GetComponent<BTForEnemy>();
+                    if (enemy != null) enemy.Init(true);
+
                     if (data._randomRotation) entity.transform.rotation = UnityEngine.Random.rotation;
                     if (data._randomScale) entity.transform.localScale = Vector3.one * _spawnScaleRange.GetRandomFromRange();
                     _spawnedObjects.Add(entity);

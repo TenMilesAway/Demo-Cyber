@@ -14,8 +14,8 @@ namespace HA
 
         private ItemCell _nowDragItemCell;    // 当前拖动的格子
         private ItemCell _nowInItemCell;      // 当前鼠标进入的格子
-        private ItemCell _lastSelectItemCell; // 之前选择的格子
-        private Image _nowSelectItemCellImg;  // 当前选中装备的图片信息
+        private ItemCell _nowSelectItemCell;  // 当前选择的格子
+        private Image _nowDragItemCellImg;    // 当前拖动的格子图片信息
 
         private bool _isDraging;              // 是否拖动中
 
@@ -30,6 +30,13 @@ namespace HA
             GameManager.Event.AddListener<BaseEventData>(GameEventType.DragingItemCell, DragItemCell);
             GameManager.Event.AddListener<ItemCell>(GameEventType.EndDragItemCell, EndDragItemCell);
         }
+
+        #region 主要方法
+        public ItemCell GetNowSelectItemCell()
+        {
+            return _nowSelectItemCell;
+        }
+        #endregion
 
         #region 监听方法
         private void UpdateInventoryItemList(PlayerInfo info)
@@ -83,10 +90,10 @@ namespace HA
         {
             if (itemCell._itemInfo == null || itemCell._itemInfo._id == 0) return;
 
-            if (_lastSelectItemCell != null) _lastSelectItemCell.SelectItem(false);
+            if (_nowSelectItemCell != null) _nowSelectItemCell.SelectItem(false);
 
             itemCell.SelectItem(true);
-            _lastSelectItemCell = itemCell;
+            _nowSelectItemCell = itemCell;
             GameManager.Event.Broadcast<ItemInfo>(GameEventType.UpdateSelectedItemDetail, itemCell._itemInfo);
         }
 
@@ -105,17 +112,17 @@ namespace HA
             // 创建图片，显示当前格子的装备 Icon
             UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.ItemImage, GetInstance().ToString(), (GameObject itemIamge) =>
             {
-                _nowSelectItemCellImg = itemIamge.GetComponent<Image>();
-                _nowSelectItemCellImg.sprite = itemCell.GetImage().sprite;
+                _nowDragItemCellImg = itemIamge.GetComponent<Image>();
+                _nowDragItemCellImg.sprite = itemCell.GetImage().sprite;
 
                 // 设置父对象
-                _nowSelectItemCellImg.transform.SetParent(UIManager.GetInstance()._canvas, false);
+                _nowDragItemCellImg.transform.SetParent(UIManager.GetInstance()._canvas, false);
 
                 // 拖动结束，放回缓存池
                 if (!_isDraging)
                 {
-                    UnityObjectPoolFactory.GetInstance().PutItem(GlobalDefine.ItemImage, _nowSelectItemCellImg.gameObject);
-                    _nowSelectItemCellImg = null;
+                    UnityObjectPoolFactory.GetInstance().PutItem(GlobalDefine.ItemImage, _nowDragItemCellImg.gameObject);
+                    _nowDragItemCellImg = null;
                 }
             });
         }
@@ -126,7 +133,7 @@ namespace HA
         private void DragItemCell(BaseEventData data)
         {
             // 拖动时更新图片位置
-            if (_nowSelectItemCellImg == null) return;
+            if (_nowDragItemCellImg == null) return;
 
             Vector2 localPos;
             // 转换坐标
@@ -136,7 +143,7 @@ namespace HA
                 (data as PointerEventData).pressEventCamera, // 触发的摄像机
                 out localPos);
 
-            _nowSelectItemCellImg.transform.localPosition = localPos;
+            _nowDragItemCellImg.transform.localPosition = localPos;
         }
 
         /// <summary>
@@ -153,9 +160,9 @@ namespace HA
             _nowInItemCell = null;
 
             // 结束拖动，移除图片
-            if (_nowSelectItemCellImg == null) return;
-            UnityObjectPoolFactory.GetInstance().PutItem(GlobalDefine.ItemImage, _nowSelectItemCellImg.gameObject);
-            _nowSelectItemCellImg = null;
+            if (_nowDragItemCellImg == null) return;
+            UnityObjectPoolFactory.GetInstance().PutItem(GlobalDefine.ItemImage, _nowDragItemCellImg.gameObject);
+            _nowDragItemCellImg = null;
         }
         #endregion
 
@@ -223,6 +230,7 @@ namespace HA
                 };
             }
 
+            GameManager.Event.Broadcast(GameEventType.UpdateInventoryPanelUI);
             GameManager.Event.Broadcast(GameEventType.ReqPlayerInfoUpload);
         }
 

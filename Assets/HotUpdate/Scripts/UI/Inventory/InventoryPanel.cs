@@ -27,8 +27,9 @@ namespace HA
         [Header("下区域")]
         [SerializeField] private GameObject _groupNotSelected;
         [SerializeField] private GameObject _groupSelelcted;
-        [SerializeField] private GameObject _btnUse;
-        [SerializeField] private GameObject _btnDiscard;
+        [SerializeField] private Button _btnEquip;
+        [SerializeField] private Button _btnUse;
+        [SerializeField] private Button _btnDiscard;
         [SerializeField] private Image _imgItem;
         [SerializeField] private Text _txtItem;
         [SerializeField] private Text _txtTypeContent;
@@ -50,7 +51,8 @@ namespace HA
             base.InitHandle(param);
 
             InventoryParam inventoryParam = (InventoryParam)param;
-            _playerInfo = inventoryParam.data as PlayerInfo;
+            // 这里修改了，不走外部传的数据
+            _playerInfo = PlayerDataManager.GetInstance().GetPlayerInfo();
             _isWithTreasurePanel = inventoryParam.isWithTreasurePanel;
 
             _groupSelelcted.SetActive(false);
@@ -65,11 +67,7 @@ namespace HA
         {
             base.CloseHandle();
 
-            GameManager.Event.RemoveListener<ItemInfo>(GameEventType.UpdateSelectedItemDetail, UpdateSelectedItemDetailInfo);
-            _btnClose.onClick.RemoveAllListeners();
-            _toggleItems.onValueChanged.RemoveAllListeners();
-            _toggleEquips.onValueChanged.RemoveAllListeners();
-            _togglePotions.onValueChanged.RemoveAllListeners();
+            RemoveListeners();
         }
 
         #region 主要方法
@@ -151,6 +149,9 @@ namespace HA
                 _imgItem.enabled = true;
             });
 
+            _btnEquip.gameObject.SetActive(itemData.type == 1);
+            _btnUse.gameObject.SetActive(itemData.usable == 1);
+            _btnDiscard.gameObject.SetActive(InventoryDataManager.GetInstance().GetNowSelectItemCell().GetItemCellParent() != ItemCellParent.Treasure);
             _txtItem.text = itemData.name;
             _txtTypeContent.text = InventoryDataManager.GetInstance().GetItemTypeString(itemData.type);
             _txtSourceContent.text = itemData.source;
@@ -166,8 +167,22 @@ namespace HA
         private void AddListeners()
         {
             GameManager.Event.AddListener<ItemInfo>(GameEventType.UpdateSelectedItemDetail, UpdateSelectedItemDetailInfo);
+            GameManager.Event.AddListener(GameEventType.UpdateInventoryPanelUI, UpdateUI);
 
             _btnClose.onClick.AddListener(OnClickCloseBtn);
+            _btnDiscard.onClick.AddListener(OnClickDiscardBtn);
+        }
+
+        /// <summary>
+        /// 删除监听
+        /// </summary>
+        private void RemoveListeners()
+        {
+            GameManager.Event.RemoveListener<ItemInfo>(GameEventType.UpdateSelectedItemDetail, UpdateSelectedItemDetailInfo);
+            GameManager.Event.RemoveListener(GameEventType.UpdateInventoryPanelUI, UpdateUI);
+
+            _btnClose.onClick.RemoveAllListeners();
+            _btnDiscard.onClick.RemoveAllListeners();
         }
 
         /// <summary>
@@ -199,6 +214,46 @@ namespace HA
                 GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
                 GameManager.Event.Broadcast(GameEventType.DisablePlayerFlipInput);
             }
+        }
+
+        private void OnClickEquipBtn()
+        {
+
+        }
+
+        private void OnClickUseBtn()
+        {
+
+        }
+
+        private void OnClickDiscardBtn()
+        {
+            ItemCell nowSelectItemCell = InventoryDataManager.GetInstance().GetNowSelectItemCell();
+            nowSelectItemCell.DiscardItem();
+        }
+
+        private void UpdateUI()
+        {
+            (int, int) countInfo = UpdateItemNumInfo();
+
+            _txtItemNum.text = string.Format("{0} / <color=yellow>{1}</color>", countInfo.Item1, countInfo.Item2);
+        }
+        #endregion
+
+        #region 辅助方法
+        private (int, int) UpdateItemNumInfo()
+        {
+            List<ItemInfo> infos = new List<ItemInfo>(_playerInfo._allItems);
+
+            int nowCount = 0;
+            int allCount = _playerInfo._inventoryItemNum;
+
+            for (int i = 0; i < infos.Count; i++)
+            {
+                if (infos[i] != null && infos[i]._id != 0) nowCount++;
+            }
+
+            return (nowCount, allCount);
         }
         #endregion
     }

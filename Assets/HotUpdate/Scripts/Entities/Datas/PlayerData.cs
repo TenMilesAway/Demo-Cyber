@@ -47,9 +47,9 @@ namespace HA
             _head = GlobalDefine.DefaultHead;        // Ä¬ÈÏÍ·Ïñ (AA µØÖ·)
 
             _level              = 1;
-            _commonCurrency     = 1000;
+            _commonCurrency     = 100;
             _rareCurrency       = 0;
-            _maxEXP             = 1000;
+            _maxEXP             = 100;
             _currentEXP         = 0;
             _maxHP              = 100;
             _currentHP          = 100;

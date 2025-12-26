@@ -25,6 +25,7 @@ public sealed partial class Treasure : Luban.BeanBase
         Content = (string)_obj.GetValue("content");
         MinNum = (int)_obj.GetValue("minNum");
         MaxNum = (int)_obj.GetValue("maxNum");
+        GlobalDefine = (string)_obj.GetValue("globalDefine");
     }
 
     public static Treasure DeserializeTreasure(JToken _buf)
@@ -52,6 +53,10 @@ public sealed partial class Treasure : Luban.BeanBase
     /// 最大宝藏数
     /// </summary>
     public readonly int MaxNum;
+    /// <summary>
+    /// 对应宝箱名
+    /// </summary>
+    public readonly string GlobalDefine;
 
 
     public const int __ID__ = 1448052431;
@@ -69,6 +74,7 @@ public sealed partial class Treasure : Luban.BeanBase
         + "content:" + Content + ","
         + "minNum:" + MinNum + ","
         + "maxNum:" + MaxNum + ","
+        + "globalDefine:" + GlobalDefine + ","
         + "}";
     }
 }

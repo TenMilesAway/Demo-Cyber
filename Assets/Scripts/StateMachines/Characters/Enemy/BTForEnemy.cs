@@ -1,9 +1,9 @@
+using BehaviorDesigner.Runtime;
+using HA;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using BehaviorDesigner.Runtime;
 using UnityEngine.AI;
-using HA;
 
 namespace Cyber
 {
@@ -26,6 +26,7 @@ namespace Cyber
         private BehaviorTree BT;                            // 行为树
                                                             
         private bool _isInit;                               // 是否已经被初始化过 (路径点)
+        private bool _isSpawner;                            // 是否由刷怪器生成
         private bool _isIdling;
         private bool _isWandering;
 
@@ -39,11 +40,12 @@ namespace Cyber
         private Vector3[] _waypointArray = new Vector3[4];  // 路径点
         private Coroutine _animatorReactionCo;              // 受击动画协程
 
-        private void Awake()
+        public void Init(bool isGenerateBySpawner)
         {
             _agent = GetComponent<NavMeshAgent>();
             _animator = GetComponentInChildren<Animator>();
             BT = GetComponent<BehaviorTree>();
+            _isSpawner = isGenerateBySpawner;
 
             InitVariables();
 
@@ -64,12 +66,12 @@ namespace Cyber
             int layer = collider.gameObject.layer;
             if ((1 << layer & _playerAttackLayer) != 0)
             {
-                // 受伤
-                OnReaction(PlayerDataManager.GetInstance().GetPlayerInfo()._pAttack);
-
                 _animator.SetTrigger("reaction");
                 if (_animatorReactionCo != null) StopCoroutine(SimualteReaction());
                 _animatorReactionCo = StartCoroutine(SimualteReaction());
+
+                // 受伤
+                OnReaction(PlayerDataManager.GetInstance().GetPlayerInfo()._pAttack);
             }
         }
 
@@ -119,7 +121,45 @@ namespace Cyber
         private void OnDeath()
         {
             PlayerDataManager.GetInstance().SendEXPToPlayer(_enemyData._EXP);
-            Destroy(this.gameObject);
+
+            // 按照生成规则生成一个宝箱
+            // 计算权重
+            int totalWeight = 0;
+            for (int i = 0; i < _enemyData._dropItems.Count; i++)
+            {
+                totalWeight += _enemyData._dropItems[i]._dropWeight;
+            }
+
+            int randomWeight = UnityEngine.Random.Range(0, totalWeight);
+            int currentWeight = 0;
+            for (int i = 0; i < _enemyData._dropItems.Count; i++)
+            {
+                currentWeight += _enemyData._dropItems[i]._dropWeight;
+
+                if (currentWeight > randomWeight)
+                {
+                    // 生成当前配置
+                    string treasurePath = HATreasureDataManager.GetInstance().GetData(_enemyData._dropItems[i]._treasureID).globalDefine;
+
+                    UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.GetPath(treasurePath), GetInstanceID().ToString(), (GameObject treasure) =>
+                    {
+                        treasure.transform.rotation = this.transform.rotation;
+                        treasure.transform.position = this.transform.position;
+
+                        GameObject parent = GameObject.Find("DropItems");
+                        if (parent == null) parent = new GameObject("DropItems");
+
+                        treasure.transform.SetParent(parent.transform, false);
+                    });
+                    break;
+                }
+            }
+
+            // 由刷怪器生成的怪物，通过 UOPF 入池
+            if (_isSpawner)
+            {
+                UnityObjectPoolFactory.GetInstance().PutItem(GlobalDefine.GetPath(_enemyData._prefabPath), this.gameObject);
+            }
         }
 
         /// <summary>

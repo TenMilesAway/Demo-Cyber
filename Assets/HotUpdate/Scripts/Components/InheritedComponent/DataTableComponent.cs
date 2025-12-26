@@ -11,8 +11,8 @@ namespace HA
         {
             base.Awake();
 
-            ItemDataManager.GetInstance().Init();
-            HATreasureDataManager.GetInstance().Init();
+            // 由于部分数据在玩家未登录时无法初始化
+            // 因此这里的逻辑全部挪至状态机中
         }
     }
 }

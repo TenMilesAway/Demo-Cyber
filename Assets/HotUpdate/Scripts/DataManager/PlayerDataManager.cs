@@ -92,6 +92,8 @@ namespace HA
                 _playerInfo._level += 1;
                 _playerInfo._currentEXP -= nowMaxExp;
             }
+
+            GameManager.Event.Broadcast<PlayerInfo>(GameEventType.UpdateMainPanelUI, _playerInfo);
         }
 
         /// <summary>
@@ -142,7 +144,6 @@ namespace HA
 
             // 分发数据至必须位置
             GameManager.Event.Broadcast<PlayerInfo>(GameEventType.UpdateInventoryItemList, _playerInfo);
-            GameManager.Event.Broadcast<PlayerInfo>(GameEventType.UpdateMainPanelUI, _playerInfo);
         }
 
         /// <summary>
