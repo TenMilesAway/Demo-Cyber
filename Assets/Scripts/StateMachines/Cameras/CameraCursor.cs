@@ -31,11 +31,13 @@ namespace Cyber
         private void OnEnable()
         {
             cameraToggleInputAction.asset.Enable();
+            GameManager.Event.AddListener(GameEventType.ToggleCursor, ToggleCursor);
         }
 
         private void OnDisable()
         {
             cameraToggleInputAction.asset.Disable();
+            GameManager.Event.RemoveListener(GameEventType.ToggleCursor, ToggleCursor);
         }
 
         private void OnCameraCursorToggled(InputAction.CallbackContext context)

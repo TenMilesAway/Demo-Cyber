@@ -41,4 +41,6 @@ public enum GameEventType
     UpdateMainPanelUI,          // 刷新主面板 UI
     UpdateInventoryPanelUI,     // 刷新背包面板 UI
     GetEXPFromEnemy,            // 怪物死亡后，玩家获得经验
+    PlayerReaction,             // 玩家受伤
+    ToggleCursor,               // 切换鼠标状态
 }

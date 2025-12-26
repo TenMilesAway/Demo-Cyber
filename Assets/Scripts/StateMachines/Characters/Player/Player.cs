@@ -1,3 +1,4 @@
+using HA;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -46,7 +47,7 @@ namespace Cyber
 
             movementStateMachine = new PlayerMovementStateMachine(this);
 
-            //AddEventLiseners();
+            AddEventLiseners();
         }
 
         private void Start()
@@ -101,13 +102,17 @@ namespace Cyber
 
         private void AddEventLiseners()
         {
-            // 受伤
-            EventCenter.GetInstance().AddEventListener<float>("PlayerInjured", OnReaction);
+            GameManager.Event.AddListener<int>(GameEventType.PlayerReaction, OnReaction);
         }
 
-        public void OnReaction(float damage)
+        private void OnReaction(int damage)
         {
-            Debug.Log("受到伤害: " + damage);
+            HADebug.Log("受到伤害: " + damage);
+
+            // 扣血 (未申报服务端)
+            PlayerDataManager.GetInstance().GetPlayerInfo()._currentHP -= damage;
+            GameManager.Event.Broadcast<HA.PlayerInfo>(GameEventType.UpdateMainPanelUI, PlayerDataManager.GetInstance().GetPlayerInfo());
+
             movementStateMachine.ChangeState(movementStateMachine.ReactionState);
         }
     }

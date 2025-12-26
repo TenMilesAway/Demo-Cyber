@@ -13,6 +13,9 @@ namespace Cyber
         [SerializeField] private EnemyData _enemyData;
         [Header("受击层级")]
         [SerializeField] private LayerMask _playerAttackLayer;
+        [Header("攻击")]
+        [SerializeField] private GameObject _attackCheck;
+        [SerializeField] private GameObject _attackArea;
 
         [Header("AI 路径点")]
         [SerializeField] private GameObject _waypoints;
@@ -101,11 +104,25 @@ namespace Cyber
             _isIdling = true;
         }
         #endregion
+        /// <summary>
+        /// 计算本身伤害
+        /// </summary>
+        public int CalculateAttack()
+        {
+            return _enemyData._pAttack;
+        }
+
 
         #region 主要方法
+        /// <summary>
+        /// 受到伤害
+        /// </summary>
         private void OnReaction(int attack)
         {
             _currentHP -= attack;
+
+            ShowAttackCollider(false);
+            ShowAttackArea(false);
 
             HADebug.LogFormat("怪物 {0} 受到伤害 {1}, 当前剩余血量 {2}", gameObject.name, attack, _currentHP);
 
@@ -246,6 +263,16 @@ namespace Cyber
             HADebug.Log("开始初始化路径点");
             _isInit = true;
             GenerateWaypoints(_patrolRadius);
+        }
+
+        public void ShowAttackCollider(bool isShow = true)
+        {
+            _attackCheck.SetActive(isShow);
+        }
+
+        public void ShowAttackArea(bool isShow = true)
+        {
+            _attackArea.SetActive(isShow);
         }
         #endregion
     }

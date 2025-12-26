@@ -19,4 +19,12 @@ namespace HA
     {
         
     }
+
+    /// <summary>
+    /// 专用于处理各种功能的交互接口，例如开启地图面板
+    /// </summary>
+    public interface IFunction : IInteractive
+    {
+
+    }
 }

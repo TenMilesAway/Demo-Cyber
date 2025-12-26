@@ -57,7 +57,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5779152820881648898}
-  m_LocalRotation: {x: 0.12410008, y: -0.06050025, z: 0.0075809034, w: 0.9903946}
+  m_LocalRotation: {x: 0.12410007, y: -0.060500253, z: 0.0075809057, w: 0.9903946}
   m_LocalPosition: {x: 1.04, y: 2.08, z: -2.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -402,7 +402,7 @@ MonoBehaviour:
   m_PivotOffset: {x: 0, y: 0, z: 0}
   m_AmplitudeGain: 0
   m_FrequencyGain: 1
-  mNoiseOffsets: {x: 0, y: 0, z: 0}
+  mNoiseOffsets: {x: -702.3268, y: -715.3096, z: -947.0282}
 --- !u!1 &8220667324360017455
 GameObject:
   m_ObjectHideFlags: 0
@@ -567,6 +567,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1905531185953389567}
     m_Modifications:
+    - target: {fileID: 4677460355511573495, guid: cbe9d3fad0458b641bb93edb424d7b8b, type: 3}
+      propertyPath: _reactionLayer.m_Bits
+      value: 134217728
+      objectReference: {fileID: 0}
     - target: {fileID: 5151621397991254793, guid: cbe9d3fad0458b641bb93edb424d7b8b, type: 3}
       propertyPath: m_Layer
       value: 26
