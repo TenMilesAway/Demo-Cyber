@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace HA
 {
@@ -33,11 +34,15 @@ namespace HA
         public void OnLeave()
         {
             InteractiveDataManager.GetInstance().ClearInteractives();
+
+            UIManager.GetInstance().ClosePanel(GlobalDefine.MainPanel);
+
+            SceneManager.UnloadSceneAsync("Spawn");
         }
 
         public void OnUpdate()
         {
-            InteractiveDataManager.GetInstance().UpdateForInteractives();
+            
         }
     }
 }

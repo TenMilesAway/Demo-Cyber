@@ -10,6 +10,7 @@ public sealed partial class GlobalDefine
 {
     // UI
     public const string MainPanel = "Assets/UI/Main View/Prefabs/MainPanel.prefab";
+    public const string LoadingPanel = "Assets/UI/Start/Prefabs/LoadingPanel.prefab";
     public const string ToastPanel = "Assets/UI/Start/Prefabs/ToastPanel.prefab";
     public const string InventoryPanel = "Assets/UI/Items/Prefabs/InventoryPanel.prefab";
     public const string ItemCell = "Assets/UI/Items/Prefabs/ItemCell.prefab";
@@ -20,6 +21,7 @@ public sealed partial class GlobalDefine
     public const string DialoguePanel = "Assets/UI/Interactive/Prefabs/DialoguePanel.prefab";
     public const string DialogueOption = "Assets/UI/Interactive/Prefabs/DialogueOption.prefab";
     public const string TreasurePanel = "Assets/UI/Interactive/Prefabs/TreasurePanel.prefab";
+    public const string MapPanel = "Assets/UI/Map/Prefabs/MapPanel.prefab";
 
     // µ–»À
     public const string WhiteBaboon = "Assets/UI/Spawner/Prefabs/WhiteBaboon.prefab";

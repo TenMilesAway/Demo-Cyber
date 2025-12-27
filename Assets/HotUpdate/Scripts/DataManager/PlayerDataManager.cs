@@ -13,6 +13,7 @@ namespace HA
     {
         private PlayerInfo _playerInfo;
         private PlayerInput _input;
+        private Transform _player;
 
         private const string _playerTag = "Player";
 
@@ -30,6 +31,27 @@ namespace HA
         }
 
         #region 主要方法
+        public void SetPlayer(Transform player)
+        {
+            _player = player;
+        }
+
+        public void SetPlayerToPlace(Vector3 position)
+        {
+            _player.position = position;
+        }
+
+        public bool GetPlayerMainCamera()
+        {
+            if (_player.GetComponentInChildren<Player>().MainCameraTransform == null) return false;
+            else return true;
+        }
+
+        public void SetPlayerMainCamera()
+        {
+            _player.GetComponentInChildren<Player>().MainCameraTransform = Camera.main.transform;
+        }
+
         /// <summary>
         /// 获取玩家信息
         /// </summary>

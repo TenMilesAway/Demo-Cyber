@@ -20,7 +20,7 @@ namespace HA
         /// </summary>
         public void Interact(object interactor = null)
         {
-            
+            UIManager.GetInstance().OpenPanel(GlobalDefine.MapPanel);
         }
 
         #region ½Ó¿ÚÔ¤Áô×Ö¶Î

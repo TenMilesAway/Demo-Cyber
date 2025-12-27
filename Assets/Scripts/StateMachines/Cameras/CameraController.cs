@@ -23,6 +23,8 @@ namespace Cyber
         
         public void Init()
         {
+            cameraDic.Clear();
+
             cameras = GameObject.FindGameObjectsWithTag(virtualCameraTag);
 
             brain = Camera.main.GetComponent<CinemachineBrain>();

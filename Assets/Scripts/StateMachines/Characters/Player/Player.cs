@@ -26,7 +26,7 @@ namespace Cyber
         public PlayerInput Input { get; private set; }
         public PlayerResizableCapsuleCollider ResizableCapsuleCollider { get; private set; }
 
-        public Transform MainCameraTransform { get; private set; }
+        public Transform MainCameraTransform { get; set; }
 
         public PlayerMovementStateMachine movementStateMachine;
 
@@ -48,11 +48,15 @@ namespace Cyber
             movementStateMachine = new PlayerMovementStateMachine(this);
 
             AddEventLiseners();
+
+            DontDestroyOnLoad(transform.parent.gameObject);
         }
 
         private void Start()
         {
             movementStateMachine.ChangeState(movementStateMachine.IdlingState);
+
+            PlayerDataManager.GetInstance().SetPlayer(transform.parent.transform);
         }
 
         private void Update()
@@ -60,9 +64,6 @@ namespace Cyber
             movementStateMachine.HandleInput();
 
             movementStateMachine.Update();
-
-            //if (GameDataMgr.GetInstance().GetPlayerTempInfo() != null)
-            //    GameDataMgr.GetInstance().UpdateTempInfo(transform.position, transform.eulerAngles, movementStateMachine.GetCurrentState());
         }
 
         private void FixedUpdate()

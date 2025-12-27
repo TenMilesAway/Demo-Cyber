@@ -18,14 +18,6 @@ namespace HA
         }
 
         #region 主要方法
-        /// <summary>
-        /// Update：是否有可交互物体
-        /// </summary>
-        public void UpdateForInteractives()
-        {
-            if (_interactives.Count == 0) return;
-        }
-
         public void ClearInteractives()
         {
             _interactives.Clear();

@@ -87,9 +87,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 359067441120472380}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 100
+  m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 100
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -217,6 +217,7 @@ GameObject:
   - component: {fileID: 359067440167012016}
   - component: {fileID: 359067440167012014}
   - component: {fileID: 359067440167012017}
+  - component: {fileID: 3137368672653655743}
   m_Layer: 5
   m_Name: LoadingPanel
   m_TagString: Untagged
@@ -284,6 +285,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3137368672653655743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 359067440167012019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaad1f02db3617446bb41fe58c49dfbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sliderLoad: {fileID: 359067439314573869}
+  _txtLoad: {fileID: 359067440501864090}
 --- !u!1 &359067440501864095
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,7 +379,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 100
+  m_Text: 0
 --- !u!114 &359067440501864093
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -34,13 +34,18 @@ namespace HA
         {
             if (obj is IDialogue)
             {
-                HADebug.Log("这是一个对话可交互物体");
                 _txtInteractiveOption.text = string.Format("和<color=#28E1E5>{0}</color>对话", npcName);
             }
             else if (obj is ITreasure)
             {
-                HADebug.Log("这是一个宝箱可交互物体");
                 _txtInteractiveOption.text = string.Format("开启<color=#28E1E5>{0}</color>", npcName);
+            }
+            else if (obj is IFunction)
+            { 
+                if (obj is HAOpenMap)
+                {
+                    _txtInteractiveOption.text = string.Format("前往<color=#28E1E5>{0}</color>", npcName);
+                }
             }
         }
         #endregion

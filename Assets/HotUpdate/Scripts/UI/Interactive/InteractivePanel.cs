@@ -143,7 +143,7 @@ namespace HA
             GameManager.Event.Broadcast(GameEventType.DisablePlayerInput);
 
             GameManager.Event.Broadcast(GameEventType.ToggleCursor);
-            
+
             // 开始对话
             if (_interactives[_currentSelectIndex] is IDialogue)
             {
@@ -152,6 +152,13 @@ namespace HA
             else if (_interactives[_currentSelectIndex] is ITreasure)
             {
                 (_interactives[_currentSelectIndex] as HATreasure).Interact();
+            }
+            else if (_interactives[_currentSelectIndex] is IFunction)
+            {
+                if (_interactives[_currentSelectIndex] is HAOpenMap)
+                {
+                    (_interactives[_currentSelectIndex] as HAOpenMap).Interact();
+                }
             }
 
             UIManager.GetInstance().ClosePanel(GetPanelName());

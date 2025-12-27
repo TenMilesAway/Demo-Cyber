@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace HA
 {
@@ -10,14 +11,7 @@ namespace HA
         public async void OnEnterAsync()
         {
             // --------- 初始化
-            Cyber.CameraController.GetInstance().Init();       // 相机组件
-            ItemDataManager.GetInstance().Init();
-            HATreasureDataManager.GetInstance().Init();
-            PlayerDataManager.GetInstance().Init();            // 玩家数据管理
-            InventoryDataManager.GetInstance().Init();         // 仓库数据管理
-            InteractiveDataManager.GetInstance().Init();       // 交互数据管理
-            LevelDataManager.GetInstance().Init();             // 玩家等级管理
-            GlobalDefine.GetPath("MainPanel");                 // 预热
+            PlayerDataManager.GetInstance().SetPlayerToPlace(new Vector3(17.0f, 0f, 0f));
             // ---------
 
 
@@ -32,12 +26,17 @@ namespace HA
 
         public void OnLeave()
         {
-            
+            InteractiveDataManager.GetInstance().ClearInteractives();
+
+            SceneManager.UnloadSceneAsync("FirstLevel");
         }
 
         public void OnUpdate()
         {
-            
+            if (!PlayerDataManager.GetInstance().GetPlayerMainCamera())
+            {
+                PlayerDataManager.GetInstance().SetPlayerMainCamera();
+            }
         }
     }
 }
