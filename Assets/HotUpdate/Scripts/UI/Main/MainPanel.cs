@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,7 +34,7 @@ namespace HA
         [SerializeField] private Image _imgMPBar;
         [SerializeField] private Image _imgEXPBar;
 
-        private PlayerInfo _playerInfo;
+        private PlayerInfo _playerInfo; // 需要等待玩家信息加载完成后才显示主面板，所以通过 param 传递
 
         public override string GetPanelName()
         {
@@ -62,30 +59,37 @@ namespace HA
             RemoveListeners();
         }
 
-        #region 主要方法
-        private void InitPlayerInfo(PlayerInfo info)
-        {
-            UpdateUI(info);
-        }
-        #endregion
-
-        #region 监听方法
         private void AddListeners()
         {
+            // 业务
             GameManager.Event.AddListener<PlayerInfo>(GameEventType.UpdateMainPanelUI, UpdateUI);
 
+            // UI
             _btnBag.onClick.AddListener(OnClickBtnBag);
             _btnForge.onClick.AddListener(OnClickBtnForge);
         }
 
         private void RemoveListeners()
         {
+            // 业务
             GameManager.Event.RemoveListener<PlayerInfo>(GameEventType.UpdateMainPanelUI, UpdateUI);
 
+            // UI
             _btnBag.onClick.RemoveAllListeners();
             _btnForge.onClick.RemoveAllListeners();
         }
 
+        #region 主要方法
+        /// <summary>
+        /// 初始化主要面板玩家信息
+        /// </summary>
+        private void InitPlayerInfo(PlayerInfo info)
+        {
+            UpdateUI(info);
+        }
+        #endregion
+
+        #region 监听方法：UI
         private void OnClickBtnBag()
         {
             InventoryParam param = new InventoryParam();
@@ -98,7 +102,12 @@ namespace HA
         {
             
         }
+        #endregion
 
+        #region 监听方法：刷新 UI
+        /// <summary>
+        /// 刷新面板 UI
+        /// </summary>
         private void UpdateUI(PlayerInfo info)
         {
             if (info == default) return;

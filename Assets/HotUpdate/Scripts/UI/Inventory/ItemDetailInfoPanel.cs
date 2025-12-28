@@ -12,22 +12,14 @@ namespace HA
 
     public class ItemDetailInfoPanel : UIBasePanel
     {
-        [SerializeField]
-        private Image _imgItemIcon;
-        [SerializeField]
-        private Text _txtItem;
-        [SerializeField]
-        private Text _txtTypeContent;
-        [SerializeField]
-        private Text _txtSourceContent;
-        [SerializeField]
-        private Text _txtUsageContent;
-        [SerializeField]
-        private Text _txtDescContent;
-        [SerializeField]
-        private Text _txtPriceContent;
-        [SerializeField]
-        private Text _txtPriceSuffix;
+        [SerializeField] private Image _imgItemIcon;
+        [SerializeField] private Text _txtItem;
+        [SerializeField] private Text _txtTypeContent;
+        [SerializeField] private Text _txtSourceContent;
+        [SerializeField] private Text _txtUsageContent;
+        [SerializeField] private Text _txtDescContent;
+        [SerializeField] private Text _txtPriceContent;
+        [SerializeField] private Text _txtPriceSuffix;
 
         private ItemCell _itemCell;
 
@@ -51,6 +43,9 @@ namespace HA
         }
 
         #region 主要方法
+        /// <summary>
+        /// 初始化信息
+        /// </summary>
         private void InitItemData(TBItemData data)
         {
             GameManager.Resource.LoadResourceAsync<Sprite>(_itemCell._imgItemPath, GetInstanceID().ToString(), (Object obj, object[] result) =>

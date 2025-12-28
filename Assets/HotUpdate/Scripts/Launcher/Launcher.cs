@@ -1,6 +1,5 @@
 using DG.Tweening;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -9,7 +8,6 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using System.Text;
 using HA;
 
 namespace Cyber
@@ -58,17 +56,17 @@ namespace Cyber
     public class Launcher : SingletonMono<Launcher>
     {
         [Header("网络")]
-        [SerializeField] private Text ip;
-        [SerializeField] private Text port;
+        [SerializeField] private Text _ip;
+        [SerializeField] private Text _port;
 
         [Header("状态")]
         private LauncherProcess process;
 
         [Header("界面")]
         // UI
-        [SerializeField] private Canvas loginCanvas;
-        [SerializeField] private Text txtLoginID;
-        [SerializeField] private Text txtLoad;
+        [SerializeField] private Canvas _loginCanvas;
+        [SerializeField] private Text _txtLoginID;
+        [SerializeField] private Text _txtLoad;
         [SerializeField] private Button btnConnect;
         [SerializeField] private Button btnNotConnect;
         [SerializeField] private Button btnRegister;
@@ -93,7 +91,7 @@ namespace Cyber
 
         [Header("控制变量")]
         [HideInInspector] public bool isNetworkMode = true;
-        public bool isConnected;
+        [HideInInspector] public bool isConnected;
         private bool canSwitchScene;
         private bool isInitGameManager;
         private bool isInitDataOver;
@@ -108,6 +106,17 @@ namespace Cyber
 
 
         private void OnEnable()
+        {
+            AddListeners();
+        }
+
+        private void OnDisable()
+        {
+            RemoveListeners();
+        }
+
+
+        private void AddListeners()
         {
             // 按钮监听
             btnConnect.onClick.AddListener(() => ShowConnectInfoPanel(true));
@@ -125,7 +134,7 @@ namespace Cyber
             NetManager.AddMsgListener("MsgLogin", OnMsgLogin);
         }
 
-        private void OnDisable()
+        private void RemoveListeners()
         {
             // 移除按钮监听
             btnConnect.onClick.RemoveAllListeners();
@@ -267,7 +276,7 @@ namespace Cyber
             }
         }
 
-        #region 辅助方法
+        #region 处理主线程任务
         /// <summary>
         /// 处理主线程任务
         /// </summary>
@@ -303,54 +312,23 @@ namespace Cyber
         }
         #endregion
 
-
-        #region 业务方法
+        #region 异步主要方法
         /// <summary>
-        /// 初始化必需资源并切换状态
+        /// 初始化必需资源
         /// </summary>
-        /// <returns></returns>
         private async Task InitResources()
         {
+            // 此时还未初始化 GameManager，无法使用 UnityObjectPoolFactory
             AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(GlobalDefine.ToastPanel);
-
             await handle.Task;
-
             prefabToastPanel = handle.Result;
+
             SetProcessState(LauncherProcess.PreloadEnd);
         }
 
         /// <summary>
-        /// 外界调用修改 Launcher 的状态
+        /// 初始化 GameManager
         /// </summary>
-        /// <param name="state">状态</param>
-        public void SetProcessState(LauncherProcess state)
-        {
-            process = state;
-        }
-
-        /// <summary>
-        /// 切换连接状态 Text
-        /// </summary>
-        /// <param name="isConnect"></param>
-        private void SwitchConnectState(bool isConnect = true)
-        {
-            m_GOTxtConnectState.SetActive(!isConnect);
-            m_GOTxtConnectSstateConnected.SetActive(isConnect);
-        }
-
-        /// <summary>
-        /// 显示加载界面
-        /// </summary>
-        /// <param name="isShow"></param>
-        private void ShowLoadingPanel(bool isShow = true)
-        {
-            m_GOLoadingPanel.SetActive(isShow);
-            txtLoad.text = "0";
-            sliderLoad.value = 0;
-
-            process = LauncherProcess.InitProgressEnd;
-        }
-
         private async Task InitGameManager()
         {
             if (isInitGameManager) return;
@@ -376,7 +354,7 @@ namespace Cyber
         }
 
         /// <summary>
-        /// 加载场景
+        /// 切换场景
         /// </summary>
         private async Task LoadScene()
         {
@@ -384,14 +362,44 @@ namespace Cyber
             await asyncOperation.Task;
             SceneManager.SetActiveScene(asyncOperation.Result.Scene);
         }
+        #endregion
+
+        #region 主要方法
+        /// <summary>
+        /// 修改 Launcher 的状态
+        /// </summary>
+        private void SetProcessState(LauncherProcess state)
+        {
+            process = state;
+        }
 
         /// <summary>
-        /// 检查是否可以切换场景了
+        /// 切换连接状态 Text
+        /// </summary>
+        private void SwitchConnectState(bool isConnect = true)
+        {
+            m_GOTxtConnectState.SetActive(!isConnect);
+            m_GOTxtConnectSstateConnected.SetActive(isConnect);
+        }
+
+        /// <summary>
+        /// 显示加载界面
+        /// </summary>
+        private void ShowLoadingPanel(bool isShow = true)
+        {
+            m_GOLoadingPanel.SetActive(isShow);
+            _txtLoad.text = "0";
+            sliderLoad.value = 0;
+
+            process = LauncherProcess.InitProgressEnd;
+        }
+
+        /// <summary>
+        /// 检查是否可以切换场景
         /// </summary>
         private void CheckCanSwitchScene()
         {
-            canSwitchScene = isInitDataOver
-                          && isLoadSceneOver;
+            canSwitchScene = isInitDataOver && isLoadSceneOver;
         }
 
         /// <summary>
@@ -403,7 +411,7 @@ namespace Cyber
             if (!canSwitchScene && sliderLoad.value <= 0.98f)
             {
                 sliderLoad.value += value;
-                txtLoad.text = Mathf.FloorToInt(sliderLoad.value * 100).ToString();
+                _txtLoad.text = Mathf.FloorToInt(sliderLoad.value * 100).ToString();
             }
             else if (canSwitchScene)
             {
@@ -415,7 +423,7 @@ namespace Cyber
                 Sequence progressSequence = DOTween.Sequence();
                 progressSequence.Append(sliderLoad.DOValue(1f, 2.0f).SetEase(Ease.OutQuad));
                 progressSequence.Join(DOTween.To(() => sliderLoad.value * 100,
-                    x => txtLoad.text = Mathf.FloorToInt(x).ToString(),
+                    x => _txtLoad.text = Mathf.FloorToInt(x).ToString(),
                     100, 2.0f).SetEase(Ease.OutQuad));
                 progressSequence.OnComplete(() =>
                 {
@@ -429,8 +437,7 @@ namespace Cyber
         }
         #endregion
 
-
-        #region 监听方法
+        #region 监听方法：服务器连接
         private void ConnectSucc(string msg)
         {
             HADebug.LogFormat("[客户端] 连接服务器成功, [{0}]", msg);
@@ -463,7 +470,9 @@ namespace Cyber
         {
             HADebug.Log("[客户端] 服务器关闭");
         }
+        #endregion
 
+        #region 监听方法：UI
         /// <summary>
         /// 切换联网显示
         /// </summary>
@@ -483,24 +492,43 @@ namespace Cyber
         }
 
         /// <summary>
+        /// 显示可自动销毁的提示信息框
+        /// </summary>
+        /// <param name="info"></param>
+        private void OpenToast(string info = "未知错误")
+        {
+            if (prefabToastPanel != null)
+            {
+                GameObject instance = Instantiate(prefabToastPanel);
+                instance.transform.SetParent(_loginCanvas.transform, false);
+                instance.transform.localPosition = Vector3.zero;
+                instance.transform.localScale = Vector3.one;
+                ToastPanel componnent = instance.GetComponent<ToastPanel>();
+                componnent.Init(info);
+            }
+        }
+        #endregion
+
+        #region 监听方法：网络请求
+        /// <summary>
         /// 发送连接请求
         /// </summary>
         private void ReqConnect()
         {
             // IP 为空
-            if (ip.text == "")
+            if (_ip.text == "")
             {
                 OpenToast("请输入服务器IP");
                 return;
             }
             // 端口为空
-            else if (port.text == "")
+            else if (_port.text == "")
             {
                 OpenToast("请输入服务器端口号");
                 return;
             }
 
-            NetManager.Connect(ip.text, int.Parse(port.text));
+            NetManager.Connect(_ip.text, int.Parse(_port.text));
 
         }
 
@@ -515,7 +543,7 @@ namespace Cyber
                 return;
             }
 
-            if (txtLoginID.text == "")
+            if (_txtLoginID.text == "")
             {
                 OpenToast("猎兽者大人，用户名不可为空");
                 return;
@@ -528,7 +556,7 @@ namespace Cyber
             }
 
             MsgRegister msg = new MsgRegister();
-            msg.id = txtLoginID.text;
+            msg.id = _txtLoginID.text;
             msg.pw = inputLoginPWD.text;
             NetManager.Send(msg);
         }
@@ -544,7 +572,7 @@ namespace Cyber
                 return;
             }
 
-            if (txtLoginID.text == "")
+            if (_txtLoginID.text == "")
             {
                 OpenToast("猎兽者大人，用户名不可为空");
                 return;
@@ -557,13 +585,13 @@ namespace Cyber
             }
 
             MsgLogin msg = new MsgLogin();
-            msg.id = txtLoginID.text;
+            msg.id = _txtLoginID.text;
             msg.pw = inputLoginPWD.text;
             NetManager.Send(msg);
         }
 
         /// <summary>
-        /// 登录回调
+        /// 登录请求返回
         /// </summary>
         /// <param name="msgBase"></param>
         private void OnMsgLogin(MsgBase msgBase)
@@ -590,13 +618,13 @@ namespace Cyber
                     // 更新服务端时间
                     GameManager.Timer.InitServerTime(msg.serverTimeStamp);
                     // 存储玩家 ID
-                    GameManager.GlobalData.PlayerID = txtLoginID.text;
+                    GameManager.GlobalData.PlayerID = _txtLoginID.text;
                 });
             }
         }
 
         /// <summary>
-        /// 注册回调
+        /// 注册请求返回
         /// </summary>
         /// <param name="msgBase"></param>
         private void OnMsgRegister(MsgBase msgBase)
@@ -619,23 +647,6 @@ namespace Cyber
                     OpenToast("注册成功！猎兽者大人您可以登录啦");
                     HADebug.Log("注册成功");
                 });
-            }
-        }
-
-        /// <summary>
-        /// 显示可自动销毁的提示信息框
-        /// </summary>
-        /// <param name="info"></param>
-        private void OpenToast(string info = "未知错误")
-        {
-            if (prefabToastPanel != null)
-            {
-                GameObject instance = Instantiate(prefabToastPanel);
-                instance.transform.SetParent(loginCanvas.transform, false);
-                instance.transform.localPosition = Vector3.zero;
-                instance.transform.localScale = Vector3.one;
-                ToastPanel componnent = instance.GetComponent<ToastPanel>();
-                componnent.Init(info);
             }
         }
         #endregion

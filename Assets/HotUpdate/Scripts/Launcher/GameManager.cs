@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +6,7 @@ namespace HA
 {
     public class GameManager : MonoBehaviour
     {
-        private static readonly List<BaseComponent> s_Components = new List<BaseComponent>();
+        private static readonly List<BaseComponent> _Components = new List<BaseComponent>();
 
         /// <summary>
         /// ÍøÂç
@@ -77,7 +76,7 @@ namespace HA
 
             Type type = component.GetType();
 
-            foreach (BaseComponent current in s_Components)
+            foreach (BaseComponent current in _Components)
             {
                 if (current != null && current.GetType() == type)
                 {
@@ -86,7 +85,7 @@ namespace HA
                 }
             }
 
-            s_Components.Add(component);
+            _Components.Add(component);
         }
 
         /// <summary>
@@ -116,7 +115,7 @@ namespace HA
 
         private static BaseComponent GetTargetComponent(Type type)
         {
-            foreach (BaseComponent current in s_Components)
+            foreach (BaseComponent current in _Components)
             {
                 if (current != null && current.GetType() == type)
                 {

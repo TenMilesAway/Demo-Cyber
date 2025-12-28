@@ -56,6 +56,7 @@ namespace HA
             _sceneName = loadingPanelParam._name;
             _nextState = loadingPanelParam._state;
 
+            _txtLoad.text = "0";
             _sliderLoad.value = 0;
 
             AsyncOperationHandle<SceneInstance> asyncOperation = Addressables.LoadSceneAsync(_sceneName, LoadSceneMode.Additive);
@@ -67,6 +68,7 @@ namespace HA
             _isLoaded = true;
         }
 
+        #region 主要方法
         /// <summary>
         /// 进度条更新
         /// </summary>
@@ -78,6 +80,9 @@ namespace HA
             _txtLoad.text = Mathf.FloorToInt(_sliderLoad.value * 100).ToString();
         }
 
+        /// <summary>
+        /// 切换场景
+        /// </summary>
         private void ChangeScene()
         {
             if (_isChanged) return;
@@ -97,5 +102,6 @@ namespace HA
                 UIManager.GetInstance().ClosePanel(GetPanelName());
             });
         }
+        #endregion
     }
 }

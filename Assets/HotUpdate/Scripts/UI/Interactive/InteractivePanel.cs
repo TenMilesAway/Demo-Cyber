@@ -18,8 +18,8 @@ namespace HA
         [SerializeField] private Text _txtPrompt;
         [SerializeField] private Transform _interactiveOptionContainer;
 
-        private List<IInteractive> _interactives;            // 可交互物体
-        private List<InteractiveOption> _interactiveOptions; // 可交互物体 InteractiveOption
+        private List<IInteractive> _interactives;            // 所有可交互物体
+        private List<InteractiveOption> _interactiveOptions; // 可交互物体选项 InteractiveOption
         private Cyber.PlayerInput _playerInput;              // 用户输入组件
         private int _lastSelectIndex;                        // 刚才选中的选项
         private int _currentSelectIndex;                     // 现在选中的选项
@@ -47,7 +47,6 @@ namespace HA
 
             _isFirstShow = true;
 
-            // 初始化一些监听
             AddListeners();
         }
 
@@ -58,7 +57,25 @@ namespace HA
             RemoveListeners();
         }
 
-        #region 主要方法
+        private void AddListeners()
+        {
+            GameManager.Event.AddListener<List<IInteractive>>(GameEventType.UpdateInteractiveList, UpdateInteractives);
+            GameManager.Event.Broadcast(GameEventType.EnableInteractiveInput);
+
+            _playerInput.PlayerActions.InteractiveOption.started += OnInteractiveStarted;
+            _playerInput.PlayerActions.Interaction.started += StartInteractive;
+        }
+
+        private void RemoveListeners()
+        {
+            GameManager.Event.RemoveListener<List<IInteractive>>(GameEventType.UpdateInteractiveList, UpdateInteractives);
+            GameManager.Event.Broadcast(GameEventType.DisableInteractiveInput);
+
+            _playerInput.PlayerActions.InteractiveOption.started -= OnInteractiveStarted;
+            _playerInput.PlayerActions.Interaction.started -= StartInteractive;
+        }
+
+        #region 监听方法：交互
         /// <summary>
         /// 刷新可交互物体列表
         /// </summary>
@@ -162,28 +179,6 @@ namespace HA
             }
 
             UIManager.GetInstance().ClosePanel(GetPanelName());
-        }
-        #endregion
-
-        #region 监听方法
-        private void AddListeners()
-        {
-            GameManager.Event.AddListener<List<IInteractive>>(GameEventType.UpdateInteractiveList, UpdateInteractives);
-
-            GameManager.Event.Broadcast(GameEventType.EnableInteractiveInput);
-
-            _playerInput.PlayerActions.InteractiveOption.started += OnInteractiveStarted;
-            _playerInput.PlayerActions.Interaction.started += StartInteractive;
-        }
-
-        private void RemoveListeners()
-        {
-            GameManager.Event.RemoveListener<List<IInteractive>>(GameEventType.UpdateInteractiveList, UpdateInteractives);
-
-            GameManager.Event.Broadcast(GameEventType.DisableInteractiveInput);
-
-            _playerInput.PlayerActions.InteractiveOption.started -= OnInteractiveStarted;
-            _playerInput.PlayerActions.Interaction.started -= StartInteractive;
         }
         #endregion
 

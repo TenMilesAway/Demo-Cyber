@@ -17,24 +17,23 @@ namespace HA
         [SerializeField] private Text _txtNum;
 
         [Header("类型")]
-        [SerializeField] private ItemCellType _itemCellType;    // 格子类型, 默认为 None
-        [SerializeField] private ItemType _itemType;            // 物品类型：物品、装备、药水
-        [SerializeField] private ItemCellParent _itemCellParent;// 格子的父类
+        [SerializeField] private ItemCellType _itemCellType;     // 格子类型, 默认为 None
+        [SerializeField] private ItemType _itemType;             // 物品类型：物品、装备、药水
+        [SerializeField] private ItemCellParent _itemCellParent; // 格子的父类
 
         [Header("组别")]
         [SerializeField] private GameObject _groupBag;
         [SerializeField] private GameObject _groupTreasure;
 
-        [HideInInspector] public ItemInfo _itemInfo;            // 物品信息
-        [HideInInspector] public string _imgItemPath;           // 物品图片路径
-        [HideInInspector] public int _id = -1;                  // 格子在父类中的 ID
-        [HideInInspector] public int _parentInstanceID = 0;     // 物品格子在父类中的 ID
+        [HideInInspector] public ItemInfo _itemInfo;             // 物品信息
+        [HideInInspector] public string _imgItemPath;            // 物品图片路径
+        [HideInInspector] public int _idInParent = -1;           // 格子在父类中的 ID
+        [HideInInspector] public int _parentInstanceID = 0;      // 父类的唯一 ID
 
-        private HATreasureEntity _treasureEntity;
-        private Sequence _searchSequence;
-        private bool _isOpenDrag;
-        private bool _isTreasure;
-        private float _radius = 15f;
+        private HATreasureEntity _treasureEntity;                // 宝藏内物品数据
+        private bool _isTreasure;                                // 是否是宝藏格子
+        private Sequence _searchSequence;                        // 搜索 DOTween
+        private float _radius = 15f;                             // 搜索动画半径
 
         /// <summary>
         /// 初始化
@@ -58,7 +57,7 @@ namespace HA
             _itemInfo = info;
             _treasureEntity = treasureEntity;
             _itemCellParent = parent;
-            _id = id;
+            _idInParent = id;
             _parentInstanceID = parentInstanceID;
 
             // 如果信息不为空，根据 info 加载物品
@@ -117,7 +116,7 @@ namespace HA
 
         #region 主要方法
         /// <summary>
-        /// 用于宝藏搜索动画
+        /// 宝藏搜索动画
         /// </summary>
         public void StartSearch()
         {
@@ -185,7 +184,7 @@ namespace HA
             {
                 // 从 playerInfo 中删除这条
                 PlayerInfo playerInfo = PlayerDataManager.GetInstance().GetPlayerInfo();
-                playerInfo._allItems[_id] = new ItemInfo { _id = 0, _num = 0 };
+                playerInfo._allItems[_idInParent] = new ItemInfo { _id = 0, _num = 0 };
 
                 GameManager.Event.Broadcast<PlayerInfo>(GameEventType.UpdateInventoryItemList, playerInfo);
                 GameManager.Event.Broadcast(GameEventType.ReqPlayerInfoUpload);
@@ -193,7 +192,7 @@ namespace HA
         }
         #endregion
 
-        #region 监听方法
+        #region 监听方法：Pointer & Drag
         /// <summary>
         /// 添加鼠标进入退出的监听
         /// </summary>
@@ -237,12 +236,14 @@ namespace HA
         /// <summary>
         /// 移除所有监听
         /// </summary>
-        public void RemoveAllListeners()
+        public void RemoveListeners()
         {
             RemovePointerListeners();
             RemoveDragListeners();
         }
+        #endregion
 
+        #region 监听方法：UI
         /// <summary>
         /// 鼠标进入物品格子
         /// </summary>
@@ -289,22 +290,78 @@ namespace HA
         }
         #endregion
 
-        #region 辅助方法
+        #region 辅助方法：外部获取信息
+        /// <summary>
+        /// 获得物品 Image 组件
+        /// </summary>
         public Image GetImage()
         {
             return _imgItem;
         }
 
+        /// <summary>
+        /// 获得格子类型
+        /// </summary>
         public ItemCellType GetItemCellType()
         {
             return _itemCellType;
         }
 
+        /// <summary>
+        /// 获得格子的父类类型
+        /// </summary>
         public ItemCellParent GetItemCellParent()
         {
             return _itemCellParent;
         }
+        #endregion
 
+        #region 辅助方法：格子类型判断
+        /// <summary>
+        /// 宝藏格子，未被搜索过
+        /// </summary>
+        private bool IsTreasureAndNotSearched()
+        {
+            return _isTreasure && 
+                   _itemInfo != null && 
+                   _itemInfo._id != 0 && 
+                   _treasureEntity != null &&
+                   _treasureEntity._treasureID != 0;
+        }
+
+        /// <summary>
+        /// 宝藏格子，但被搜索过了
+        /// </summary>
+        private bool IsTreasureButSearched()
+        {
+            return _isTreasure &&
+                   _itemInfo != null &&
+                   _itemInfo._id != 0 &&
+                   (_treasureEntity == null || _treasureEntity._treasureID == 0);
+        }
+
+        /// <summary>
+        /// 宝藏格子，但是没有物品信息
+        /// </summary>
+        private bool IsTreasureButNoItemInfo()
+        {
+            return _isTreasure &&
+                   (_itemInfo == null || _itemInfo._id == 0) &&
+                   (_treasureEntity == null || _treasureEntity._treasureID == 0);
+        }
+
+        /// <summary>
+        /// 物品格子，但是没有物品信息
+        /// </summary>
+        private bool IsInventoryButNoItemInfo()
+        {
+            return !_isTreasure &&
+                   (_itemInfo == null || _itemInfo._id == 0) &&
+                   _treasureEntity == null;
+        }
+        #endregion
+
+        #region 刷新 ItemCell UI
         public void UpdateItemCellInfo()
         {
             if (_itemInfo == null || _itemInfo._id == 0)
@@ -330,51 +387,6 @@ namespace HA
             {
                 _imgItem.sprite = obj as Sprite;
             });
-        }
-        #endregion
-
-        #region 格子类型判断
-        /// <summary>
-        /// 宝藏格子，未被搜索过
-        /// </summary>
-        public bool IsTreasureAndNotSearched()
-        {
-            return _isTreasure && 
-                   _itemInfo != null && 
-                   _itemInfo._id != 0 && 
-                   _treasureEntity != null &&
-                   _treasureEntity._treasureID != 0;
-        }
-
-        /// <summary>
-        /// 宝藏格子，但被搜索过了
-        /// </summary>
-        public bool IsTreasureButSearched()
-        {
-            return _isTreasure &&
-                   _itemInfo != null &&
-                   _itemInfo._id != 0 &&
-                   (_treasureEntity == null || _treasureEntity._treasureID == 0);
-        }
-
-        /// <summary>
-        /// 宝藏格子，但是没有物品信息
-        /// </summary>
-        public bool IsTreasureButNoItemInfo()
-        {
-            return _isTreasure &&
-                   (_itemInfo == null || _itemInfo._id == 0) &&
-                   (_treasureEntity == null || _treasureEntity._treasureID == 0);
-        }
-
-        /// <summary>
-        /// 物品格子，但是没有物品信息
-        /// </summary>
-        public bool IsInventoryButNoItemInfo()
-        {
-            return !_isTreasure &&
-                   (_itemInfo == null || _itemInfo._id == 0) &&
-                   _treasureEntity == null;
         }
         #endregion
     }

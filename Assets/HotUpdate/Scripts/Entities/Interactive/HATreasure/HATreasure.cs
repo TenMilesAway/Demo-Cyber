@@ -37,7 +37,7 @@ namespace HA
         public void Interact(object interactor = null)
         {
             TreasurePanelParam treasurePanelParam = new TreasurePanelParam();
-            treasurePanelParam.isInteractable = _isInteractable;
+            treasurePanelParam._isInteractable = _isInteractable;
             // 未被打开过, 则初始化宝藏 Entities
             if (!_isInteractable)
             {
@@ -46,8 +46,8 @@ namespace HA
                 _isInteractable = true;
                 HATreasureDataManager.GetInstance().AddHATreasureListToDic(_instanceID, _treasureEntities);
             }
-            treasurePanelParam.parentInstanceID = _instanceID;
-            treasurePanelParam.treasureEntities = _treasureEntities;
+            treasurePanelParam._parentInstanceID = _instanceID;
+            treasurePanelParam._treasureEntities = _treasureEntities;
             UIManager.GetInstance().OpenPanel(GlobalDefine.TreasurePanel, UILayer.Mid, treasurePanelParam);
 
             InventoryParam param = new InventoryParam();

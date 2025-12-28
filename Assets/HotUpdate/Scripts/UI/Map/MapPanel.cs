@@ -19,19 +19,29 @@ namespace HA
         {
             base.InitHandle(param);
 
-            _btnClose.onClick.AddListener(OnClickBtnClose);
-            _btnFeiCuiLinHai.onClick.AddListener(() => OnClickBtnNextMap(1));
+            AddListeners();
         }
 
         protected override void CloseHandle()
         {
             base.CloseHandle();
 
+            RemoveListeners();
+        }
+
+        private void AddListeners()
+        {
+            _btnClose.onClick.AddListener(OnClickBtnClose);
+            _btnFeiCuiLinHai.onClick.AddListener(() => OnClickBtnNextMap(1));
+        }
+
+        private void RemoveListeners()
+        {
             _btnClose.onClick.RemoveAllListeners();
             _btnFeiCuiLinHai.onClick.RemoveAllListeners();
         }
 
-        #region 监听方法
+        #region 监听方法：UI
         private void OnClickBtnClose()
         {
             UIManager.GetInstance().ClosePanel(GlobalDefine.MapPanel);
@@ -64,7 +74,7 @@ namespace HA
         }
         #endregion
 
-        #region 辅助方法
+        #region 辅助方法：根据 Level 获得数据
         /// <summary>
         /// 获得场景名
         /// </summary>
@@ -82,6 +92,11 @@ namespace HA
             return null;
         }
 
+        /// <summary>
+        /// 获得 FsmState
+        /// </summary>
+        /// <param name="level"></param>
+        /// <returns></returns>
         private string GetFsmStateByLevel(int level)
         {
             switch (level)

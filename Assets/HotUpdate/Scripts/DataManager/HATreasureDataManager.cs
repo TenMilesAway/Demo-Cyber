@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace HA
 {
+    /// <summary>
+    /// Treasure 表数据 & 管理 HATreasure 的初始化等方法
+    /// </summary>
     public class HATreasureDataManager : BaseManager<HATreasureDataManager>
     {
         private readonly static Dictionary<int, TBTreasureData> treasureDataDic = new Dictionary<int, TBTreasureData>();
@@ -14,30 +17,23 @@ namespace HA
 
         public async void Init()
         {
-            // 从 json 去读取数据
             List<TBTreasureData> treasures = await HAJsonData.LoadAsync<TBTreasureData>("Assets/HotUpdate/TableData/tbtreasure.json");
 
-            // 存进 treasureDataDic
             foreach (TBTreasureData treasure in treasures)
             {
                 treasureDataDic[treasure.id] = treasure;
             }
         }
 
-        #region 主要方法
-        /// <summary>
-        /// 获得预设宝藏配置
-        /// </summary>
         public TBTreasureData GetData(int id)
         {
             return treasureDataDic[id];
         }
 
+        #region 主要方法：初始化宝藏箱
         /// <summary>
-        /// 初始化宝藏的物品
+        /// 初始化宝藏箱的物品
         /// </summary>
-        /// <param name="treasureID"></param>
-        /// <returns></returns>
         public List<HATreasureEntity> InitHATreasure(int treasureID)
         {
             List<HATreasureEntity> result = new List<HATreasureEntity>();
@@ -112,7 +108,7 @@ namespace HA
         }
         #endregion
 
-        #region 辅助方法
+        #region 辅助方法：初始化宝藏箱
         /// <summary>
         /// 根据宝藏权重来随机一个物品
         /// </summary>
@@ -180,7 +176,7 @@ namespace HA
         }
         #endregion
 
-        #region 已打开过的宝藏数据管理
+        #region 辅助方法：已打开过的宝藏箱数据管理
         /// <summary>
         /// 将 List<HATreasureEntity> 存入字典中
         /// </summary>

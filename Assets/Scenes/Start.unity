@@ -1212,11 +1212,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b32f26bdd6e43e42ac9c66fbbf106ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ip: {fileID: 1720556579}
-  port: {fileID: 2013453930}
-  loginCanvas: {fileID: 1990181275}
-  txtLoginID: {fileID: 799363972}
-  txtLoad: {fileID: 1098197469}
+  _ip: {fileID: 1720556579}
+  _port: {fileID: 2013453930}
+  _loginCanvas: {fileID: 1990181275}
+  _txtLoginID: {fileID: 799363972}
+  _txtLoad: {fileID: 1098197469}
   btnConnect: {fileID: 8539904360402750892}
   btnNotConnect: {fileID: 8539904360402750891}
   btnRegister: {fileID: 1311557149}

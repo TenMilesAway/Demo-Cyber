@@ -6,8 +6,7 @@ namespace HA
 {
     public class InteractiveDataManager : BaseManager<InteractiveDataManager>
     {
-        // 当前可交互物体
-        private List<IInteractive> _interactives = new List<IInteractive>();
+        private List<IInteractive> _interactives = new List<IInteractive>(); // 当前可交互物体
 
         public List<IInteractive> CurrentInteractives { get { return _interactives; } }
 
@@ -18,11 +17,17 @@ namespace HA
         }
 
         #region 主要方法
+        /// <summary>
+        /// 清除可交互物体
+        /// </summary>
         public void ClearInteractives()
         {
             _interactives.Clear();
         }
 
+        /// <summary>
+        /// 获得可交互物体
+        /// </summary>
         public List<IInteractive> GetInteractives()
         {
             return _interactives;

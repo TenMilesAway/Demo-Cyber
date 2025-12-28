@@ -32,18 +32,24 @@ namespace HA
         }
 
         #region 主要方法
+        /// <summary>
+        /// 获得当前选择的 ItemCell
+        /// </summary>
+        /// <returns></returns>
         public ItemCell GetNowSelectItemCell()
         {
             return _nowSelectItemCell;
         }
         #endregion
 
-        #region 监听方法
+        #region 监听方法：更新数据
         private void UpdateInventoryItemList(PlayerInfo info)
         {
             _itemInfos = info._allItems;
         }
+        #endregion
 
+        #region 监听方法：Pointer & Drag
         /// <summary>
         /// 鼠标进入物品格子时, 显示详细信息
         /// </summary>
@@ -166,9 +172,9 @@ namespace HA
         }
         #endregion
 
-        #region 辅助方法
+        #region 辅助方法：交换格子
         /// <summary>
-        /// 交换格子位置
+        /// 检查交换格子位置
         /// </summary>
         private void ChangeItemCell()
         {
@@ -179,6 +185,9 @@ namespace HA
             }
         }
 
+        /// <summary>
+        /// 交换格子位置
+        /// </summary>
         private void SwapAndUpdateItemCell()
         {
             // 如果两个物品 ID 相同，则叠加
@@ -204,12 +213,12 @@ namespace HA
 
             if (nowDragParent == ItemCellParent.Inventory)
             {
-                _itemInfos[_nowDragItemCell._id] = _nowDragItemCell._itemInfo;
+                _itemInfos[_nowDragItemCell._idInParent] = _nowDragItemCell._itemInfo;
             }
             else if (nowDragParent == ItemCellParent.Treasure)
             {
                 List<HATreasureEntity> treasure = HATreasureDataManager.GetInstance().GetHATreasureListFromDic(_nowDragItemCell._parentInstanceID);
-                treasure[_nowDragItemCell._id] = new HATreasureEntity
+                treasure[_nowDragItemCell._idInParent] = new HATreasureEntity
                 {
                     _treasureID = _nowDragItemCell._itemInfo == null ? 0 : _nowDragItemCell._itemInfo._id,
                     _treasureNum = _nowDragItemCell._itemInfo == null ? 0 : _nowDragItemCell._itemInfo._num,
@@ -218,12 +227,12 @@ namespace HA
 
             if (nowInParent == ItemCellParent.Inventory)
             {
-                _itemInfos[_nowInItemCell._id] =  _nowInItemCell._itemInfo;
+                _itemInfos[_nowInItemCell._idInParent] =  _nowInItemCell._itemInfo;
             }
             else if (nowInParent == ItemCellParent.Treasure)
             {
                 List<HATreasureEntity> treasure = HATreasureDataManager.GetInstance().GetHATreasureListFromDic(_nowInItemCell._parentInstanceID);
-                treasure[_nowInItemCell._id] = new HATreasureEntity
+                treasure[_nowInItemCell._idInParent] = new HATreasureEntity
                 {
                     _treasureID = _nowInItemCell._itemInfo == null ? 0 : _nowInItemCell._itemInfo._id,
                     _treasureNum = _nowInItemCell._itemInfo == null ? 0 : _nowInItemCell._itemInfo._num,
@@ -233,7 +242,9 @@ namespace HA
             GameManager.Event.Broadcast(GameEventType.UpdateInventoryPanelUI);
             GameManager.Event.Broadcast(GameEventType.ReqPlayerInfoUpload);
         }
+        #endregion
 
+        #region 辅助方法：外部获取数据
         /// <summary>
         /// 获得物品种类对应字符串
         /// </summary>
@@ -258,6 +269,9 @@ namespace HA
             return typeString;
         }
 
+        /// <summary>
+        /// 获得 ItemCell 类型
+        /// </summary>
         public ItemType GetItemType(int type)
         {
             ItemType result = ItemType.Item;

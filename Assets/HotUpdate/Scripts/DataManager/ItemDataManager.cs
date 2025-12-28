@@ -6,7 +6,7 @@ using UnityEngine;
 namespace HA
 {
     /// <summary>
-    /// 物品数据管理器
+    /// Item 表数据
     /// </summary>
     public class ItemDataManager : BaseManager<ItemDataManager>
     {
@@ -14,10 +14,8 @@ namespace HA
 
         public async void Init()
         {
-            // 从 json 去读取数据
             List<TBItemData> items = await HAJsonData.LoadAsync<TBItemData>("Assets/HotUpdate/TableData/tbitem.json");
 
-            // 存进 itemDataDic
             foreach (TBItemData item in items)
             {
                 itemDataDic[item.id] = item;

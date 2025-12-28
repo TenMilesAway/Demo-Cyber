@@ -79,6 +79,8 @@ namespace HA
                     _dialogueOptions.Add(dialogueOption);
                     dialogueOption.transform.SetParent(_dialogueOptionContainer, false);
                     dialogueOption.GetComponent<DialogueOption>().Init("结束对话", 0, DialogueOver);
+
+                    // 也许未来可以在这里加入对话的回调逻辑：任务、触发其它
                 });
 
                 return;
@@ -120,7 +122,7 @@ namespace HA
         }
         #endregion
 
-        #region 监听方法
+        #region 监听方法：UI
         /// <summary>
         /// 中止对话
         /// </summary>

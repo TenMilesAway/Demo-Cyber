@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace HA
 {
+    /// <summary>
+    /// Level ±íÊý¾Ý
+    /// </summary>
     public class LevelDataManager : BaseManager<LevelDataManager>
     {
         private readonly static Dictionary<int, TBLevelData> levelDataDic = new Dictionary<int, TBLevelData>();

@@ -11,18 +11,18 @@ namespace HA
     /// </summary>
     public class PlayerDataManager : BaseManager<PlayerDataManager>
     {
-        private PlayerInfo _playerInfo;
-        private PlayerInput _input;
-        private Transform _player;
+        private PlayerInfo _playerInfo; // 玩家信息
+        private PlayerInput _input;     // 玩家输入
+        private Transform _player;      // 玩家位置
 
-        private const string _playerTag = "Player";
+        private const string _playerTag = "Player"; // 玩家 Tag
 
         public void Init()
         {
-            NetManager.AddMsgListener(GameEventType.HAMsgPlayerInfoLoad.ToString(), RpsPlayerInfoLoad);
-            NetManager.AddMsgListener(GameEventType.HAMsgPlayerInfoUpload.ToString(), RpsPlayerInfoUpload);
-            GameManager.Event.AddListener(GameEventType.ReqPlayerInfoLoad, ReqPlayerInfoLoad);
-            GameManager.Event.AddListener(GameEventType.ReqPlayerInfoUpload, ReqPlayerInfoUpload);
+            NetManager.AddMsgListener(GameEventType.HAMsgPlayerInfoLoad.ToString(), RpsPlayerInfoLoad);     // 加载玩家信息响应
+            NetManager.AddMsgListener(GameEventType.HAMsgPlayerInfoUpload.ToString(), RpsPlayerInfoUpload); // 上传玩家信息响应
+            GameManager.Event.AddListener(GameEventType.ReqPlayerInfoLoad, ReqPlayerInfoLoad);              // 请求加载玩家信息
+            GameManager.Event.AddListener(GameEventType.ReqPlayerInfoUpload, ReqPlayerInfoUpload);          // 请求上传玩家信息
 
             // 请求玩家数据
             GameManager.Event.Broadcast(GameEventType.ReqPlayerInfoLoad);
@@ -30,23 +30,35 @@ namespace HA
             _input = GameObject.FindGameObjectWithTag(_playerTag).GetComponent<PlayerInput>();
         }
 
-        #region 主要方法
+        #region 主要方法：修改玩家信息
+        /// <summary>
+        /// 设置玩家 Transform
+        /// </summary>
         public void SetPlayer(Transform player)
         {
             _player = player;
         }
 
+        /// <summary>
+        /// 设置玩家至指定坐标
+        /// </summary>
         public void SetPlayerToPlace(Vector3 position)
         {
             _player.position = position;
         }
 
+        /// <summary>
+        /// 当前玩家的 MainCameraTransform 是否存在
+        /// </summary>
         public bool GetPlayerMainCamera()
         {
             if (_player.GetComponentInChildren<Player>().MainCameraTransform == null) return false;
             else return true;
         }
 
+        /// <summary>
+        /// 设置玩家的 MainCameraTransform
+        /// </summary>
         public void SetPlayerMainCamera()
         {
             _player.GetComponentInChildren<Player>().MainCameraTransform = Camera.main.transform;
@@ -66,6 +78,16 @@ namespace HA
         public PlayerInput GetPlayerInput()
         {
             return _input;
+        }
+
+        /// <summary>
+        /// 玩家获得经验值
+        /// </summary>
+        public void SendEXPToPlayer(int exp)
+        {
+            _playerInfo._currentEXP += exp;
+            RefreshLevel();
+            ReqPlayerInfoUpload();
         }
 
         /// <summary>
@@ -93,17 +115,10 @@ namespace HA
             HADebug.LogErrorFormat("玩家信息加载超时, 超过[{0}]秒", timeoutSeconds);
             return default;
         }
-
+        
         /// <summary>
-        /// 玩家获得经验值
+        /// 刷新 Level 数据
         /// </summary>
-        public void SendEXPToPlayer(int exp)
-        {
-            _playerInfo._currentEXP += exp;
-            RefreshLevel();
-            ReqPlayerInfoUpload();
-        }
-
         private void RefreshLevel()
         {
             int nowLevel = _playerInfo._level;
@@ -117,7 +132,9 @@ namespace HA
 
             GameManager.Event.Broadcast<PlayerInfo>(GameEventType.UpdateMainPanelUI, _playerInfo);
         }
+        #endregion
 
+        #region 监听方法：发送请求
         /// <summary>
         /// 向服务器请求获取玩家信息
         /// </summary>
@@ -144,7 +161,7 @@ namespace HA
         }
         #endregion
 
-        #region 监听方法
+        #region 监听方法：请求响应
         /// <summary>
         /// 监听 ReqPlayerInfoLoad 返回消息
         /// </summary>
@@ -188,7 +205,8 @@ namespace HA
 
         #region 辅助方法
         /// <summary>
-        /// 获得类型的仓库容量，目前只有 ItemNun 了
+        /// 获得类型的仓库容量
+        /// 修改后：目前只有 ItemNun
         /// </summary>
         public int GetItemNumByType(int type)
         {

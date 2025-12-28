@@ -1,10 +1,5 @@
-using Cyber;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 
 namespace HA
@@ -38,8 +33,8 @@ namespace HA
         [SerializeField] private Text _txtDescContent;
 
         private PlayerInfo _playerInfo;
-        private List<ItemCell> _showList = new List<ItemCell>();
-        private bool _isWithTreasurePanel;
+        private List<ItemCell> _showList = new List<ItemCell>(); // 当前显示的所有 ItemCell
+        private bool _isWithTreasurePanel;                       // 是否和宝藏面板一起开启
 
         public override string GetPanelName()
         {
@@ -51,7 +46,7 @@ namespace HA
             base.InitHandle(param);
 
             InventoryParam inventoryParam = (InventoryParam)param;
-            // 这里修改了，不走外部传的数据
+            // 修改，不走外部传的数据
             _playerInfo = PlayerDataManager.GetInstance().GetPlayerInfo();
             _isWithTreasurePanel = inventoryParam.isWithTreasurePanel;
 
@@ -68,6 +63,28 @@ namespace HA
             base.CloseHandle();
 
             RemoveListeners();
+        }
+
+        private void AddListeners()
+        {
+            // 业务
+            GameManager.Event.AddListener<ItemInfo>(GameEventType.UpdateSelectedItemDetail, UpdateSelectedItemDetailInfo); // 更新 DetailPanel 信息
+            GameManager.Event.AddListener(GameEventType.UpdateInventoryPanelUI, UpdateUI);                                 // 更新当前面板信息
+
+            // UI
+            _btnClose.onClick.AddListener(OnClickCloseBtn);     // 关闭面板
+            _btnDiscard.onClick.AddListener(OnClickDiscardBtn); // 丢弃物品
+        }
+
+        private void RemoveListeners()
+        {
+            // 业务
+            GameManager.Event.RemoveListener<ItemInfo>(GameEventType.UpdateSelectedItemDetail, UpdateSelectedItemDetailInfo);
+            GameManager.Event.RemoveListener(GameEventType.UpdateInventoryPanelUI, UpdateUI);
+
+            // UI
+            _btnClose.onClick.RemoveAllListeners();
+            _btnDiscard.onClick.RemoveAllListeners();
         }
 
         #region 主要方法
@@ -126,65 +143,9 @@ namespace HA
                 });
             }
         }
-
-        private void UpdateSelectedItemDetailInfo(ItemInfo info)
-        {
-            _imgItem.enabled = false;
-
-            if (info == null)
-            {
-                _groupSelelcted.SetActive(false);
-                _groupNotSelected.SetActive(true);
-                return;
-            }
-
-            _groupSelelcted.SetActive(true);
-            _groupNotSelected.SetActive(false);
-
-            TBItemData itemData = ItemDataManager.GetInstance().GetData(info._id);
-
-            GameManager.Resource.LoadResourceAsync<Sprite>(itemData.icon, GetInstanceID().ToString(), (obj, result) =>
-            {
-                _imgItem.sprite = obj as Sprite;
-                _imgItem.enabled = true;
-            });
-
-            _btnEquip.gameObject.SetActive(itemData.type == 1);
-            _btnUse.gameObject.SetActive(itemData.usable == 1);
-            _btnDiscard.gameObject.SetActive(InventoryDataManager.GetInstance().GetNowSelectItemCell().GetItemCellParent() != ItemCellParent.Treasure);
-            _txtItem.text = itemData.name;
-            _txtTypeContent.text = InventoryDataManager.GetInstance().GetItemTypeString(itemData.type);
-            _txtSourceContent.text = itemData.source;
-            _txtUsageContent.text = itemData.usage;
-            _txtDescContent.text = itemData.desc;
-        }
         #endregion
 
-        #region 监听方法
-        /// <summary>
-        /// 添加监听
-        /// </summary>
-        private void AddListeners()
-        {
-            GameManager.Event.AddListener<ItemInfo>(GameEventType.UpdateSelectedItemDetail, UpdateSelectedItemDetailInfo);
-            GameManager.Event.AddListener(GameEventType.UpdateInventoryPanelUI, UpdateUI);
-
-            _btnClose.onClick.AddListener(OnClickCloseBtn);
-            _btnDiscard.onClick.AddListener(OnClickDiscardBtn);
-        }
-
-        /// <summary>
-        /// 删除监听
-        /// </summary>
-        private void RemoveListeners()
-        {
-            GameManager.Event.RemoveListener<ItemInfo>(GameEventType.UpdateSelectedItemDetail, UpdateSelectedItemDetailInfo);
-            GameManager.Event.RemoveListener(GameEventType.UpdateInventoryPanelUI, UpdateUI);
-
-            _btnClose.onClick.RemoveAllListeners();
-            _btnDiscard.onClick.RemoveAllListeners();
-        }
-
+        #region 监听方法：UI
         /// <summary>
         /// 关闭按钮
         /// </summary>
@@ -192,7 +153,7 @@ namespace HA
         {
             foreach (var component in _showList)
             {
-                component.RemoveAllListeners();
+                component.RemoveListeners();
                 UnityObjectPoolFactory.GetInstance().PutItem(GlobalDefine.ItemCell, component.gameObject);
             }
             _showList.Clear();
@@ -231,6 +192,40 @@ namespace HA
             ItemCell nowSelectItemCell = InventoryDataManager.GetInstance().GetNowSelectItemCell();
             nowSelectItemCell.DiscardItem();
         }
+        #endregion
+
+        #region 监听方法：刷新 UI
+        private void UpdateSelectedItemDetailInfo(ItemInfo info)
+        {
+            _imgItem.enabled = false;
+
+            if (info == null)
+            {
+                _groupSelelcted.SetActive(false);
+                _groupNotSelected.SetActive(true);
+                return;
+            }
+
+            _groupSelelcted.SetActive(true);
+            _groupNotSelected.SetActive(false);
+
+            TBItemData itemData = ItemDataManager.GetInstance().GetData(info._id);
+
+            GameManager.Resource.LoadResourceAsync<Sprite>(itemData.icon, GetInstanceID().ToString(), (obj, result) =>
+            {
+                _imgItem.sprite = obj as Sprite;
+                _imgItem.enabled = true;
+            });
+
+            _btnEquip.gameObject.SetActive(itemData.type == 1);
+            _btnUse.gameObject.SetActive(itemData.usable == 1);
+            _btnDiscard.gameObject.SetActive(InventoryDataManager.GetInstance().GetNowSelectItemCell().GetItemCellParent() != ItemCellParent.Treasure);
+            _txtItem.text = itemData.name;
+            _txtTypeContent.text = InventoryDataManager.GetInstance().GetItemTypeString(itemData.type);
+            _txtSourceContent.text = itemData.source;
+            _txtUsageContent.text = itemData.usage;
+            _txtDescContent.text = itemData.desc;
+        }
 
         private void UpdateUI()
         {
@@ -241,6 +236,9 @@ namespace HA
         #endregion
 
         #region 辅助方法
+        /// <summary>
+        /// 更新物品数量
+        /// </summary>
         private (int, int) UpdateItemNumInfo()
         {
             List<ItemInfo> infos = new List<ItemInfo>(_playerInfo._allItems);

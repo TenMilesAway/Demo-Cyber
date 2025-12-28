@@ -10,6 +10,7 @@ namespace HA
     {
         [SerializeField] private Button _btnDialogueOption;
         [SerializeField] private Text _txtDialogueOption;
+
         private int _dialogueIndex;
 
         /// <summary>

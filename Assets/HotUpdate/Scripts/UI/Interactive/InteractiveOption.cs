@@ -28,6 +28,14 @@ namespace HA
         }
 
         /// <summary>
+        /// 初始化交互选项文本
+        /// </summary>
+        private void InitTextInteractiveOption(string npcName, IInteractive obj)
+        {
+            UpdateTextInteractiveOption(npcName, obj);
+        }
+
+        /// <summary>
         /// 更新交互选项文本
         /// </summary>
         public void UpdateTextInteractiveOption(string npcName, IInteractive obj)
@@ -47,13 +55,6 @@ namespace HA
                     _txtInteractiveOption.text = string.Format("前往<color=#28E1E5>{0}</color>", npcName);
                 }
             }
-        }
-        #endregion
-
-        #region 辅助方法
-        private void InitTextInteractiveOption(string npcName, IInteractive obj)
-        {
-            UpdateTextInteractiveOption(npcName, obj);
         }
         #endregion
     }
