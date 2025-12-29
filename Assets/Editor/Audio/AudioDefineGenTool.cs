@@ -16,9 +16,9 @@ public static class AudioDefineGenTool
     {
         if (Selection.objects.Length == 0) return;
 
-        Debug.LogFormat("当前选中文件夹: {0}", Selection.objects[0].name);
+        HADebug.LogFormat("当前选中文件夹: {0}", Selection.objects[0].name);
 
-        Dictionary<string, AudioData> confDic = new Dictionary<string, AudioData>();
+        Dictionary<string, AudioData> audioDataDic = new Dictionary<string, AudioData>();
 
         // 判断是否选中文件夹
         if (AssetDatabase.IsValidFolder(AssetDatabase.GetAssetPath(Selection.objects[0])))
@@ -34,17 +34,20 @@ public static class AudioDefineGenTool
                 AudioClip clip = AssetDatabase.LoadAssetAtPath<AudioClip>(path);
                 if (clip == null) continue;
 
-                AudioData conf = new AudioData();
-                if (confDic.ContainsKey(clip.name))
+                AudioData data = new AudioData();
+                if (audioDataDic.ContainsKey(clip.name))
                 {
                     Debug.LogWarningFormat("音频名称重复: 名称[{0}] 路径[{1}]", clip.name, path);
                     continue;
                 }
 
-                conf.key = clip.name;
-                conf.path = path;
-                conf.loop = clip.name.StartsWith("Music");
-                confDic.Add(conf.key, conf);
+                string relativePath = path.Replace(rootPath + "/", "");
+                relativePath = relativePath.Substring(0, relativePath.LastIndexOf("/"));
+                data.key = clip.name;
+                data.path = path;
+                data.loop = clip.name.StartsWith("Music");
+                data.mixerName = relativePath;
+                audioDataDic.Add(data.key, data);
             }
 
             bool isNewCreate = false;
@@ -57,7 +60,7 @@ public static class AudioDefineGenTool
                 isNewCreate = true;
             }
             dataSO.conf = new List<AudioData>();
-            foreach (KeyValuePair<string, AudioData> conf in confDic)
+            foreach (KeyValuePair<string, AudioData> conf in audioDataDic)
             {
                 dataSO.conf.Add(conf.Value);
             }
@@ -67,12 +70,12 @@ public static class AudioDefineGenTool
             // 刷新数据
             else EditorUtility.SetDirty(dataSO);
 
-            // 生成 cs
+            // 生成 CSharp
             StringBuilder contentSB = new StringBuilder();
             contentSB.Append("// 此文件是自动生成的，请勿手动修改\n");
             contentSB.Append("public static class AudioDefine\n");
             contentSB.Append("{\n");
-            foreach (KeyValuePair<string, AudioData> conf in confDic)
+            foreach (KeyValuePair<string, AudioData> conf in audioDataDic)
             {
                 string name = conf.Key;
                 contentSB.Append("    public static string " + name + " = \"" + name + "\";\n");
@@ -80,6 +83,8 @@ public static class AudioDefineGenTool
             contentSB.Append("}\n");
             File.WriteAllText(AudioDefinePath, contentSB.ToString());
             AssetDatabase.Refresh();
+
+            HADebug.LogFormat("生成完成");
         }
     }
 }

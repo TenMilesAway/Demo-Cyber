@@ -240,7 +240,7 @@ namespace HA
             }
 
             GameManager.Event.Broadcast(GameEventType.UpdateInventoryPanelUI);
-            GameManager.Event.Broadcast(GameEventType.ReqPlayerInfoUpload);
+            GameManager.Event.Broadcast(GameEventType.ReqPlayerInfoSave);
         }
         #endregion
 

@@ -9,19 +9,27 @@ namespace HA
     public class AudioDataSO : ScriptableObject
     {
         public string desc = "此配置是自动生成的，请勿手动修改";
-
-        [SerializeField]
-        public List<AudioData> conf;
+        [SerializeField] public List<AudioData> conf;
     }
 
     [Serializable]
     public class AudioData
     {
-        // key 值
-        public string key;
-        // 存储路径
-        public string path;
-        // 是否循环播放
-        public bool loop;
+        public string key;       // key 值, 使用 AudioClip 的 name
+        public string path;      // AudioClip 存储路径
+        public bool loop;        // 是否循环播放
+        public string mixerName; // AudioMixer Group 的名称
+    }
+
+    public enum AudioClipType
+    {
+        SFXOpenPanel,
+        SFXClosePanel,
+    }
+
+    public class AudioClipData
+    {
+        public AudioClipType _type;
+        public string _content;
     }
 }

@@ -62,6 +62,13 @@ namespace HA
         {
             base.CloseHandle();
 
+            AudioClipData data = new AudioClipData
+            {
+                _type = AudioClipType.SFXClosePanel,
+                _content = "¹Ø±Õ±³°üÃæ°å",
+            };
+            GameManager.Event.Broadcast<AudioClipData>(GameEventType.PlayAudio, data);
+
             RemoveListeners();
         }
 

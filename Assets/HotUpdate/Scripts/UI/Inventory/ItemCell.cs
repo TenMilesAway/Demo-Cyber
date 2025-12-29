@@ -187,7 +187,7 @@ namespace HA
                 playerInfo._allItems[_idInParent] = new ItemInfo { _id = 0, _num = 0 };
 
                 GameManager.Event.Broadcast<PlayerInfo>(GameEventType.UpdateInventoryItemList, playerInfo);
-                GameManager.Event.Broadcast(GameEventType.ReqPlayerInfoUpload);
+                GameManager.Event.Broadcast(GameEventType.ReqPlayerInfoSave);
             }
         }
         #endregion

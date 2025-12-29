@@ -92,6 +92,13 @@ namespace HA
         #region 监听方法：UI
         private void OnClickBtnBag()
         {
+            AudioClipData data = new AudioClipData
+            {
+                _type = AudioClipType.SFXOpenPanel,
+                _content = "打开仓库面板",
+            };
+            GameManager.Event.Broadcast<AudioClipData>(GameEventType.PlayAudio, data);
+
             InventoryParam param = new InventoryParam();
             param.data = _playerInfo;
 

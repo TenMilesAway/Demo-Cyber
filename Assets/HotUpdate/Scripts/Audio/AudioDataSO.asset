@@ -17,6 +17,8 @@ MonoBehaviour:
   - key: SFXClosePanel
     path: Assets/HotUpdate/Audios/SFX/SFXClosePanel.mp3
     loop: 0
+    mixerName: SFX
   - key: SFXOpenPanel
     path: Assets/HotUpdate/Audios/SFX/SFXOpenPanel.mp3
     loop: 0
+    mixerName: SFX

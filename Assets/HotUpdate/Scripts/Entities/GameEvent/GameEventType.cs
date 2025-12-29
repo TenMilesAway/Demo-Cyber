@@ -9,11 +9,24 @@ public enum GameEventType
     ConnectFail = 2,            // 连接失败
     Close = 3,                  // 连接关闭
     PacketIdEnd = 10000,
+
     /** 网络消息预留区间 **/
-    HAMsgPlayerInfoLoad,        // 玩家信息加载
-    ReqPlayerInfoLoad,          // 请求加载玩家信息
-    HAMsgPlayerInfoUpload,      // 玩家信息上传
-    ReqPlayerInfoUpload,        // 请求上传玩家信息
+    ReqPlayerInfoLoad,          // 请求：获得玩家所有信息
+    ReqPlayerInfoSave,          // 请求：保存玩家所有信息
+    ReqPlayerBaseLoad,          // 请求：获得玩家基础信息
+    ReqPlayerBaseSave,          // 请求：保存玩家基础信息
+    ReqPlayerStatsLoad,         // 请求：获得玩家状态信息
+    ReqPlayerStatsSave,         // 请求：保存玩家状态信息
+    ReqPlayerInventoryLoad,     // 请求：获得玩家背包信息
+    ReqPlayerInventorySave,     // 请求：保存玩家背包信息
+    HAMsgPlayerInfoLoad,        // 响应：获得玩家所有信息
+    HAMsgPlayerInfoSave,        // 响应：保存玩家所有信息
+    MsgPlayerBaseLoad,          // 响应：获得玩家基础信息
+    MsgPlayerBaseSave,          // 响应：保存玩家基础信息
+    MsgPlayerStatsLoad,         // 响应：获得玩家状态信息
+    MsgPlayerStatsSave,         // 响应：保存玩家状态信息
+    MsgPlayerInventoryLoad,     // 响应：获得玩家背包信息
+    MsgPlayerInventorySave,     // 响应：保存玩家背包信息
     
     /** 玩家输入 **/
     DisablePlayerInput,         // 禁用玩家所有输入

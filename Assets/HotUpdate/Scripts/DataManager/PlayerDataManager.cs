@@ -19,14 +19,31 @@ namespace HA
 
         public void Init()
         {
-            NetManager.AddMsgListener(GameEventType.HAMsgPlayerInfoLoad.ToString(), RpsPlayerInfoLoad);     // 加载玩家信息响应
-            NetManager.AddMsgListener(GameEventType.HAMsgPlayerInfoUpload.ToString(), RpsPlayerInfoUpload); // 上传玩家信息响应
-            GameManager.Event.AddListener(GameEventType.ReqPlayerInfoLoad, ReqPlayerInfoLoad);              // 请求加载玩家信息
-            GameManager.Event.AddListener(GameEventType.ReqPlayerInfoUpload, ReqPlayerInfoUpload);          // 请求上传玩家信息
+            NetManager.AddMsgListener(GameEventType.HAMsgPlayerInfoLoad.ToString(), RpsPlayerInfoLoad);         // 1响应：获得玩家所有信息
+            NetManager.AddMsgListener(GameEventType.HAMsgPlayerInfoSave.ToString(), RpsPlayerInfoSave);         // 2响应：保存玩家所有信息
+            NetManager.AddMsgListener(GameEventType.MsgPlayerBaseLoad.ToString(), RpsPlayerBaseLoad);           // 3响应：获得玩家基础信息
+            NetManager.AddMsgListener(GameEventType.MsgPlayerBaseSave.ToString(), RpsPlayerBaseSave);           // 4响应：保存玩家基础信息
+            NetManager.AddMsgListener(GameEventType.MsgPlayerStatsLoad.ToString(), RpsPlayerStatsLoad);         // 5响应：获得玩家状态信息
+            NetManager.AddMsgListener(GameEventType.MsgPlayerStatsSave.ToString(), RpsPlayerStatsSave);         // 6响应：保存玩家状态信息
+            NetManager.AddMsgListener(GameEventType.MsgPlayerInventoryLoad.ToString(), RpsPlayerInventoryLoad); // 7响应：获得玩家背包信息
+            NetManager.AddMsgListener(GameEventType.MsgPlayerInventorySave.ToString(), RpsPlayerInventorySave); // 8响应：保存玩家背包信息
+
+            GameManager.Event.AddListener(GameEventType.ReqPlayerInfoLoad, ReqPlayerInfoLoad);                  // 1请求：获得玩家所有信息
+            GameManager.Event.AddListener(GameEventType.ReqPlayerInfoSave, ReqPlayerInfoSave);                  // 2请求：保存玩家所有信息
+            GameManager.Event.AddListener(GameEventType.ReqPlayerBaseLoad, ReqPlayerBaseLoad);                  // 3请求：获得玩家基础信息
+            GameManager.Event.AddListener(GameEventType.ReqPlayerBaseSave, ReqPlayerBaseSave);                  // 4请求：保存玩家基础信息
+            GameManager.Event.AddListener(GameEventType.ReqPlayerStatsLoad, ReqPlayerStatsLoad);                // 5请求：获得玩家状态信息
+            GameManager.Event.AddListener(GameEventType.ReqPlayerStatsSave, ReqPlayerStatsSave);                // 6请求：保存玩家状态信息
+            GameManager.Event.AddListener(GameEventType.ReqPlayerInventoryLoad, ReqPlayerInventoryLoad);        // 7请求：获得玩家背包信息
+            GameManager.Event.AddListener(GameEventType.ReqPlayerInventorySave, ReqPlayerInventoryLoad);        // 8请求：保存玩家背包信息
 
             // 请求玩家数据
-            GameManager.Event.Broadcast(GameEventType.ReqPlayerInfoLoad);
+            ReqPlayerInfoLoad();
+            ReqPlayerBaseLoad();
+            ReqPlayerStatsLoad();
+            ReqPlayerInventoryLoad();
 
+            // 玩家输入
             _input = GameObject.FindGameObjectWithTag(_playerTag).GetComponent<PlayerInput>();
         }
 
@@ -87,7 +104,9 @@ namespace HA
         {
             _playerInfo._currentEXP += exp;
             RefreshLevel();
-            ReqPlayerInfoUpload();
+            ReqPlayerInfoSave();
+            ReqPlayerBaseSave();
+            ReqPlayerStatsSave();
         }
 
         /// <summary>
@@ -103,7 +122,7 @@ namespace HA
             {
                 PlayerInfo playerInfo = GetPlayerInfo();
 
-                if (playerInfo != null && !string.IsNullOrEmpty(playerInfo._id))
+                if (playerInfo != null && !string.IsNullOrEmpty(playerInfo._id) && playerInfo._maxHP != 0)
                 {
                     HADebug.LogFormat("玩家信息加载成功[{0}], 耗时[{1}]秒", playerInfo.ToString(), Time.time - startTime);
                     return playerInfo;
@@ -136,7 +155,7 @@ namespace HA
 
         #region 监听方法：发送请求
         /// <summary>
-        /// 向服务器请求获取玩家信息
+        /// 请求：获取玩家所有信息
         /// </summary>
         private void ReqPlayerInfoLoad()
         {
@@ -149,9 +168,9 @@ namespace HA
         }
 
         /// <summary>
-        /// 向服务器上传玩家信息以保存
+        /// 请求：保存玩家所有信息
         /// </summary>
-        private void ReqPlayerInfoUpload()
+        private void ReqPlayerInfoSave()
         {
             HAMsgPlayerInfoUpload msg = new HAMsgPlayerInfoUpload();
 
@@ -159,11 +178,118 @@ namespace HA
 
             NetManager.Send(msg);
         }
+
+        /// <summary>
+        /// 请求：获取玩家基础信息
+        /// </summary>
+        private void ReqPlayerBaseLoad()
+        {
+            MsgPlayerBaseLoad msg = new MsgPlayerBaseLoad();
+
+            msg.playerBaseEntity = new PlayerBaseEntity(false);
+            msg.playerBaseEntity.id = GameManager.GlobalData.PlayerID;
+
+            NetManager.Send(msg);
+        }
+
+        /// <summary>
+        /// 请求：保存玩家基础信息
+        /// </summary>
+        private void ReqPlayerBaseSave()
+        {
+            MsgPlayerBaseSave msg = new MsgPlayerBaseSave();
+
+            msg.playerBaseEntity = new PlayerBaseEntity
+            {
+                id = _playerInfo._id,
+                name = _playerInfo._name,
+                head = _playerInfo._head,
+                level = _playerInfo._level,
+                common_currency = _playerInfo._commonCurrency,
+                rare_currency = _playerInfo._rareCurrency
+            };
+
+            NetManager.Send(msg);
+        }
+
+        /// <summary>
+        /// 请求：获取玩家状态信息
+        /// </summary>
+        private void ReqPlayerStatsLoad()
+        {
+            MsgPlayerStatsLoad msg = new MsgPlayerStatsLoad();
+
+            msg.playerStatsEntity = new PlayerStatsEntity(false);
+            msg.playerStatsEntity.player_id = GameManager.GlobalData.PlayerID;
+
+            NetManager.Send(msg);
+        }
+
+        /// <summary>
+        /// 请求：保存玩家状态信息
+        /// </summary>
+        private void ReqPlayerStatsSave()
+        {
+            MsgPlayerStatsSave msg = new MsgPlayerStatsSave();
+
+            msg.playerStatsEntity = new PlayerStatsEntity
+            {
+                player_id = _playerInfo._id,
+                max_hp = _playerInfo._maxHP,
+                max_mp = _playerInfo._maxMP,
+                max_exp = _playerInfo._maxEXP,
+                current_hp = _playerInfo._currentHP,
+                current_mp = _playerInfo._currentMP,
+                current_exp = _playerInfo._currentEXP,
+                attack = _playerInfo._pAttack,
+                armor_penetration = _playerInfo._pArmorPenetration,
+                defense = _playerInfo._pDefense,
+                damage_avoidance = _playerInfo._pDamageAvoidance,
+                critical_probability = _playerInfo._pCriticalProbability,
+                critical_multiplier = _playerInfo._pCriticalMultiplier,
+                suck_probability = _playerInfo._pSuckProbability,
+                suck_multiplier = _playerInfo._pSuckMultiplier,
+            };
+
+            NetManager.Send(msg);
+        }
+
+        /// <summary>
+        /// 请求：获取玩家背包信息
+        /// </summary>
+        private void ReqPlayerInventoryLoad()
+        {
+            MsgPlayerInventoryLoad msg = new MsgPlayerInventoryLoad();
+
+            msg.playerInventoryEntity = new PlayerInventoryEntity(false);
+            msg.playerInventoryEntity.player_id = GameManager.GlobalData.PlayerID;
+
+            NetManager.Send(msg);
+        }
+
+        /// <summary>
+        /// 请求：保存玩家背包信息
+        /// </summary>
+        private void ReqPlayerInventorySave()
+        {
+            MsgPlayerInventorySave msg = new MsgPlayerInventorySave();
+
+            msg.playerInventoryEntity = new PlayerInventoryEntity
+            {
+                player_id = _playerInfo._id,
+                items = _playerInfo._allItems,
+                now_equips = _playerInfo._nowEquips,
+                inventory_num = _playerInfo._inventoryItemNum,
+                safebox_num = _playerInfo._safeboxNum,
+            };
+
+            NetManager.Send(msg);
+        }
         #endregion
 
         #region 监听方法：请求响应
         /// <summary>
-        /// 监听 ReqPlayerInfoLoad 返回消息
+        /// 响应：获取玩家所有信息
         /// </summary>
         private void RpsPlayerInfoLoad(MsgBase msgBase)
         {
@@ -178,7 +304,7 @@ namespace HA
             {
                 HADebug.LogWarning("[客户端] 角色信息获取失败，生成默认数据并进行存储");
                 _playerInfo = new PlayerInfo(true);
-                GameManager.Event.Broadcast(GameEventType.ReqPlayerInfoUpload);
+                ReqPlayerInfoSave();
             }
 
             // 分发数据至必须位置
@@ -186,19 +312,133 @@ namespace HA
         }
 
         /// <summary>
-        /// 监听 ReqPlayerInfoUpload 返回消息
+        /// 响应：保存玩家所有信息
         /// </summary>
-        private void RpsPlayerInfoUpload(MsgBase msgBase)
+        private void RpsPlayerInfoSave(MsgBase msgBase)
         {
             HAMsgPlayerInfoUpload msg = (HAMsgPlayerInfoUpload)msgBase;
 
             if (msg.result == 0)
             {
-                Debug.Log("[客户端] 角色信息存储成功!");
+                HADebug.Log("[客户端] 角色信息存储成功!");
             }
             else
             {
-                Debug.LogError("[客户端] 角色信息存储失败");
+                HADebug.LogError("[客户端] 角色信息存储失败");
+            }
+        }
+
+        /// <summary>
+        /// 响应：获取玩家基础信息
+        /// </summary>
+        private void RpsPlayerBaseLoad(MsgBase msgBase)
+        {
+            MsgPlayerBaseLoad msg = (MsgPlayerBaseLoad)msgBase;
+
+            if (msg.result == 0)
+            {
+                HADebug.Log("[客户端] PlayerBase 获取成功!");
+                UpdatePlayerInfoByPlayerBase(msg.playerBaseEntity);
+            }
+            else
+            {
+                HADebug.LogWarning("[客户端] PlayerBase 获取失败, 生成默认数据并存储");
+                PlayerBaseEntity entity = new PlayerBaseEntity(true);
+                UpdatePlayerInfoByPlayerBase(entity);
+                ReqPlayerBaseSave();
+            }
+        }
+
+        /// <summary>
+        /// 响应：保存玩家基础信息
+        /// </summary>
+        private void RpsPlayerBaseSave(MsgBase msgBase)
+        {
+            MsgPlayerBaseSave msg = (MsgPlayerBaseSave)msgBase;
+
+            if (msg.result == 0)
+            {
+                HADebug.LogFormat("[客户端] PlayerBase 存储成功!");
+            }
+            else
+            {
+                HADebug.LogErrorFormat("[客户端] PlayerBase 存储失败");
+            }
+        }
+
+        /// <summary>
+        /// 响应：获取玩家状态信息
+        /// </summary>
+        private void RpsPlayerStatsLoad(MsgBase msgBase)
+        {
+            MsgPlayerStatsLoad msg = (MsgPlayerStatsLoad)msgBase;
+
+            if (msg.result == 0)
+            {
+                HADebug.Log("[客户端] PlayerStats 获取成功!");
+                UpdatePlayerInfoByPlayerStats(msg.playerStatsEntity);
+            }
+            else
+            {
+                HADebug.LogWarning("[客户端] PlayerStats 获取失败, 生成默认数据并存储");
+                PlayerStatsEntity entity = new PlayerStatsEntity(true);
+                UpdatePlayerInfoByPlayerStats(entity);
+                ReqPlayerStatsSave();
+            }
+        }
+
+        /// <summary>
+        /// 响应：保存玩家状态信息
+        /// </summary>
+        private void RpsPlayerStatsSave(MsgBase msgBase)
+        {
+            MsgPlayerStatsSave msg = (MsgPlayerStatsSave)msgBase;
+
+            if (msg.result == 0)
+            {
+                HADebug.LogFormat("[客户端] PlayerStats 存储成功!");
+            }
+            else
+            {
+                HADebug.LogErrorFormat("[客户端] PlayerStats 存储失败");
+            }
+        }
+
+        /// <summary>
+        /// 响应：获取玩家背包信息
+        /// </summary>
+        private void RpsPlayerInventoryLoad(MsgBase msgBase)
+        {
+            MsgPlayerInventoryLoad msg = (MsgPlayerInventoryLoad)msgBase;
+
+            if (msg.result == 0)
+            {
+                HADebug.Log("[客户端] PlayerInventory 获取成功!");
+                UpdatePlayerInfoByPlayerInventory(msg.playerInventoryEntity);
+            }
+            else
+            {
+                HADebug.Log("[客户端] PlayerInventory 获取失败，生成默认数据并存储");
+                PlayerInventoryEntity entity = new PlayerInventoryEntity(true);
+                UpdatePlayerInfoByPlayerInventory(entity);
+                ReqPlayerInventorySave();
+            }
+        }
+
+        /// <summary>
+        /// 响应：保存玩家背包信息
+        /// </summary>
+        private void RpsPlayerInventorySave(MsgBase msgBase)
+        {
+            MsgPlayerInventorySave msg = (MsgPlayerInventorySave)msgBase;
+
+            if (msg.result == 0)
+            {
+                HADebug.LogFormat("[客户端] PlayerInventory 存储成功!");
+            }
+            else
+            {
+                HADebug.LogErrorFormat("[客户端] PlayerInventory 存储失败");
             }
         }
         #endregion
@@ -219,19 +459,54 @@ namespace HA
                         num = _playerInfo._inventoryItemNum;
                     }
                     break;
-                case 2:
-                    {
-                        num = _playerInfo._inventoryEquipNum;
-                    }
-                    break;
-                case 3:
-                    {
-                        num = _playerInfo._inventoryPotionNum;
-                    }
-                    break;
             }
 
             return num;
+        }
+
+        /// <summary>
+        /// 通过 PlayerBaseEntity 更新 _playerInfo
+        /// </summary>
+        private void UpdatePlayerInfoByPlayerBase(PlayerBaseEntity entity)
+        {
+            _playerInfo._id = entity.id;
+            _playerInfo._name = entity.name;
+            _playerInfo._head = entity.head;
+            _playerInfo._level = entity.level;
+            _playerInfo._commonCurrency = entity.common_currency;
+            _playerInfo._rareCurrency = entity.rare_currency;
+        }
+
+        /// <summary>
+        /// 通过 PlayerStatsEntity 更新 _playerInfo
+        /// </summary>
+        private void UpdatePlayerInfoByPlayerStats(PlayerStatsEntity entity)
+        {
+            _playerInfo._maxHP = entity.max_hp;
+            _playerInfo._maxMP = entity.max_mp;
+            _playerInfo._maxEXP = entity.max_exp;
+            _playerInfo._currentHP = entity.current_hp;
+            _playerInfo._currentMP = entity.current_mp;
+            _playerInfo._currentEXP = entity.current_exp;
+            _playerInfo._pAttack = entity.attack;
+            _playerInfo._pArmorPenetration = entity.armor_penetration;
+            _playerInfo._pDefense = entity.defense;
+            _playerInfo._pDamageAvoidance = entity.damage_avoidance;
+            _playerInfo._pCriticalProbability = entity.critical_probability;
+            _playerInfo._pCriticalMultiplier = entity.critical_multiplier;
+            _playerInfo._pSuckProbability = entity.suck_probability;
+            _playerInfo._pSuckMultiplier = entity.suck_multiplier;
+        }
+
+        /// <summary>
+        /// 通过 PlayerInventoryEntity 更新 _playerInfo
+        /// </summary>
+        private void UpdatePlayerInfoByPlayerInventory(PlayerInventoryEntity entity)
+        {
+            _playerInfo._allItems = entity.items;
+            _playerInfo._nowEquips = entity.now_equips;
+            _playerInfo._inventoryItemNum = entity.inventory_num;
+            _playerInfo._safeboxNum = entity.safebox_num;
         }
         #endregion
     }
