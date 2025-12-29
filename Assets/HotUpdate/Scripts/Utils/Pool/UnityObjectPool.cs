@@ -32,6 +32,8 @@ namespace HA
                         if (s_PoolRoot == null)
                         {
                             s_PoolRoot = new GameObject("PoolRoot").transform;
+                            GameManager.GlobalData.PoolRoot = s_PoolRoot.gameObject;
+                            GameManager.GlobalData.SetDontDestroyOnLoad(s_PoolRoot.gameObject);
                         }
                     }
                 }

@@ -21,6 +21,10 @@ MonoBehaviour:
     m_Address: Assets/HotUpdate/Audios
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 24ce8c1d406130f41a6b6d1f92148543
+    m_Address: Assets/Audio/AudioSourceTemplate.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a21267dd150d19f4e9fc611b903aaf99, type: 2}
   m_SchemaSet:
