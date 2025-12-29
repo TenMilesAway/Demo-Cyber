@@ -38,7 +38,7 @@ namespace HA
             GameManager.Event.AddListener(GameEventType.ReqPlayerInventorySave, ReqPlayerInventoryLoad);        // 8请求：保存玩家背包信息
 
             // 请求玩家数据
-            ReqPlayerInfoLoad();
+            //ReqPlayerInfoLoad();
             ReqPlayerBaseLoad();
             ReqPlayerStatsLoad();
             ReqPlayerInventoryLoad();
@@ -469,6 +469,8 @@ namespace HA
         /// </summary>
         private void UpdatePlayerInfoByPlayerBase(PlayerBaseEntity entity)
         {
+            if (_playerInfo == null) _playerInfo = new PlayerInfo(false);
+
             _playerInfo._id = entity.id;
             _playerInfo._name = entity.name;
             _playerInfo._head = entity.head;
@@ -482,6 +484,8 @@ namespace HA
         /// </summary>
         private void UpdatePlayerInfoByPlayerStats(PlayerStatsEntity entity)
         {
+            if (_playerInfo == null) _playerInfo = new PlayerInfo(false);
+
             _playerInfo._maxHP = entity.max_hp;
             _playerInfo._maxMP = entity.max_mp;
             _playerInfo._maxEXP = entity.max_exp;
@@ -503,6 +507,8 @@ namespace HA
         /// </summary>
         private void UpdatePlayerInfoByPlayerInventory(PlayerInventoryEntity entity)
         {
+            if (_playerInfo == null) _playerInfo = new PlayerInfo(false);
+
             _playerInfo._allItems = entity.items;
             _playerInfo._nowEquips = entity.now_equips;
             _playerInfo._inventoryItemNum = entity.inventory_num;
