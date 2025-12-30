@@ -52,6 +52,7 @@ namespace HA
             _imgItem.enabled = false;
             _imgSearch.enabled = false;
             _txtNum.enabled = false;
+            _searchSequence = null;
 
             _isTreasure = isTreasure;
             _itemInfo = info;

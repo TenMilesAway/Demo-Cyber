@@ -46,8 +46,8 @@ namespace HA
         {
             UIManager.GetInstance().ClosePanel(GlobalDefine.MapPanel);
 
-            GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
-            GameManager.Event.Broadcast(GameEventType.DisablePlayerFlipInput);
+            //GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
+            //GameManager.Event.Broadcast(GameEventType.DisablePlayerFlipInput);
         }
 
         private void OnClickBtnNextMap(int level)
@@ -69,8 +69,8 @@ namespace HA
             UIManager.GetInstance().OpenPanel(GlobalDefine.LoadingPanel, UILayer.Top, param);
             UIManager.GetInstance().ClosePanel(GetPanelName());
 
-            GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
-            GameManager.Event.Broadcast(GameEventType.DisablePlayerFlipInput);
+            //GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
+            //GameManager.Event.Broadcast(GameEventType.DisablePlayerFlipInput);
         }
         #endregion
 

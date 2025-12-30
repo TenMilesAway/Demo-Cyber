@@ -27,6 +27,7 @@ namespace HA
         private DSDialogueSO _currentDialogueSO;
         private DSDialogueSO _nextDialogueSO;
         private List<GameObject> _dialogueOptions = new List<GameObject>();
+        private Sequence dialogueSequence;
 
         public override string GetPanelName()
         {
@@ -47,6 +48,16 @@ namespace HA
             PlayNextDialogue();
         }
 
+        protected override void CloseHandle()
+        {
+            base.CloseHandle();
+
+            dialogueSequence.Kill();
+            dialogueSequence = null;
+
+            _btnDialogueCancel.onClick.RemoveAllListeners();
+        }
+
         #region 主要方法
         /// <summary>
         /// 播放下一个对话
@@ -58,7 +69,7 @@ namespace HA
                 _currentDialogueSO = _nextDialogueSO;
             }
 
-            Sequence dialogueSequence = DOTween.Sequence();
+            dialogueSequence = DOTween.Sequence();
             dialogueSequence.Append(_txtDialogue.DOText(_currentDialogueSO.Text, 2, true, ScrambleMode.All));
             dialogueSequence.OnComplete(() =>
             {
@@ -130,7 +141,7 @@ namespace HA
         {
             UIManager.GetInstance().ClosePanel(GlobalDefine.DialoguePanel);
             ClearCurrentOptions();
-            GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
+            //GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
             GameManager.Event.Broadcast(GameEventType.HasInteractiveObject);
         }
 
@@ -141,7 +152,7 @@ namespace HA
         {
             UIManager.GetInstance().ClosePanel(GlobalDefine.DialoguePanel);
             ClearCurrentOptions();
-            GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
+            //GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
             GameManager.Event.Broadcast(GameEventType.HasInteractiveObject);
         }
         #endregion

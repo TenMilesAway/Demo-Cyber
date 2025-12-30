@@ -19,6 +19,7 @@ namespace HA
     /// </summary>
     public abstract class UIBasePanel : MonoBehaviour
     {
+        public bool _isBlockingWindow = true;
 
         /// <summary>
         /// 初始化
@@ -30,9 +31,7 @@ namespace HA
 
         protected virtual void InitHandle(OpenUIParam param)
         {
-            // 音效播放 ...
-
-
+            
         }
 
         /// <summary>
@@ -41,14 +40,21 @@ namespace HA
         public void OnClose()
         {
             OnHide();
-            // 定时回收面板逻辑 ...
             CloseHandle();
         }
 
         protected virtual void CloseHandle()
         {
-            // 音效播放 ...
+            bool hasBlockingWindow = UIManager.GetInstance().hasBlockingWindow();
 
+            // 鼠标状态和输入监听
+            if (!hasBlockingWindow && Cursor.visible) GameManager.Event.Broadcast(GameEventType.ToggleCursor);
+
+            // 开启输入
+            if (!hasBlockingWindow)
+            {
+                GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
+            }
         }
 
         /// <summary>
@@ -62,7 +68,16 @@ namespace HA
 
         protected virtual void ShowHandle()
         {
+            bool hasBlockingWindow = UIManager.GetInstance().hasBlockingWindow();
 
+            // 鼠标状态和输入监听
+            if (hasBlockingWindow && !Cursor.visible) GameManager.Event.Broadcast(GameEventType.ToggleCursor);
+
+            // 禁用输入
+            if (hasBlockingWindow)
+            {
+                GameManager.Event.Broadcast(GameEventType.DisablePlayerInput);
+            }
         }
 
         /// <summary>

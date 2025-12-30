@@ -52,20 +52,16 @@ namespace HA
             }
         }
 
-        protected override void HideHandle()
+        protected override void CloseHandle()
         {
-            base.HideHandle();
+            base.CloseHandle();
 
             foreach (GameObject cell in _itemCells)
             {
                 cell.GetComponent<ItemCell>().RemoveListeners();
                 UnityObjectPoolFactory.GetInstance().PutItem(GlobalDefine.ItemCell, cell);
             }
-        }
-
-        protected override void CloseHandle()
-        {
-            base.CloseHandle();
+            _itemCells.Clear();
 
             StopAllCoroutines();
             _searchCo = null;

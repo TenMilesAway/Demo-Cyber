@@ -45,6 +45,8 @@ namespace HA
         {
             base.InitHandle(param);
 
+            _isBlockingWindow = false;
+
             MainPanelParam mainPanelParam = (MainPanelParam)param;
             _playerInfo = mainPanelParam.data as PlayerInfo;
             InitPlayerInfo(_playerInfo);

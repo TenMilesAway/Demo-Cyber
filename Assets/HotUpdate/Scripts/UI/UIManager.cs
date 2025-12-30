@@ -1,3 +1,4 @@
+using BehaviorDesigner.Runtime.Tasks.Unity.UnityGameObject;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,8 +27,9 @@ namespace HA
     /// </summary>
     public class UIManager : BaseManager<UIManager>
     {
-        private Dictionary<string, UIBasePanel> _panelDic = new Dictionary<string, UIBasePanel>();
-        private List<string> _loadingPanels = new List<string>();
+        private Dictionary<string, UIBasePanel> _panelDic = new Dictionary<string, UIBasePanel>();        // 当前打开的面板
+        private Dictionary<string, UIBasePanel> _blockingWindows = new Dictionary<string, UIBasePanel>(); // 阻断交互的面板
+        private List<string> _loadingPanels = new List<string>();                                         // 正在加载的面板
 
         private const string _canvasPath = "Assets/UI/Canvas/Prefabs/Canvas.prefab";
         private const string _eventSystemPath = "Assets/UI/Canvas/Prefabs/EventSystem.prefab";
@@ -97,11 +99,6 @@ namespace HA
 
             GameObject panelGO = await UnityObjectPoolFactory.GetInstance().GetItem<GameObject>(panelName, GetInstance().ToString());
 
-            // 字典中不存在此面板, 从 AA 中加载
-            //AsyncOperationHandle panelHandle = Addressables.LoadAssetAsync<GameObject>(panelName);
-            //await panelHandle.Task;
-            //GameObject panelGO = GameObject.Instantiate(panelHandle.Result as GameObject);
-
             // 设置父对象, 设置相对位置和大小
             switch (layer)
             {
@@ -137,6 +134,8 @@ namespace HA
         {
             panel.OnInit(param);
 
+            if (panel._isBlockingWindow && !_blockingWindows.ContainsKey(panelName)) _blockingWindows.Add(panelName, panel);
+
             panel.OnShow();
 
             if (action != null) action();
@@ -156,10 +155,16 @@ namespace HA
         /// </summary>
         public void ClosePanel(string panelName)
         {
+            if (_blockingWindows.ContainsKey(panelName))
+            {
+                _blockingWindows.Remove(panelName);
+            }
+
             if (_panelDic.ContainsKey(panelName))
             {
                 _panelDic[panelName].OnClose();
-                GameObject.Destroy(_panelDic[panelName].gameObject);
+                //GameObject.Destroy(_panelDic[panelName].gameObject);
+                UnityObjectPoolFactory.GetInstance().PutItem(panelName, _panelDic[panelName].gameObject);
                 _panelDic.Remove(panelName);
             }
         }
@@ -215,6 +220,12 @@ namespace HA
                 // 未来需要考虑性能消耗
                 GameObject.Destroy(trigger);
             }
+        }
+
+        public bool hasBlockingWindow()
+        {
+            if (_blockingWindows.Count != 0) return true;
+            else return false;
         }
     }
 }

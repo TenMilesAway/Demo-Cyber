@@ -34,6 +34,8 @@ namespace HA
         {
             base.InitHandle(param);
 
+            _isBlockingWindow = false;
+
             _interactiveOptionContainer.gameObject.SetActive(false);
 
             // 初始化可交互队列
@@ -53,6 +55,11 @@ namespace HA
         protected override void CloseHandle()
         {
             base.CloseHandle();
+
+            foreach (InteractiveOption option in _interactiveOptions)
+            {
+                UnityObjectPoolFactory.GetInstance().PutItem(GlobalDefine.InteractiveOption, option.gameObject);
+            }
 
             RemoveListeners();
         }
@@ -126,7 +133,7 @@ namespace HA
         }
 
         /// <summary>
-        /// 监听：通过上下箭头切换对话选择
+        /// 监听：通过上下箭头切换交互选择
         /// </summary>
         private void OnInteractiveStarted(InputAction.CallbackContext context)
         {
@@ -153,13 +160,11 @@ namespace HA
         }
 
         /// <summary>
-        /// 监听：触碰按键 F 开始对话
+        /// 监听：触碰按键 F 开始交互
         /// </summary>
         private void StartInteractive(InputAction.CallbackContext context)
         {
-            GameManager.Event.Broadcast(GameEventType.DisablePlayerInput);
-
-            GameManager.Event.Broadcast(GameEventType.ToggleCursor);
+            // GameManager.Event.Broadcast(GameEventType.DisablePlayerInput);
 
             // 开始对话
             if (_interactives[_currentSelectIndex] is IDialogue)

@@ -8,9 +8,6 @@ public enum GameEventType
     ConnectSucc = 1,            // 连接成功
     ConnectFail = 2,            // 连接失败
     Close = 3,                  // 连接关闭
-    PacketIdEnd = 10000,
-
-    /** 网络消息预留区间 **/
     ReqPlayerInfoLoad,          // 请求：获得玩家所有信息
     ReqPlayerInfoSave,          // 请求：保存玩家所有信息
     ReqPlayerBaseLoad,          // 请求：获得玩家基础信息

@@ -19,8 +19,8 @@ namespace HA
 
         public void Init()
         {
-            NetManager.AddMsgListener(GameEventType.HAMsgPlayerInfoLoad.ToString(), RpsPlayerInfoLoad);         // 1响应：获得玩家所有信息
-            NetManager.AddMsgListener(GameEventType.HAMsgPlayerInfoSave.ToString(), RpsPlayerInfoSave);         // 2响应：保存玩家所有信息
+            //NetManager.AddMsgListener(GameEventType.HAMsgPlayerInfoLoad.ToString(), RpsPlayerInfoLoad);         // 1响应：获得玩家所有信息
+            //NetManager.AddMsgListener(GameEventType.HAMsgPlayerInfoSave.ToString(), RpsPlayerInfoSave);         // 2响应：保存玩家所有信息
             NetManager.AddMsgListener(GameEventType.MsgPlayerBaseLoad.ToString(), RpsPlayerBaseLoad);           // 3响应：获得玩家基础信息
             NetManager.AddMsgListener(GameEventType.MsgPlayerBaseSave.ToString(), RpsPlayerBaseSave);           // 4响应：保存玩家基础信息
             NetManager.AddMsgListener(GameEventType.MsgPlayerStatsLoad.ToString(), RpsPlayerStatsLoad);         // 5响应：获得玩家状态信息
@@ -28,8 +28,8 @@ namespace HA
             NetManager.AddMsgListener(GameEventType.MsgPlayerInventoryLoad.ToString(), RpsPlayerInventoryLoad); // 7响应：获得玩家背包信息
             NetManager.AddMsgListener(GameEventType.MsgPlayerInventorySave.ToString(), RpsPlayerInventorySave); // 8响应：保存玩家背包信息
 
-            GameManager.Event.AddListener(GameEventType.ReqPlayerInfoLoad, ReqPlayerInfoLoad);                  // 1请求：获得玩家所有信息
-            GameManager.Event.AddListener(GameEventType.ReqPlayerInfoSave, ReqPlayerInfoSave);                  // 2请求：保存玩家所有信息
+            //GameManager.Event.AddListener(GameEventType.ReqPlayerInfoLoad, ReqPlayerInfoLoad);                  // 1请求：获得玩家所有信息
+            //GameManager.Event.AddListener(GameEventType.ReqPlayerInfoSave, ReqPlayerInfoSave);                  // 2请求：保存玩家所有信息
             GameManager.Event.AddListener(GameEventType.ReqPlayerBaseLoad, ReqPlayerBaseLoad);                  // 3请求：获得玩家基础信息
             GameManager.Event.AddListener(GameEventType.ReqPlayerBaseSave, ReqPlayerBaseSave);                  // 4请求：保存玩家基础信息
             GameManager.Event.AddListener(GameEventType.ReqPlayerStatsLoad, ReqPlayerStatsLoad);                // 5请求：获得玩家状态信息
@@ -104,7 +104,7 @@ namespace HA
         {
             _playerInfo._currentEXP += exp;
             RefreshLevel();
-            ReqPlayerInfoSave();
+            //ReqPlayerInfoSave();
             ReqPlayerBaseSave();
             ReqPlayerStatsSave();
         }
@@ -423,6 +423,9 @@ namespace HA
                 UpdatePlayerInfoByPlayerInventory(entity);
                 ReqPlayerInventorySave();
             }
+
+            // 分发数据至必须位置
+            GameManager.Event.Broadcast<PlayerInfo>(GameEventType.UpdateInventoryItemList, _playerInfo);
         }
 
         /// <summary>

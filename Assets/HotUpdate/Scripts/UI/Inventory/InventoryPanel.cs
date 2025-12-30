@@ -179,8 +179,8 @@ namespace HA
             {
                 UIManager.GetInstance().ClosePanel(GlobalDefine.TreasurePanel);
                 GameManager.Event.Broadcast(GameEventType.HasInteractiveObject);
-                GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
-                GameManager.Event.Broadcast(GameEventType.DisablePlayerFlipInput);
+                //GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
+                //GameManager.Event.Broadcast(GameEventType.DisablePlayerFlipInput);
             }
         }
 
