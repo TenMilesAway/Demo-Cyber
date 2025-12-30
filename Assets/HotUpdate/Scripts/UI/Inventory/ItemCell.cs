@@ -1,3 +1,4 @@
+using Cyber;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,8 +30,10 @@ namespace HA
         [HideInInspector] public string _imgItemPath;            // 物品图片路径
         [HideInInspector] public int _idInParent = -1;           // 格子在父类中的 ID
         [HideInInspector] public int _parentInstanceID = 0;      // 父类的唯一 ID
+        [HideInInspector] public bool _canBeStacked;             // 是否可以堆叠
 
         private HATreasureEntity _treasureEntity;                // 宝藏内物品数据
+        private bool _isAddListeners;                            // 是否已添加过监听
         private bool _isTreasure;                                // 是否是宝藏格子
         private Sequence _searchSequence;                        // 搜索 DOTween
         private float _radius = 15f;                             // 搜索动画半径
@@ -74,8 +77,10 @@ namespace HA
                 {
                     _imgItem.sprite = obj as Sprite;
                 });
+                _canBeStacked = (data.type != 1); // 不是装备，则可以堆叠
             }
 
+            #region 处理格子初始化
             // 如果是宝藏格子，且有信息
             if (IsTreasureAndNotSearched())
             {
@@ -88,21 +93,18 @@ namespace HA
                 _groupBag.SetActive(true);
                 _imgItem.enabled = true;
                 _txtNum.enabled = true;
-                AddPointerListeners();
-                AddDragListeners();
+                AddListeners();
             }
             // 如果是宝藏格子，且无宝藏信息 (空格子)
             else if (IsTreasureButNoItemInfo())
             {
-                AddPointerListeners();
-                AddDragListeners();
+                AddListeners();
             }
             // 如果不是宝藏格子，且无物品信息（空格子）
             else if (IsInventoryButNoItemInfo())
             {
                 _groupBag.SetActive(true);
-                AddPointerListeners();
-                AddDragListeners();
+                AddListeners();
             }
             // 如果不是宝藏格子，且有信息
             else
@@ -110,9 +112,11 @@ namespace HA
                 _groupBag.SetActive(true);
                 _imgItem.enabled = true;
                 _txtNum.enabled = true;
-                AddPointerListeners();
-                AddDragListeners();
+                AddListeners();
             }
+            #endregion
+
+            if (!_canBeStacked) _txtNum.enabled = false;
         }
 
         #region 主要方法
@@ -158,8 +162,7 @@ namespace HA
                 _groupBag.SetActive(true);
                 _imgSearch.enabled = false;
                 _txtNum.enabled = true;
-                AddPointerListeners();
-                AddDragListeners();
+                AddListeners();
                 HADebug.LogFormat("结束搜索, 发现物品{0}", ItemDataManager.GetInstance().GetData(_treasureEntity._treasureID).name);
             });
         }
@@ -173,13 +176,66 @@ namespace HA
         }
 
         /// <summary>
+        /// 装备物品
+        /// </summary>
+        public void EquipItem()
+        {
+            int type = (_itemInfo._id - 4000) / 1000;
+            bool hasEquiped = false;
+            ItemInfo hasEquipedItemInfo = null;
+            // 先找找 nowEquip 中有没有同类型的装备
+            foreach (ItemInfo info in PlayerDataManager.GetInstance().GetPlayerInfo()._nowEquips)
+            {
+                int infoType = (info._id - 4000) / 1000;
+                if (type == infoType)
+                {
+                    hasEquiped = true;
+                    hasEquipedItemInfo = info;
+                    break;
+                }
+            }
+
+            if (_itemCellParent == ItemCellParent.Inventory) // 背包里的装备
+            {
+                PlayerInfo playerInfo = PlayerDataManager.GetInstance().GetPlayerInfo();
+                if (hasEquiped) // 已有同类型装备
+                {
+                    _itemInfo = hasEquipedItemInfo;
+                    // 更新背包换下的装备
+                    playerInfo._allItems[_idInParent] = new ItemInfo { _id = hasEquipedItemInfo._id, _num = 1 };
+
+                    // 更新属性面板显示的装备
+                    playerInfo._nowEquips.RemoveAll(item => item._id == hasEquipedItemInfo._id);
+                    playerInfo._nowEquips.Add(_itemInfo);
+                    CalculatePlayerStats(_itemInfo, hasEquipedItemInfo);
+                }
+                else // 没有同类型装备
+                {
+                    playerInfo._allItems[_idInParent] = new ItemInfo { _id = 0, _num = 0 };
+
+                    // 更新属性面板显示的装备
+                    playerInfo._nowEquips.Add(_itemInfo);
+                    CalculatePlayerStats(_itemInfo);
+                    _itemInfo = new ItemInfo();
+                }
+
+                // 刷新 UI
+                UpdateItemCellInfo();
+                GameManager.Event.Broadcast(GameEventType.UpdatePropertyPanelUI);
+                GameManager.Event.Broadcast(GameEventType.UpdateInventoryPanelUI);
+
+                // 更新数据
+                GameManager.Event.Broadcast<PlayerInfo>(GameEventType.UpdateInventoryItemList, playerInfo);
+                GameManager.Event.Broadcast(GameEventType.ReqPlayerInventorySave);
+            }
+        }
+
+        /// <summary>
         /// 丢弃物品
         /// </summary>
         public void DiscardItem()
         {
             _itemInfo = new ItemInfo();
-            _imgItem.enabled = false;
-            _txtNum.enabled = false;
 
             if (_itemCellParent == ItemCellParent.Inventory)
             {
@@ -188,12 +244,23 @@ namespace HA
                 playerInfo._allItems[_idInParent] = new ItemInfo { _id = 0, _num = 0 };
 
                 GameManager.Event.Broadcast<PlayerInfo>(GameEventType.UpdateInventoryItemList, playerInfo);
-                GameManager.Event.Broadcast(GameEventType.ReqPlayerInfoSave);
+                GameManager.Event.Broadcast(GameEventType.ReqPlayerInventorySave);
             }
+
+            UpdateItemCellInfo();
         }
         #endregion
 
         #region 监听方法：Pointer & Drag
+        private void AddListeners()
+        {
+            if (_isAddListeners) return;
+            _isAddListeners = true;
+
+            AddPointerListeners();
+            AddDragListeners();
+        }
+
         /// <summary>
         /// 添加鼠标进入退出的监听
         /// </summary>
@@ -239,6 +306,8 @@ namespace HA
         /// </summary>
         public void RemoveListeners()
         {
+            _isAddListeners = false;
+
             RemovePointerListeners();
             RemoveDragListeners();
         }
@@ -362,7 +431,51 @@ namespace HA
         }
         #endregion
 
+        #region 辅助方法：数值计算
+        private void CalculatePlayerStats(ItemInfo infoPutOn, ItemInfo infoTakeOff = null)
+        {
+            PlayerInfo playerInfo = PlayerDataManager.GetInstance().GetPlayerInfo();
+
+            TBItemData dataPutOn = ItemDataManager.GetInstance().GetData(infoPutOn._id);
+            playerInfo._pAttack += dataPutOn.attack;
+            playerInfo._pArmorPenetration += dataPutOn.armorPenetration;
+            playerInfo._pDefense += dataPutOn.defense;
+            playerInfo._pDamageAvoidance += dataPutOn.damageAvoidance;
+            playerInfo._maxHP += dataPutOn.hp;
+            playerInfo._currentHP += dataPutOn.hp;
+            playerInfo._maxMP += dataPutOn.mp;
+            playerInfo._currentMP += dataPutOn.mp;
+            playerInfo._pCriticalProbability += dataPutOn.cp;
+            playerInfo._pCriticalMultiplier += dataPutOn.cm;
+            playerInfo._pSuckProbability += dataPutOn.sp;
+            playerInfo._pSuckMultiplier += dataPutOn.sm;
+
+            if (infoTakeOff != null)
+            {
+                TBItemData dataTakeOff = ItemDataManager.GetInstance().GetData(infoTakeOff._id);
+                playerInfo._pAttack -= dataTakeOff.attack;
+                playerInfo._pArmorPenetration -= dataTakeOff.armorPenetration;
+                playerInfo._pDefense -= dataTakeOff.defense;
+                playerInfo._pDamageAvoidance -= dataTakeOff.damageAvoidance;
+                playerInfo._maxHP -= dataTakeOff.hp;
+                playerInfo._currentHP -= dataTakeOff.hp;
+                playerInfo._maxMP -= dataTakeOff.mp;
+                playerInfo._currentMP -= dataTakeOff.mp;
+                playerInfo._pCriticalProbability -= dataTakeOff.cp;
+                playerInfo._pCriticalMultiplier -= dataTakeOff.cm;
+                playerInfo._pSuckProbability -= dataTakeOff.sp;
+                playerInfo._pSuckMultiplier -= dataTakeOff.sm;
+            }
+
+            PlayerDataManager.GetInstance().SetPlayerInfo(playerInfo);
+            GameManager.Event.Broadcast(GameEventType.ReqPlayerStatsSave);
+        }
+        #endregion
+
         #region 刷新 ItemCell UI
+        /// <summary>
+        /// 刷新 UI
+        /// </summary>
         public void UpdateItemCellInfo()
         {
             if (_itemInfo == null || _itemInfo._id == 0)
@@ -378,7 +491,7 @@ namespace HA
 
             _groupBag.SetActive(true);
             _imgItem.enabled = true;
-            _txtNum.enabled = true;
+            if (_canBeStacked) _txtNum.enabled = true;
 
             TBItemData data = ItemDataManager.GetInstance().GetData(_itemInfo._id);
             _itemType = InventoryDataManager.GetInstance().GetItemType(data.type);

@@ -39,6 +39,7 @@ public enum GameEventType
     EnterItemCell,              // 鼠标进入物品格子
     ExitItemCell,               // 鼠标离开物品格子
     ClickItemCell,              // 鼠标点击物品格子
+    ClickEquipCell,             // 鼠标点击装备格子
     BeginDragItemCell,          // 鼠标开始拖动物品格子
     DragingItemCell,            // 鼠标正在拖动物品格子
     EndDragItemCell,            // 鼠标结束拖动物品格子
@@ -50,6 +51,7 @@ public enum GameEventType
     UpdateEntityInfoAfterSpawn, // 刷怪操作完成后更新信息
     UpdateMainPanelUI,          // 刷新主面板 UI
     UpdateInventoryPanelUI,     // 刷新背包面板 UI
+    UpdatePropertyPanelUI,      // 刷新属性面板 UI
     GetEXPFromEnemy,            // 怪物死亡后，玩家获得经验
     PlayerReaction,             // 玩家受伤
     ToggleCursor,               // 切换鼠标状态

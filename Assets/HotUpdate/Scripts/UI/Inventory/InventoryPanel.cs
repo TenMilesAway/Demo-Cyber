@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,7 @@ namespace HA
     public class InventoryParam : OpenUIParam
     {
         public bool isWithTreasurePanel;
+        public bool isWithPropertyPanel;
     }
 
     public class InventoryPanel : UIBasePanel
@@ -35,6 +37,7 @@ namespace HA
         private PlayerInfo _playerInfo;
         private List<ItemCell> _showList = new List<ItemCell>(); // 当前显示的所有 ItemCell
         private bool _isWithTreasurePanel;                       // 是否和宝藏面板一起开启
+        private bool _isWithPropertyPanel;                       // 是否和属性面板一起开启
 
         public override string GetPanelName()
         {
@@ -49,6 +52,7 @@ namespace HA
             // 修改，不走外部传的数据
             _playerInfo = PlayerDataManager.GetInstance().GetPlayerInfo();
             _isWithTreasurePanel = inventoryParam.isWithTreasurePanel;
+            _isWithPropertyPanel = inventoryParam.isWithPropertyPanel;
 
             _groupSelelcted.SetActive(false);
             _groupNotSelected.SetActive(true);
@@ -80,6 +84,7 @@ namespace HA
 
             // UI
             _btnClose.onClick.AddListener(OnClickCloseBtn);     // 关闭面板
+            _btnEquip.onClick.AddListener(OnClickEquipBtn);     // 装备物品
             _btnDiscard.onClick.AddListener(OnClickDiscardBtn); // 丢弃物品
         }
 
@@ -91,6 +96,7 @@ namespace HA
 
             // UI
             _btnClose.onClick.RemoveAllListeners();
+            _btnEquip.onClick.RemoveAllListeners();
             _btnDiscard.onClick.RemoveAllListeners();
         }
 
@@ -149,6 +155,8 @@ namespace HA
                     _showList.Add(component);
                 });
             }
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate(_itemContainer as RectTransform);
         }
         #endregion
 
@@ -166,7 +174,7 @@ namespace HA
             _showList.Clear();
 
             // 关闭当前窗口
-            UIManager.GetInstance().ClosePanel(GlobalDefine.InventoryPanel);
+            UIManager.GetInstance().ClosePanel(GetPanelName());
 
             // 关闭物品详情窗口
             if (UIManager.GetInstance().GetOpeningPanel(GlobalDefine.ItemDetailInfoPanel) != null)
@@ -179,14 +187,18 @@ namespace HA
             {
                 UIManager.GetInstance().ClosePanel(GlobalDefine.TreasurePanel);
                 GameManager.Event.Broadcast(GameEventType.HasInteractiveObject);
-                //GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
-                //GameManager.Event.Broadcast(GameEventType.DisablePlayerFlipInput);
+            }
+            else if (_isWithPropertyPanel)
+            {
+                UIManager.GetInstance().ClosePanel(GlobalDefine.PropertyPanel);
+                UIManager.GetInstance().ClosePanel(GlobalDefine.EquipmentTipPanel);
             }
         }
 
         private void OnClickEquipBtn()
         {
-
+            ItemCell nowSelectItemCell = InventoryDataManager.GetInstance().GetNowSelectItemCell();
+            nowSelectItemCell.EquipItem();
         }
 
         private void OnClickUseBtn()
@@ -202,6 +214,9 @@ namespace HA
         #endregion
 
         #region 监听方法：刷新 UI
+        /// <summary>
+        /// 刷新下方面板
+        /// </summary>
         private void UpdateSelectedItemDetailInfo(ItemInfo info)
         {
             _imgItem.enabled = false;
@@ -234,15 +249,28 @@ namespace HA
             _txtDescContent.text = itemData.desc;
         }
 
+        /// <summary>
+        /// 刷新背包容量
+        /// </summary>
         private void UpdateUI()
         {
-            (int, int) countInfo = UpdateItemNumInfo();
+            List<ItemInfo> infos = new List<ItemInfo>(_playerInfo._allItems);
+            SwitchTab(infos, 1);
 
+            (int, int) countInfo = UpdateItemNumInfo();
             _txtItemNum.text = string.Format("{0} / <color=yellow>{1}</color>", countInfo.Item1, countInfo.Item2);
         }
         #endregion
 
         #region 辅助方法
+        /// <summary>
+        /// 获得当前显示的所有 ItemCell
+        /// </summary>
+        public List<ItemCell> GetShowList()
+        {
+            return _showList;
+        }
+
         /// <summary>
         /// 更新物品数量
         /// </summary>

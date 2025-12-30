@@ -26,6 +26,7 @@ namespace HA
             GameManager.Event.AddListener<ItemCell>(GameEventType.EnterItemCell, EnterItemCell);
             GameManager.Event.AddListener<ItemCell>(GameEventType.ExitItemCell, ExitItemCell);
             GameManager.Event.AddListener<ItemCell>(GameEventType.ClickItemCell, ClickItemCell);
+            GameManager.Event.AddListener<EquipCell>(GameEventType.ClickEquipCell, ClickEquipCell);
             GameManager.Event.AddListener<ItemCell>(GameEventType.BeginDragItemCell, BeginDragItemCell);
             GameManager.Event.AddListener<BaseEventData>(GameEventType.DragingItemCell, DragItemCell);
             GameManager.Event.AddListener<ItemCell>(GameEventType.EndDragItemCell, EndDragItemCell);
@@ -101,6 +102,19 @@ namespace HA
             itemCell.SelectItem(true);
             _nowSelectItemCell = itemCell;
             GameManager.Event.Broadcast<ItemInfo>(GameEventType.UpdateSelectedItemDetail, itemCell._itemInfo);
+        }
+
+        /// <summary>
+        /// 鼠标点击装备格子
+        /// </summary>
+        private void ClickEquipCell(EquipCell equipCell)
+        {
+            if (equipCell._itemInfo == null || equipCell._itemInfo._id == 0) return;
+
+            EquipmentTipPanelParam param = new EquipmentTipPanelParam();
+            param._equipCell = equipCell;
+
+            UIManager.GetInstance().OpenPanel(GlobalDefine.EquipmentTipPanel, UILayer.Top, param);
         }
 
         /// <summary>
@@ -190,8 +204,9 @@ namespace HA
         /// </summary>
         private void SwapAndUpdateItemCell()
         {
-            // 如果两个物品 ID 相同，则叠加
-            if (_nowInItemCell._itemInfo != null && _nowDragItemCell._itemInfo._id == _nowInItemCell._itemInfo._id)
+            // 如果两个物品 ID 相同，不是装备，则叠加
+            if (_nowInItemCell._itemInfo != null && _nowDragItemCell._itemInfo._id == _nowInItemCell._itemInfo._id && 
+                _nowInItemCell._canBeStacked && _nowDragItemCell._canBeStacked)
             {
                 _nowInItemCell._itemInfo._num += _nowDragItemCell._itemInfo._num;
                 _nowDragItemCell._itemInfo = null;
@@ -240,7 +255,7 @@ namespace HA
             }
 
             GameManager.Event.Broadcast(GameEventType.UpdateInventoryPanelUI);
-            GameManager.Event.Broadcast(GameEventType.ReqPlayerInfoSave);
+            GameManager.Event.Broadcast(GameEventType.ReqPlayerInventorySave);
         }
         #endregion
 

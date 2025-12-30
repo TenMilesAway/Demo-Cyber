@@ -52,6 +52,8 @@ namespace HA
         {
             base.InitHandle(param);
 
+            _isBlockingWindow = false;
+
             LoadingPanelParam loadingPanelParam = param as LoadingPanelParam;
             _sceneName = loadingPanelParam._name;
             _nextState = loadingPanelParam._state;

@@ -103,8 +103,12 @@ namespace HA
 
             InventoryParam param = new InventoryParam();
             param.data = _playerInfo;
+            param.isWithPropertyPanel = true;
 
             UIManager.GetInstance().OpenPanel(GlobalDefine.InventoryPanel, UILayer.Mid, param);
+            UIManager.GetInstance().OpenPanel(GlobalDefine.PropertyPanel);
+
+            UIManager.GetInstance().ClosePanel(GlobalDefine.InteractivePanel);
         }
 
         private void OnClickBtnForge()

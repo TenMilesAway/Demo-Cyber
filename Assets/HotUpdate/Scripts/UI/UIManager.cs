@@ -151,7 +151,7 @@ namespace HA
         }
 
         /// <summary>
-        /// 关闭面板 (目前未走定时逻辑, 后续修改)
+        /// 关闭面板
         /// </summary>
         public void ClosePanel(string panelName)
         {
@@ -163,7 +163,6 @@ namespace HA
             if (_panelDic.ContainsKey(panelName))
             {
                 _panelDic[panelName].OnClose();
-                //GameObject.Destroy(_panelDic[panelName].gameObject);
                 UnityObjectPoolFactory.GetInstance().PutItem(panelName, _panelDic[panelName].gameObject);
                 _panelDic.Remove(panelName);
             }

@@ -35,7 +35,7 @@ namespace HA
             GameManager.Event.AddListener(GameEventType.ReqPlayerStatsLoad, ReqPlayerStatsLoad);                // 5请求：获得玩家状态信息
             GameManager.Event.AddListener(GameEventType.ReqPlayerStatsSave, ReqPlayerStatsSave);                // 6请求：保存玩家状态信息
             GameManager.Event.AddListener(GameEventType.ReqPlayerInventoryLoad, ReqPlayerInventoryLoad);        // 7请求：获得玩家背包信息
-            GameManager.Event.AddListener(GameEventType.ReqPlayerInventorySave, ReqPlayerInventoryLoad);        // 8请求：保存玩家背包信息
+            GameManager.Event.AddListener(GameEventType.ReqPlayerInventorySave, ReqPlayerInventorySave);        // 8请求：保存玩家背包信息
 
             // 请求玩家数据
             //ReqPlayerInfoLoad();
@@ -87,6 +87,14 @@ namespace HA
         public PlayerInfo GetPlayerInfo()
         {
             return _playerInfo;
+        }
+
+        /// <summary>
+        /// 设置玩家信息
+        /// </summary>
+        public void SetPlayerInfo(PlayerInfo playerInfo)
+        {
+            _playerInfo = playerInfo;
         }
 
         /// <summary>

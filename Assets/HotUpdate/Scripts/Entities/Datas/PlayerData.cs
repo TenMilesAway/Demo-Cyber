@@ -154,7 +154,7 @@ namespace HA
             critical_probability = 0f;
             critical_multiplier = 1f;
             suck_probability = 0f;
-            suck_multiplier = 1f;
+            suck_multiplier = 0f;
         }
     }
 
@@ -174,18 +174,18 @@ namespace HA
             inventory_num = 40;
             safebox_num = 1;
             items = new List<ItemInfo> { new ItemInfo { _id = 1000, _num = 1 },
-                                         new ItemInfo { _id = 0, _num = 0 }, // 空物体
-                                         new ItemInfo { _id = 1001, _num = 1 },
-                                         new ItemInfo { _id = 0, _num = 0 }, // 空物体
+                                         new ItemInfo { _id = 1001, _num = 1 }, // 空物体
                                          new ItemInfo { _id = 1002, _num = 1 },
                                          new ItemInfo { _id = 0, _num = 0 }, // 空物体
-                                         new ItemInfo { _id = 1003, _num = 1 },
+                                         new ItemInfo { _id = 0, _num = 0 },
                                          new ItemInfo { _id = 0, _num = 0 }, // 空物体
-                                         new ItemInfo { _id = 1004, _num = 1 },
+                                         new ItemInfo { _id = 1003, _num = 1 },
+                                         new ItemInfo { _id = 1004, _num = 1 }, // 空物体
                                          new ItemInfo { _id = 1005, _num = 1 },
-                                         new ItemInfo { _id = 1006, _num = 5 },
-                                         new ItemInfo { _id = 1007, _num = 10 },
-                                         new ItemInfo { _id = 1008, _num = 13 },
+                                         new ItemInfo { _id = 4000, _num = 1 },
+                                         new ItemInfo { _id = 1006, _num = 3 },
+                                         new ItemInfo { _id = 1007, _num = 2 },
+                                         new ItemInfo { _id = 1008, _num = 1 },
                                          new ItemInfo { _id = 4000, _num = 1 },
                                          new ItemInfo { _id = 5000, _num = 1 },
                                          new ItemInfo { _id = 6000, _num = 1 },
@@ -199,6 +199,8 @@ namespace HA
             {
                 items.Add(new ItemInfo { _id = 0, _num = 0 });
             }
+
+            now_equips = new List<ItemInfo>();
         }
     }
 }

@@ -475,6 +475,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99e12eb77d899aa42a77fcfb68232ced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _popType: 0
+  _translationType: 0
   _scaleCurve:
     serializedVersion: 2
     m_Curve:
@@ -1184,9 +1186,9 @@ RectTransform:
   m_Father: {fileID: 3631630411726323526}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 260, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 260, y: -62.599976}
   m_SizeDelta: {x: 240, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3631630411825122720
@@ -1570,6 +1572,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cc09141ca4a81a4facb8fd0ad2c8498, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isBlockingWindow: 1
   _imgItemIcon: {fileID: 3631630411798554719}
   _txtItem: {fileID: 3631630411825122721}
   _txtTypeContent: {fileID: 3631630410918806981}

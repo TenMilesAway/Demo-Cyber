@@ -19,7 +19,7 @@ namespace HA
     /// </summary>
     public abstract class UIBasePanel : MonoBehaviour
     {
-        public bool _isBlockingWindow = true;
+        [HideInInspector] public bool _isBlockingWindow = true;
 
         /// <summary>
         /// ≥ı ºªØ
