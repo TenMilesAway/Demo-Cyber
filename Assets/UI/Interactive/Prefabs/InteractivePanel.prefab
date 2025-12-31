@@ -178,6 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de3e1981b477ac14e9052c0bd6b7a039, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isBlockingWindow: 1
   _txtPrompt: {fileID: 3884045399359458938}
   _interactiveOptionContainer: {fileID: 3884045398434203281}
 --- !u!1 &3884045399359458940

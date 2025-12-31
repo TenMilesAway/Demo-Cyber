@@ -3401,6 +3401,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 644c59584cfcaeb46879a2b487cb5d9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isBlockingWindow: 1
   _btnClose: {fileID: 383240821492461298}
   _itemContainer: {fileID: 383240821415294873}
   _toggleItems: {fileID: 383240821065451014}

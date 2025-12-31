@@ -297,9 +297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba20dd86cc1bc3749b20a9f64b1bb41b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  imgBack: {fileID: 0}
-  txtLoad: {fileID: 0}
-  sliderLoad: {fileID: 0}
+  maps: 0
 --- !u!1 &359067440501864095
 GameObject:
   m_ObjectHideFlags: 0

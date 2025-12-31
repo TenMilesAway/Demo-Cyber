@@ -786,6 +786,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cabb5a289b619784c92bb707f3c08c67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isBlockingWindow: 1
   _dialogueOptionContainer: {fileID: 7363574392993706800}
   _imgHead: {fileID: 7363574394221068227}
   _txtDialogue: {fileID: 7363574393560124557}

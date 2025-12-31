@@ -297,6 +297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaad1f02db3617446bb41fe58c49dfbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isBlockingWindow: 1
   _sliderLoad: {fileID: 359067439314573869}
   _txtLoad: {fileID: 359067440501864090}
 --- !u!1 &359067440501864095

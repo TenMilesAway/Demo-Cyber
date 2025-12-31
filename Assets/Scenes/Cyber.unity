@@ -103891,10 +103891,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8bbd0cc633cd114584cf399b7304c31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <NowPosition>k__BackingField: {fileID: 0}
   <AniamtionData>k__BackingField:
     idleParameterName: isIdling
     walkParameterName: isWalking
-  nowPosition: {fileID: 543450652229256489}
+    runParameterName: isRunning
+    attackParameterName: isAttacking
+  hp: 200
+  defense: 20
+  attack: 50
 --- !u!1001 &1534411641348321464
 PrefabInstance:
   m_ObjectHideFlags: 0

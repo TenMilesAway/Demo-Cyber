@@ -2002,6 +2002,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8a13b5ccb312f1478be51ca1ceeb0fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isBlockingWindow: 1
   _btnBag: {fileID: 5554817759760060212}
   _btnForge: {fileID: 5554817758983662479}
   _btnSkill: {fileID: 5554817759167579349}
