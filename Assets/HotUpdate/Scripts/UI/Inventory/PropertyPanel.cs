@@ -155,7 +155,7 @@ namespace HA
             _txtMP.text = string.Format("<color=grey>法力值上限：</color>{0}", _playerInfo._maxMP.ToString());
             _txtEXP.text = string.Format("<color=grey>升级所需经验：</color>{0}", _playerInfo._maxEXP.ToString());
             _txtAttack.text = string.Format("<color=#0091FF>攻击力：</color>{0}", _playerInfo._pAttack.ToString());
-            _txtArmorPenetration.text = string.Format("<color=#0091FF>破甲值：</color>{0}", _playerInfo._pArmorPenetration.ToString());
+            _txtArmorPenetration.text = string.Format("<color=#0091FF>破甲值：</color>{0}%", _playerInfo._pArmorPenetration.ToString());
             _txtCriticalProbability.text = string.Format("<color=#E34242>暴击率：</color>{0}%", _playerInfo._pCriticalProbability.ToString());
             _txtSuckProbability.text = string.Format("<color=#E34242>吸血率：</color>{0}%", _playerInfo._pSuckProbability.ToString());
 
@@ -164,7 +164,7 @@ namespace HA
             _txtCMP.text = string.Format("<color=grey>当前法力值：</color>{0}", _playerInfo._currentMP.ToString());
             _txtCEXP.text = string.Format("<color=grey>当前经验值：</color>{0}", _playerInfo._currentEXP.ToString());
             _txtDefense.text = string.Format("<color=#0091FF>防御力：</color>{0}", _playerInfo._pDefense.ToString());
-            _txtDamageAvoidance.text = string.Format("<color=#0091FF>免伤值：</color>{0}", _playerInfo._pDamageAvoidance.ToString());
+            _txtDamageAvoidance.text = string.Format("<color=#0091FF>免伤值：</color>{0}%", _playerInfo._pDamageAvoidance.ToString());
             _txtCriticalMultiplier.text = string.Format("<color=#E34242>暴击倍率：</color>{0}%", (_playerInfo._pCriticalMultiplier * 100).ToString());
             _txtSuckMultiplier.text = string.Format("<color=#E34242>吸血倍率：</color>{0}%", _playerInfo._pSuckMultiplier.ToString());
         }

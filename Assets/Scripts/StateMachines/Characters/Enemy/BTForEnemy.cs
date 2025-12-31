@@ -58,6 +58,16 @@ namespace Cyber
             AddListeners();
         }
 
+        private void AddListeners()
+        {
+            GameManager.Event.AddListener(GameEventType.UpdateEntityInfoAfterSpawn, GenerateWaypoints);
+        }
+
+        public void RemoveAllListeners()
+        {
+            GameManager.Event.RemoveListener(GameEventType.UpdateEntityInfoAfterSpawn, GenerateWaypoints);
+        }
+
         private void Update()
         {
             BT.GetVariable("_velocity").SetValue(_agent.velocity.magnitude);
@@ -74,7 +84,7 @@ namespace Cyber
                 _animatorReactionCo = StartCoroutine(SimualteReaction());
 
                 // 受伤
-                OnReaction(PlayerDataManager.GetInstance().GetPlayerInfo()._pAttack);
+                OnReaction(AttackDataManager.GetInstance().CalculatePlayerAttack(PlayerDataManager.GetInstance().GetPlayerInfo(), _enemyData));
             }
         }
 
@@ -104,14 +114,6 @@ namespace Cyber
             _isIdling = true;
         }
         #endregion
-        /// <summary>
-        /// 计算本身伤害
-        /// </summary>
-        public int CalculateAttack()
-        {
-            return _enemyData._pAttack;
-        }
-
 
         #region 主要方法
         /// <summary>
@@ -156,12 +158,24 @@ namespace Cyber
                 if (currentWeight > randomWeight)
                 {
                     // 生成当前配置
-                    string treasurePath = HATreasureDataManager.GetInstance().GetData(_enemyData._dropItems[i]._treasureID).globalDefine;
+                    TBTreasureData treasureData = HATreasureDataManager.GetInstance().GetData(_enemyData._dropItems[i]._treasureID);
+                    string treasurePath = treasureData.globalDefine;
 
                     UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.GetPath(treasurePath), GetInstanceID().ToString(), (GameObject treasure) =>
                     {
                         treasure.transform.rotation = this.transform.rotation;
                         treasure.transform.position = this.transform.position;
+
+                        HATreasure component = treasure.GetComponent<HATreasure>();
+
+                        // 初始化宝藏箱
+                        component.InitTreasureName(treasureData.id, treasureData.name);
+
+                        // 是否掉落灵环
+                        if (IsDropRing(_enemyData._ringDropRate))
+                        {
+                            component.DropItemInfo(new HA.ItemInfo { _id = _enemyData._ringID, _num = 1 });
+                        };
 
                         GameObject parent = GameObject.Find("DropItems");
                         if (parent == null) parent = new GameObject("DropItems");
@@ -230,16 +244,6 @@ namespace Cyber
         #endregion
 
         #region 辅助方法
-        private void AddListeners()
-        {
-            GameManager.Event.AddListener(GameEventType.UpdateEntityInfoAfterSpawn, GenerateWaypoints);
-        }
-
-        public void RemoveAllListeners()
-        {
-            GameManager.Event.RemoveListener(GameEventType.UpdateEntityInfoAfterSpawn, GenerateWaypoints);
-        }
-
         private IEnumerator SimualteReaction()
         {
             _animator.speed = 0.01f;
@@ -250,9 +254,24 @@ namespace Cyber
 
             _animatorReactionCo = null;
         }
+
+        /// <summary>
+        /// 获得 EnemyData
+        /// </summary>
+        public EnemyData GetEnemyData()
+        {
+            return _enemyData;
+        }
+
+        private bool IsDropRing(int dropRate)
+        {
+            int randomInt = Random.Range(0, 100);
+            if (dropRate > randomInt) return true;
+            else return false;
+        }
         #endregion
 
-        #region 监听方法
+        #region 监听方法：寻路 & 攻击
         /// <summary>
         /// 初始化路径点
         /// </summary>

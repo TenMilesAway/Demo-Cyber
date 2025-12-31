@@ -79,7 +79,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "<color=#0091FF>\u7834\u7532\u503C\uFF1A</color>{0}"
+  m_Text: "<color=#0091FF>\u7834\u7532\u503C\uFF1A</color>{0}%"
 --- !u!1 &855848046110822063
 GameObject:
   m_ObjectHideFlags: 0
@@ -2147,7 +2147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 4181991264738351216}
-  m_Horizontal: 1
+  m_Horizontal: 0
   m_Vertical: 1
   m_MovementType: 1
   m_Elasticity: 0.1
@@ -3657,7 +3657,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "<color=#0091FF>\u514D\u4F24\u503C\uFF1A</color>{0}"
+  m_Text: "<color=#0091FF>\u514D\u4F24\u503C\uFF1A</color>{0}%"
 --- !u!1 &7559811201908163712
 GameObject:
   m_ObjectHideFlags: 0

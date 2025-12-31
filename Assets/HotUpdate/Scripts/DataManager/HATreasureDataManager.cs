@@ -34,7 +34,8 @@ namespace HA
         /// <summary>
         /// 初始化宝藏箱的物品
         /// </summary>
-        public List<HATreasureEntity> InitHATreasure(int treasureID)
+        /// <param name="ringItemInfo">不为 null 时，则随机将一个物品替换为灵环</param>
+        public List<HATreasureEntity> InitHATreasure(int treasureID, ItemInfo ringItemInfo = null)
         {
             List<HATreasureEntity> result = new List<HATreasureEntity>();
             List<TBTreasureItem> items = new List<TBTreasureItem>();
@@ -92,6 +93,9 @@ namespace HA
                 result.Add(entity);
             }
 
+            // 随机替换一个物品为灵环
+            if (ringItemInfo != null) RandomModifyATreasureItemToRing(result, itemNum, ringItemInfo);
+
             // 将剩下的格子物品 ID 初始化为 0
             int leftNum = _maxItemNum - itemNum;
             for (int i = 0; i < leftNum; i++)
@@ -131,6 +135,21 @@ namespace HA
             }
 
             return items[items.Count - 1];
+        }
+
+        private void RandomModifyATreasureItemToRing(List<HATreasureEntity> result, int itemNum, ItemInfo ringInfo)
+        {
+            int randomInt = Random.Range(0, itemNum);
+
+            TBItemData ringData = ItemDataManager.GetInstance().GetData(ringInfo._id);
+            HATreasureEntity entity = new HATreasureEntity
+            {
+                _treasureID = ringInfo._id,
+                _treasureNum = ringInfo._num,
+                _treasureLevel = ringData.level,
+                _treasureDuration = GetDurationByLevel(ringData.level),
+            };
+            result[randomInt] = entity;
         }
         
         /// <summary>

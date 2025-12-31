@@ -10,7 +10,8 @@ namespace HA
     [System.Serializable]
     public class SpawnerData
     {
-        public string _prefabPath;
+        [HideInInspector] public string _prefabPath;
+        public int _prefabID;
         public bool _randomRotation;
         public bool _randomScale;
         public int _weight;
@@ -34,6 +35,15 @@ namespace HA
     {
         OneTime,
         Continuous,
+    }
+
+    /// <summary>
+    /// À¢π÷¿‡–Õ
+    /// </summary>
+    public enum ESpawnType
+    {
+        Enemy,
+        Treasure,
     }
 
     /// <summary>

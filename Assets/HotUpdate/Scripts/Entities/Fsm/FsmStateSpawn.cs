@@ -12,12 +12,13 @@ namespace HA
         {
             // --------- 初始化
             Cyber.CameraController.GetInstance().Init();       // 相机组件
-            ItemDataManager.GetInstance().Init();
-            HATreasureDataManager.GetInstance().Init();
+            ItemDataManager.GetInstance().Init();              // Item 表
+            HATreasureDataManager.GetInstance().Init();        // Treasure 表
+            EnemyDataManager.GetInstance().Init();             // Enemy 表
+            LevelDataManager.GetInstance().Init();             // Level 表
             PlayerDataManager.GetInstance().Init();            // 玩家数据管理
             InventoryDataManager.GetInstance().Init();         // 仓库数据管理
             InteractiveDataManager.GetInstance().Init();       // 交互数据管理
-            LevelDataManager.GetInstance().Init();             // 玩家等级管理
             GlobalDefine.GetPath("MainPanel");                 // 预热
             // ---------
 

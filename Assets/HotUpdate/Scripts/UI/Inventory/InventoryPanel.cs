@@ -199,6 +199,7 @@ namespace HA
         {
             ItemCell nowSelectItemCell = InventoryDataManager.GetInstance().GetNowSelectItemCell();
             nowSelectItemCell.EquipItem();
+            SetSelectedItemDetailInfo(false);
         }
 
         private void OnClickUseBtn()
@@ -210,6 +211,7 @@ namespace HA
         {
             ItemCell nowSelectItemCell = InventoryDataManager.GetInstance().GetNowSelectItemCell();
             nowSelectItemCell.DiscardItem();
+            SetSelectedItemDetailInfo(false);
         }
         #endregion
 
@@ -247,6 +249,15 @@ namespace HA
             _txtSourceContent.text = itemData.source;
             _txtUsageContent.text = itemData.usage;
             _txtDescContent.text = itemData.desc;
+        }
+
+        /// <summary>
+        /// 是否显示选中组别
+        /// </summary>
+        private void SetSelectedItemDetailInfo(bool isShowSelected = true)
+        {
+            _groupSelelcted.SetActive(isShowSelected);
+            _groupNotSelected.SetActive(!isShowSelected);
         }
 
         /// <summary>

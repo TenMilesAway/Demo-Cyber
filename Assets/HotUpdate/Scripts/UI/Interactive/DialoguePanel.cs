@@ -26,6 +26,7 @@ namespace HA
         // SO 用的还是 DialogueSystem 的原脚本
         private DSDialogueSO _currentDialogueSO;
         private DSDialogueSO _nextDialogueSO;
+        private DSDialogueSO _startDialogueSO;
         private List<GameObject> _dialogueOptions = new List<GameObject>();
         private Sequence dialogueSequence;
 
@@ -41,11 +42,17 @@ namespace HA
             // 读取 HADialogue 的信息, 用于初始化对话
             DialoguePanelParam dialoguePanelParam = param as DialoguePanelParam;
             _dialogue = dialoguePanelParam.data as HADialogue;
+            _startDialogueSO = _dialogue.Dialogue;
             _currentDialogueSO = _dialogue.Dialogue;
 
             _btnDialogueCancel.onClick.AddListener(CancelDialogue);
 
             PlayNextDialogue();
+        }
+
+        protected override void ShowHandle()
+        {
+            base.ShowHandle();
         }
 
         protected override void CloseHandle()
@@ -139,9 +146,8 @@ namespace HA
         /// </summary>
         public void CancelDialogue()
         {
-            UIManager.GetInstance().ClosePanel(GlobalDefine.DialoguePanel);
+            UIManager.GetInstance().ClosePanelAndDestory(GetPanelName());
             ClearCurrentOptions();
-            //GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
             GameManager.Event.Broadcast(GameEventType.HasInteractiveObject);
         }
 
@@ -150,10 +156,20 @@ namespace HA
         /// </summary>
         private void DialogueOver()
         {
-            UIManager.GetInstance().ClosePanel(GlobalDefine.DialoguePanel);
+            UIManager.GetInstance().ClosePanelAndDestory(GetPanelName());
             ClearCurrentOptions();
-            //GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
             GameManager.Event.Broadcast(GameEventType.HasInteractiveObject);
+        }
+        #endregion
+
+        #region 辅助方法：重置
+        /// <summary>
+        /// 重置对话
+        /// </summary>
+        private void ResetDialogue()
+        {
+            _currentDialogueSO = _startDialogueSO;
+            _txtDialogue.text = _currentDialogueSO.Text;
         }
         #endregion
     }

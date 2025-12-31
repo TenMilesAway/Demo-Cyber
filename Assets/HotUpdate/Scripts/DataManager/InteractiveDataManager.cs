@@ -88,6 +88,8 @@ namespace HA
         /// </summary>
         private void HasInteractiveObject()
         {
+            if (_interactives.Count == 0) return;
+
             UIManager.GetInstance().OpenPanel(GlobalDefine.InteractivePanel, UILayer.Top, null, () => {
                 // Pos: InteractivePanel
                 GameManager.Event.Broadcast<List<IInteractive>>(GameEventType.UpdateInteractiveList, _interactives);

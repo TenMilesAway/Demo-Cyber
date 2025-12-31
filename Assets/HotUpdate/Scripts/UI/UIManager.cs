@@ -169,6 +169,24 @@ namespace HA
         }
 
         /// <summary>
+        /// 关闭并销毁面板
+        /// </summary>
+        public void ClosePanelAndDestory(string panelName)
+        {
+            if (_blockingWindows.ContainsKey(panelName))
+            {
+                _blockingWindows.Remove(panelName);
+            }
+
+            if (_panelDic.ContainsKey(panelName))
+            {
+                _panelDic[panelName].OnClose();
+                GameObject.Destroy(_panelDic[panelName].gameObject);
+                _panelDic.Remove(panelName);
+            }
+        }
+
+        /// <summary>
         /// 控件添加自定义事件监听
         /// </summary>
         /// <param name="control">控件对象</param>

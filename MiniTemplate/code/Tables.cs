@@ -16,6 +16,7 @@ public partial class Tables
     public TbItem TbItem {get; }
     public TbTreasure TbTreasure {get; }
     public TbLevel TbLevel {get; }
+    public TbEnemy TbEnemy {get; }
 
 
       public Tables(System.Func<string, JArray> loader)
@@ -23,6 +24,7 @@ public partial class Tables
         TbItem = new TbItem(loader("tbitem"));
         TbTreasure = new TbTreasure(loader("tbtreasure"));
         TbLevel = new TbLevel(loader("tblevel"));
+        TbEnemy = new TbEnemy(loader("tbenemy"));
         ResolveRef();
     }
     
@@ -31,6 +33,7 @@ public partial class Tables
         TbItem.ResolveRef(this);
         TbTreasure.ResolveRef(this);
         TbLevel.ResolveRef(this);
+        TbEnemy.ResolveRef(this);
     }
 }
 

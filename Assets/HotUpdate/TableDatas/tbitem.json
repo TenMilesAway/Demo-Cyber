@@ -548,5 +548,27 @@
     "cm": 0,
     "sp": 0,
     "sm": 0
+  },
+  {
+    "id": 20000,
+    "name": "白狒狒灵环",
+    "desc": "白狒狒的灵环，封存着远古的力量",
+    "price": 10,
+    "source": "翡翠林海",
+    "usage": "怪物掉落",
+    "icon": "Assets/UI/Items/Items.spriteatlas[SpriteItem20000]",
+    "type": 0,
+    "usable": 0,
+    "level": 0,
+    "attack": 10,
+    "armorPenetration": 0,
+    "defense": 5,
+    "damageAvoidance": 1,
+    "hp": 15,
+    "mp": 5,
+    "cp": 1,
+    "cm": 4,
+    "sp": 0,
+    "sm": 0
   }
 ]

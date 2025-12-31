@@ -44,12 +44,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e4c043bab1162d4fb67e0bd9423e616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spawnType: 1
   _spawnerDatas:
   - _prefabPath: FeiCuiLinHaiTreasure1
+    _prefabID: 1000
     _randomRotation: 0
     _randomScale: 0
-    _weight: 100
+    _weight: 0
   - _prefabPath: FeiCuiLinHaiTreasure2
+    _prefabID: 1001
     _randomRotation: 0
     _randomScale: 0
     _weight: 20

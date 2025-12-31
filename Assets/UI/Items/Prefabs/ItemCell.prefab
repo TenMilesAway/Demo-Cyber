@@ -391,13 +391,18 @@ MonoBehaviour:
   _imgItem: {fileID: 4847222374605066050}
   _imgSearch: {fileID: 133794056611499102}
   _txtNum: {fileID: 4847222373818299443}
-  _equipType: 0
+  _itemCellType: 0
+  _itemType: 0
+  _itemCellParent: 0
   _groupBag: {fileID: 7929861246356848129}
   _groupTreasure: {fileID: 2749572324182782710}
   _itemInfo:
     _id: 0
     _num: 0
   _imgItemPath: 
+  _idInParent: -1
+  _parentInstanceID: 0
+  _canBeStacked: 0
 --- !u!1 &4847222374605066076
 GameObject:
   m_ObjectHideFlags: 0

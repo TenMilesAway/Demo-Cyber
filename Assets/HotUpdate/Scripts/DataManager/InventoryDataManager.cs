@@ -209,7 +209,7 @@ namespace HA
                 _nowInItemCell._canBeStacked && _nowDragItemCell._canBeStacked)
             {
                 _nowInItemCell._itemInfo._num += _nowDragItemCell._itemInfo._num;
-                _nowDragItemCell._itemInfo = null;
+                _nowDragItemCell._itemInfo = new ItemInfo { _id = 0, _num = 0 };
             }
             else
             {

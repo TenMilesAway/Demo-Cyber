@@ -23,9 +23,11 @@ MonoBehaviour:
   _maxHP: 100
   _maxMP: 0
   _pAttack: 10
+  _pDefense: 5
   _pArmorPenetration: 0
-  _pDefense: 0
-  _pDamageAvoidance: 0
+  _pDamageAvoidance: 10
+  _ringDropRate: 10
+  _ringID: 20000
   _dropItems:
   - _treasureID: 1000
     _dropWeight: 100

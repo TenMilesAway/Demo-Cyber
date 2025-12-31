@@ -9,6 +9,7 @@ namespace HA
     public class OneTimeSpawner : MonoBehaviour, ISpawner
     {
         [Header("基础信息")]
+        [SerializeField] private ESpawnType _spawnType = ESpawnType.Enemy;
         [SerializeField] private List<SpawnerData> _spawnerDatas = new List<SpawnerData>();
         [SerializeField] private bool _spawnOnStart;
 
@@ -60,11 +61,17 @@ namespace HA
             }
         }
 
+        /// <summary>
+        /// 计算权重
+        /// </summary>
         public void CalculateTotalWeight()
         {
             _totalWeight = 0;
             foreach (SpawnerData data in _spawnerDatas)
             {
+                // 初始化路径
+                data._prefabPath = InitSpawnerDataPath(data);
+
                 // 不计算 path 为空的数据
                 if (data._prefabPath != null)
                 {
@@ -73,12 +80,18 @@ namespace HA
             }
         }
 
+        /// <summary>
+        /// 刷怪
+        /// </summary>
         public void SpawnPrefabs()
         {
             int count = _spawnNumRange.GetRandomFromRange();
             SpawnPrefabs(count);
         }
 
+        /// <summary>
+        /// 生成指定数量的 prefab
+        /// </summary>
         public void SpawnPrefabs(int count)
         {
             for (int i = 0; i < count; i++)
@@ -97,8 +110,7 @@ namespace HA
 
                 UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.GetPath(data._prefabPath), GetInstanceID().ToString(), (GameObject entity) =>
                 {
-                    BTForEnemy enemy = entity.GetComponent<BTForEnemy>();
-                    if (enemy != null) enemy.Init(true);
+                    InitSpawnerInfo(entity, data);
 
                     if (data._randomRotation) entity.transform.rotation = UnityEngine.Random.rotation;
                     if (data._randomScale) entity.transform.localScale = Vector3.one * _spawnScaleRange.GetRandomFromRange();
@@ -111,6 +123,58 @@ namespace HA
         }
 
         #region 辅助方法
+        /// <summary>
+        /// 初始化刷怪路径
+        /// </summary>
+        private string InitSpawnerDataPath(SpawnerData data)
+        {
+            string path = null;
+
+            switch (_spawnType)
+            {
+                case ESpawnType.Enemy:
+                    {
+                        path = EnemyDataManager.GetInstance().GetData(data._prefabID).globalDefine;
+                    }
+                    break;
+                case ESpawnType.Treasure:
+                    {
+                        path = HATreasureDataManager.GetInstance().GetData(data._prefabID).globalDefine;
+                    }
+                    break;
+            }
+
+            return path;
+        }
+
+        /// <summary>
+        /// 初始化刷怪信息
+        /// </summary>
+        private void InitSpawnerInfo(GameObject entity, SpawnerData data)
+        {
+            switch (_spawnType)
+            {
+                case ESpawnType.Enemy:
+                    {
+                        // 敌人的初始化
+                        BTForEnemy enemy = entity.GetComponent<BTForEnemy>();
+                        if (enemy != null) enemy.Init(true);
+                    }
+                    break;
+                case ESpawnType.Treasure:
+                    {
+                        // 宝藏的初始化
+                        HATreasure treasure = entity.GetComponent<HATreasure>();
+                        if (treasure != null)
+                        {
+                            TBTreasureData treasureData = HATreasureDataManager.GetInstance().GetData(data._prefabID);
+                            treasure.InitTreasureName(treasureData.id, treasureData.name);
+                        }
+                    }
+                    break;
+            }
+        }
+
         /// <summary>
         /// 随机获得一个预制体路径
         /// </summary>
@@ -170,6 +234,9 @@ namespace HA
             }
         }
 
+        /// <summary>
+        /// 调整位置至地面 (没有实用)
+        /// </summary>
         private Vector3 AdjustPositionToGround(Vector3 position)
         {
             RaycastHit hit;
@@ -179,7 +246,9 @@ namespace HA
             }
             return position;
         }
+        #endregion
 
+        #region 编辑器拓展
         private void OnDrawGizmosSelected()
         {
             if (!_showGizmos) return;

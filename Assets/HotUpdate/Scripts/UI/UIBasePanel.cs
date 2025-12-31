@@ -53,6 +53,7 @@ namespace HA
             // 开启输入
             if (!hasBlockingWindow)
             {
+                //GameManager.Event.Broadcast(GameEventType.HasInteractiveObject);
                 GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
             }
         }
@@ -76,6 +77,7 @@ namespace HA
             // 禁用输入
             if (hasBlockingWindow)
             {
+                //GameManager.Event.Broadcast(GameEventType.NoneInteractiveObject);
                 GameManager.Event.Broadcast(GameEventType.DisablePlayerInput);
             }
         }

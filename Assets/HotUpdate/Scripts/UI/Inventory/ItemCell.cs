@@ -36,6 +36,8 @@ namespace HA
         private bool _isAddListeners;                            // 是否已添加过监听
         private bool _isTreasure;                                // 是否是宝藏格子
         private Sequence _searchSequence;                        // 搜索 DOTween
+        private Sequence _shakeSequence;                         // Icon 抖动 DOTween
+        private Vector3 _originalScale;                          // Icon 初始缩放
         private float _radius = 15f;                             // 搜索动画半径
 
         /// <summary>
@@ -56,6 +58,7 @@ namespace HA
             _imgSearch.enabled = false;
             _txtNum.enabled = false;
             _searchSequence = null;
+            _originalScale = Vector3.one;
 
             _isTreasure = isTreasure;
             _itemInfo = info;
@@ -173,6 +176,43 @@ namespace HA
         public void SelectItem(bool isSelect = true)
         {
             _imgBackSelected.enabled = isSelect;
+
+            if (_shakeSequence != null && _shakeSequence.IsActive()) _shakeSequence.Kill();
+
+            _shakeSequence = DOTween.Sequence();
+
+            if (isSelect)
+            {
+                RectTransform iconRect = _imgItem.GetComponent<RectTransform>();
+
+                // 放大 -> 弹性回弹 -> 呼吸
+                _shakeSequence
+                    .Append(iconRect.DOScale(_originalScale * 1.2f, 0.1f).SetEase(Ease.OutBack))
+                    .Append(iconRect.DOScale(_originalScale * 0.95f, 0.1f).SetEase(Ease.OutQuad))
+                    .Append(iconRect.DOScale(_originalScale * 1.05f, 0.08f).SetEase(Ease.OutQuad))
+                    .Append(iconRect.DOScale(_originalScale, 0.05f).SetEase(Ease.OutQuad))
+                    .OnComplete(() =>
+                    {
+                        // 呼吸效果
+                        _shakeSequence = DOTween.Sequence()
+                            .Append(iconRect.DOScale(_originalScale * 1.02f, 0.8f).SetEase(Ease.InOutSine))
+                            .Append(iconRect.DOScale(_originalScale * 0.98f, 0.8f).SetEase(Ease.InOutSine))
+                            .SetLoops(-1, LoopType.Yoyo);
+                    });
+            }
+            else
+            {
+                RectTransform iconRect = _imgItem.GetComponent<RectTransform>();
+                _shakeSequence
+                    .Append(iconRect.DOScale(_originalScale, 0.2f).SetEase(Ease.OutQuad))
+                    .OnComplete(() =>
+                    {
+                        if (_shakeSequence != null && _shakeSequence.IsActive())
+                        {
+                            _shakeSequence.Kill();
+                        }
+                    });
+            }
         }
 
         /// <summary>

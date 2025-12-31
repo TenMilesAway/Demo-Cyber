@@ -11,6 +11,7 @@ namespace HA
         public int _parentInstanceID;                    // 父类唯一 ID
         public bool _isInteractable;                     // 宝藏箱是否已被打开过
         public List<HATreasureEntity> _treasureEntities; // 宝藏箱内所有物品
+        public string _treasureName;                     // 宝藏箱的名称
     }
 
     public class TreasurePanel : UIBasePanel
@@ -40,6 +41,8 @@ namespace HA
             _isInteractable = treasurePanelParam._isInteractable;
             _treasureEntities = treasurePanelParam._treasureEntities;
             _parentInstanceID = treasurePanelParam._parentInstanceID;
+
+            _txtTitle.text = treasurePanelParam._treasureName;
 
             // 初始化 15 个槽位
             InitItemCells();

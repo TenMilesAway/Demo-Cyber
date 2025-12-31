@@ -21,12 +21,18 @@ namespace HA
         public int _maxHP;
         public int _maxMP;
         public int _pAttack;
-        public int _pArmorPenetration;
         public int _pDefense;
-        public int _pDamageAvoidance;
+        [SerializeField][Range(0, 100)] private int _pArmorPenetration;
+        [SerializeField][Range(0, 100)] private int _pDamageAvoidance;
+
+        public float ArmorPenetration { get { return (float)_pArmorPenetration / 100; } }
+        public float DamageAvoidance { get { return (float)_pDamageAvoidance / 100; } }
 
         [Header("奖励设置")]
-        public List<DropItem> _dropItems = new List<DropItem>();
+        [SerializeField][Range(0, 100)] public int _ringDropRate;
+        [Tooltip("对应灵环ID")] public int _ringID;
+        [Tooltip("随机掉落其中之一")] public List<DropItem> _dropItems = new List<DropItem>();
+
     }
 
     /// <summary>

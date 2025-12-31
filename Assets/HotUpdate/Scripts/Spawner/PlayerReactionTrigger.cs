@@ -16,7 +16,7 @@ namespace HA
             if ((1 << layer & _reactionLayer) != 0)
             {
                 BTForEnemy bt = other.GetComponentInParent<BTForEnemy>();
-                int damage = bt.CalculateAttack();
+                int damage = AttackDataManager.GetInstance().CalculateEnemyAttack(bt.GetEnemyData(), PlayerDataManager.GetInstance().GetPlayerInfo());
                 GameManager.Event.Broadcast<int>(GameEventType.PlayerReaction, damage);
             }
         }
