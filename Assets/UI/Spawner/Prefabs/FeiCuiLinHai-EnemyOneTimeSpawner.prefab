@@ -62,7 +62,7 @@ MonoBehaviour:
     _max: 1.2
   _gizmoColor: {r: 0.11201763, g: 0, b: 1, a: 1}
   _showGizmos: 1
-  _alignToGround: 1
+  _alignToGround: 0
   _groundCheckDistance: 10
   _groundLayer:
     serializedVersion: 2

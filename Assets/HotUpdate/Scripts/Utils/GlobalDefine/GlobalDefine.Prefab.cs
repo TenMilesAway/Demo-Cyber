@@ -31,6 +31,9 @@ public sealed partial class GlobalDefine
     // ±¶œ‰
     public const string FeiCuiLinHaiTreasure1 = "Assets/UI/Spawner/Prefabs/PrettyTreasure_1.prefab";
     public const string FeiCuiLinHaiTreasure2 = "Assets/UI/Spawner/Prefabs/PrettyTreasure_2.prefab";
+    public const string FeiCuiLinHaiTreasure3 = "Assets/UI/Spawner/Prefabs/PrettyTreasure_3.prefab";
+    public const string FeiCuiLinHaiTreasure4 = "Assets/UI/Spawner/Prefabs/PrettyTreasure_4.prefab";
+    public const string FeiCuiLinHaiTreasure5 = "Assets/UI/Spawner/Prefabs/PrettyTreasure_5.prefab";
 
     private static Dictionary<string, string> _pathCache = null;
 

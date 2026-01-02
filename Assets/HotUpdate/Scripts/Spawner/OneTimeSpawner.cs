@@ -35,6 +35,7 @@ namespace HA
 
         private List<GameObject> _spawnedObjects = new List<GameObject>();
         private int _totalWeight = 0;
+        private int _seed;
 
         #region  Ù–‘
         public List<SpawnerData> SpawnablePrefabs { get => _spawnerDatas; }
@@ -110,13 +111,15 @@ namespace HA
 
                 UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.GetPath(data._prefabPath), GetInstanceID().ToString(), (GameObject entity) =>
                 {
+                    entity.transform.position = spawnPosition;
+
                     InitSpawnerInfo(entity, data);
 
                     if (data._randomRotation) entity.transform.rotation = UnityEngine.Random.rotation;
                     if (data._randomScale) entity.transform.localScale = Vector3.one * _spawnScaleRange.GetRandomFromRange();
                     _spawnedObjects.Add(entity);
 
-                    entity.transform.SetParent(transform, false);
+                    entity.transform.SetParent(transform, true);
                     GameManager.Event.Broadcast(GameEventType.UpdateEntityInfoAfterSpawn);
                 });
             }

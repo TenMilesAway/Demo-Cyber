@@ -151,10 +151,11 @@ namespace HA
             int nowLevel = _playerInfo._level;
             int nowMaxExp = LevelDataManager.GetInstance().GetData(nowLevel).exp;
 
-            if (_playerInfo._currentEXP > nowMaxExp)
+            if (_playerInfo._currentEXP >= nowMaxExp)
             {
                 _playerInfo._level += 1;
                 _playerInfo._currentEXP -= nowMaxExp;
+                _playerInfo._maxEXP = LevelDataManager.GetInstance().GetData(_playerInfo._level).exp;
             }
 
             GameManager.Event.Broadcast<PlayerInfo>(GameEventType.UpdateMainPanelUI, _playerInfo);

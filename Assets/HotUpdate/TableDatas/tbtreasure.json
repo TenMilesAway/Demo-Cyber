@@ -11,40 +11,40 @@
     "id": 1001,
     "name": "[翡翠林海]木质宝箱",
     "content": "2,1,500|1000,2,1000|1003,2,1000|1006,2,1000|1009,2,1000|3000,1,1000|10000,1,200",
-    "minNum": 1,
-    "maxNum": 1,
+    "minNum": 2,
+    "maxNum": 3,
     "globalDefine": "FeiCuiLinHaiTreasure1"
   },
   {
     "id": 1002,
     "name": "[翡翠林海]银质宝箱",
-    "content": "3,2,1000|10000,1,1000|1001,1,1000",
+    "content": "2,2,1000|3,1,800|1001,1,200|1004,1,200|1007,1,200|1010,1,200|3000,3,1000|10000,1,400",
     "minNum": 2,
-    "maxNum": 4,
+    "maxNum": 3,
     "globalDefine": "FeiCuiLinHaiTreasure2"
   },
   {
     "id": 1003,
     "name": "[翡翠林海]金质宝箱",
-    "content": "1002,1,1000|1005,1,1000|1008,1,1000",
+    "content": "2,3,1000|3,1,1000|1002,1,100|1005,1,100|1008,1,100|1011,1,100|10001,1,100",
     "minNum": 1,
-    "maxNum": 3,
-    "globalDefine": ""
+    "maxNum": 2,
+    "globalDefine": "FeiCuiLinHaiTreasure3"
   },
   {
     "id": 1004,
     "name": "[翡翠林海]翡翠之箱",
-    "content": "10001,1,1000",
-    "minNum": 1,
-    "maxNum": 1,
-    "globalDefine": ""
+    "content": "3,2,1000|4,1,100|1002,1,500|1005,2,500|1008,2,500|1011,2,500|10001,1,500|10002,1,200",
+    "minNum": 2,
+    "maxNum": 3,
+    "globalDefine": "FeiCuiLinHaiTreasure4"
   },
   {
     "id": 1005,
     "name": "[翡翠林海]传说翡翠之箱",
-    "content": "10002,1,1000|10001,2,1000|10002,4,1000",
-    "minNum": 5,
-    "maxNum": 15,
-    "globalDefine": ""
+    "content": "4,1,200|1002,1,1000|1005,1,1000|1008,1,1000|1011,1,1000|10001,2,1000|10002,1,1000",
+    "minNum": 2,
+    "maxNum": 3,
+    "globalDefine": "FeiCuiLinHaiTreasure5"
   }
 ]

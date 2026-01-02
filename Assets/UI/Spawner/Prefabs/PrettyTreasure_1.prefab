@@ -59,8 +59,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 708476e245cfa0547a4ef9590eb16bf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _treasureName: "\u7FE1\u7FE0\u6797\u6D77\u666E\u901A\u5B9D\u7BB1"
-  _treasureID: 1000
+  _treasureName: 
+  _treasureID: 0
 --- !u!1 &1486350708786118179
 GameObject:
   m_ObjectHideFlags: 0
