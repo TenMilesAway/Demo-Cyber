@@ -86,24 +86,11 @@ namespace HA
         #region 辅助方法：显示伤害数值
         public void ShowAttackDamage(int attack, bool isCriticalAttack, Transform enemyTransform)
         {
-            // 获取 canvas
-            if (_canvasRect == null) _canvasRect = UIManager.GetInstance()._canvas.GetComponent<RectTransform>();
-
-            Vector3 screenPoint = Camera.main.WorldToScreenPoint(enemyTransform.position);
-
-            // 转换到 Canvas 本地坐标
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                _canvasRect,
-                screenPoint,
-                null,
-                out Vector2 localPoint
-            );
-
-            DamageParam param = new DamageParam();
-            param.attack = attack;
-            param.isCriticalAttack = isCriticalAttack;
-            param.localPosition = localPoint;
-            UIManager.GetInstance().OpenPanel(GlobalDefine.DamagePanel, UILayer.Top, param);
+            UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.DamageToast, GetInstance().ToString(), (GameObject damageToast) =>
+            {
+                DamageToast component = damageToast.GetComponent<DamageToast>();
+                component.Init(attack, isCriticalAttack, enemyTransform.position);
+            });
         }
         #endregion
     }
