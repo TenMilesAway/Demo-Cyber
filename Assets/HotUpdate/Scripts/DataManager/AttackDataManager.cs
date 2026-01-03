@@ -9,10 +9,12 @@ namespace HA
     /// </summary>
     public class AttackDataManager : BaseManager<AttackDataManager>
     {
+        private RectTransform _canvasRect;
+
         /// <summary>
         /// 玩家对敌方造成伤害
         /// </summary>
-        public int CalculatePlayerAttack(PlayerInfo playerInfo, EnemyData enemyData)
+        public int CalculatePlayerAttack(PlayerInfo playerInfo, EnemyData enemyData, Transform enemeyTransform)
         {
             int attack = 0;
 
@@ -34,8 +36,10 @@ namespace HA
             if (IsSuckAttack(playerInfo._pSuckProbability))
             {
                 int suckHP = (int)(attack * playerInfo._pSuckMultiplier);
-                // 广播
+                // 广播回血
             }
+
+            ShowAttackDamage(attack, isCriticalAttack, enemeyTransform);
 
             return attack;
         }
@@ -76,6 +80,30 @@ namespace HA
             int randomInt = Random.Range(0, 100);
             if (suckProbability > randomInt) return true; 
             else return false;
+        }
+        #endregion
+
+        #region 辅助方法：显示伤害数值
+        public void ShowAttackDamage(int attack, bool isCriticalAttack, Transform enemyTransform)
+        {
+            // 获取 canvas
+            if (_canvasRect == null) _canvasRect = UIManager.GetInstance()._canvas.GetComponent<RectTransform>();
+
+            Vector3 screenPoint = Camera.main.WorldToScreenPoint(enemyTransform.position);
+
+            // 转换到 Canvas 本地坐标
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                _canvasRect,
+                screenPoint,
+                null,
+                out Vector2 localPoint
+            );
+
+            DamageParam param = new DamageParam();
+            param.attack = attack;
+            param.isCriticalAttack = isCriticalAttack;
+            param.localPosition = localPoint;
+            UIManager.GetInstance().OpenPanel(GlobalDefine.DamagePanel, UILayer.Top, param);
         }
         #endregion
     }

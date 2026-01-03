@@ -84,7 +84,7 @@ namespace Cyber
                 _animatorReactionCo = StartCoroutine(SimualteReaction());
 
                 //  ‹…À
-                OnReaction(AttackDataManager.GetInstance().CalculatePlayerAttack(PlayerDataManager.GetInstance().GetPlayerInfo(), _enemyData));
+                OnReaction(AttackDataManager.GetInstance().CalculatePlayerAttack(PlayerDataManager.GetInstance().GetPlayerInfo(), _enemyData, transform));
             }
         }
 

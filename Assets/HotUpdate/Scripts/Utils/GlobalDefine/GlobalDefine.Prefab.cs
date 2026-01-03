@@ -24,6 +24,7 @@ public sealed partial class GlobalDefine
     public const string MapPanel = "Assets/UI/Map/Prefabs/MapPanel.prefab";
     public const string PropertyPanel = "Assets/UI/Items/Prefabs/PropertyPanel.prefab";
     public const string EquipmentTipPanel = "Assets/UI/Items/Prefabs/EquipmentTipPanel.prefab";
+    public const string DamagePanel = "Assets/UI/Common/Prefabs/DamagePanel.prefab";
 
     // µ–»À
     public const string WhiteBaboon = "Assets/UI/Spawner/Prefabs/WhiteBaboon.prefab";
