@@ -3,5 +3,15 @@
     "id": 1000,
     "name": "白狒狒",
     "globalDefine": "WhiteBaboon"
+  },
+  {
+    "id": 1001,
+    "name": "古石巨人",
+    "globalDefine": "StoneGiant"
+  },
+  {
+    "id": 1002,
+    "name": "青石巨人",
+    "globalDefine": "CyanStoneGiant"
   }
 ]

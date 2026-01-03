@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 753de023679cabe43ab7332143271abc, type: 3}
+  m_Name: FeiCuiLinHai_StoneGiant
+  m_EditorClassIdentifier: 
+  _name: "\u53E4\u77F3\u5DE8\u4EBA"
+  _enemyIconPath: IconStoneGiant
+  _prefabPath: StoneGiant
+  _type: 0
+  _behavior: 2
+  _description: "\u53E4\u77F3\u5DE8\u4EBA\u662F\u7FE1\u7FE0\u6797\u6D77\u4E2D\u6C89\u7761\u7684\u8FDC\u53E4\u9057\u6C11\uFF0C\u5B83\u4EEC\u7684\u8EAF\u4F53\u7531\u8986\u6EE1\u82D4\u85D3\u7684\u53E4\u8001\u5CA9\u77F3\u4E0E\u76D8\u7ED3\u7684\u6811\u6839\u4EA4\u7EC7\u800C\u6210\uFF0C\u4EFF\u4F5B\u672C\u5C31\u662F\u5C71\u8109\u7684\u4E00\u90E8\u5206\u3002\u8FD9\u4E9B\u5DE8\u517D\u4E0E\u68EE\u6797\u540C\u606F\u5171\u611F\uFF0C\u65E0\u9700\u8A00\u8BED\uFF0C\u4FBF\u80FD\u8BFB\u61C2\u5E74\u8F6E\u4E2D\u7684\u8BB0\u5FC6\uFF0C\u542C\u61C2\u98CE\u7A7F\u8FC7\u53F6\u9699\u7684\u4F4E\u8BED\u3002"
+  _level: 2
+  _EXP: 20
+  _maxHP: 300
+  _maxMP: 0
+  _pAttack: 20
+  _pDefense: 20
+  _pArmorPenetration: 0
+  _pDamageAvoidance: 15
+  _ringDropRate: 10
+  _ringID: 20000
+  _dropItems:
+  - _treasureID: 1000
+    _dropWeight: 50
+  - _treasureID: 1001
+    _dropWeight: 100
+  - _treasureID: 1002
+    _dropWeight: 10

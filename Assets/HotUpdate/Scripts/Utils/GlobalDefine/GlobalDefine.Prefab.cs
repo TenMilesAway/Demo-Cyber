@@ -29,6 +29,8 @@ public sealed partial class GlobalDefine
 
     // µ–»À
     public const string WhiteBaboon = "Assets/UI/Spawner/Prefabs/WhiteBaboon.prefab";
+    public const string StoneGiant = "Assets/UI/Spawner/Prefabs/StoneGiant.prefab";
+    public const string CyanStoneGiant = "Assets/UI/Spawner/Prefabs/CyanStoneGiant.prefab";
 
     // ±¶œ‰
     public const string FeiCuiLinHaiTreasure1 = "Assets/UI/Spawner/Prefabs/PrettyTreasure_1.prefab";

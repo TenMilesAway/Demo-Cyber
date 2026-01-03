@@ -111,8 +111,6 @@ namespace HA
 
                 UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.GetPath(data._prefabPath), GetInstanceID().ToString(), (GameObject entity) =>
                 {
-                    entity.transform.position = spawnPosition;
-
                     InitSpawnerInfo(entity, data);
 
                     if (data._randomRotation) entity.transform.rotation = UnityEngine.Random.rotation;
@@ -120,8 +118,10 @@ namespace HA
                     _spawnedObjects.Add(entity);
 
                     entity.transform.SetParent(transform, true);
+                    entity.transform.position = spawnPosition;
                     GameManager.Event.Broadcast(GameEventType.UpdateEntityInfoAfterSpawn);
                 });
+                Debug.Log($"生成位置: {spawnPosition}, 中心点: {transform.position}, 范围类型: {_spawnAreaType}, 半径: {_spawnRadius}");
             }
         }
 
