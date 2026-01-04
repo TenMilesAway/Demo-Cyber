@@ -45,6 +45,8 @@ namespace Cyber
 
         public void Init(bool isGenerateBySpawner)
         {
+            Debug.Log($"=== 怪物初始化开始 ===");
+            Debug.Log($"初始化前位置: {transform.position}");
             _agent = GetComponent<NavMeshAgent>();
             _animator = GetComponentInChildren<Animator>();
             BT = GetComponent<BehaviorTree>();
@@ -55,7 +57,9 @@ namespace Cyber
             _currentHP = _enemyData._maxHP;
             _currentMP = _enemyData._maxMP;
 
-            AddListeners();
+            Debug.Log($"初始化后立即位置: {transform.position}");
+            StartCoroutine(DelayedGenerateWaypoints());
+            //AddListeners();
         }
 
         private void AddListeners()
@@ -71,6 +75,7 @@ namespace Cyber
         private void Update()
         {
             BT.GetVariable("_velocity").SetValue(_agent.velocity.magnitude);
+            _animator.SetFloat("velocity", _agent.velocity.magnitude);
         }
 
         private void OnTriggerEnter(Collider collider)
@@ -272,6 +277,19 @@ namespace Cyber
         #endregion
 
         #region 监听方法：寻路 & 攻击
+        private IEnumerator DelayedGenerateWaypoints()
+        {
+            yield return null;  // 等待一帧，确保Transform更新完成
+            GenerateWaypoints();
+
+            if (_agent != null && !_agent.enabled)
+            {
+                _agent.enabled = true;
+                _agent.Warp(transform.position);  // 强制设置到当前位置
+                Debug.Log($"NavMeshAgent已启用，位置设置为: {transform.position}");
+            }
+        }
+
         /// <summary>
         /// 初始化路径点
         /// </summary>
@@ -279,7 +297,6 @@ namespace Cyber
         {
             if (_isInit) return;
 
-            HADebug.Log("开始初始化路径点");
             _isInit = true;
             GenerateWaypoints(_patrolRadius);
         }

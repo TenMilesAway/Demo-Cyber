@@ -105,9 +105,7 @@ namespace HA
                     continue;
                 }
 
-                Vector3 spawnPosition = GetRandomSpawnPosition();
-
-                if (_alignToGround) spawnPosition = AdjustPositionToGround(spawnPosition);
+                //if (_alignToGround) spawnPosition = AdjustPositionToGround(spawnPosition);
 
                 UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.GetPath(data._prefabPath), GetInstanceID().ToString(), (GameObject entity) =>
                 {
@@ -118,10 +116,8 @@ namespace HA
                     _spawnedObjects.Add(entity);
 
                     entity.transform.SetParent(transform, true);
-                    entity.transform.position = spawnPosition;
-                    GameManager.Event.Broadcast(GameEventType.UpdateEntityInfoAfterSpawn);
+                    entity.transform.position = GetRandomSpawnPosition();
                 });
-                Debug.Log($"生成位置: {spawnPosition}, 中心点: {transform.position}, 范围类型: {_spawnAreaType}, 半径: {_spawnRadius}");
             }
         }
 
