@@ -1068,6 +1068,10 @@ PrefabInstance:
       value: FeiCuiLinHai-TreasureOneTimeSpawner (3)
       objectReference: {fileID: 0}
     - target: {fileID: 418400909803905070, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: _spawnProbability
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905070, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
       propertyPath: _spawnerDatas.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -1882,20 +1886,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8839511262883882457, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: _spawnProbability
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882457, guid: c6d4dda55975f1946af371afd813f055, type: 3}
       propertyPath: _spawnerDatas.Array.size
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8839511262883882457, guid: c6d4dda55975f1946af371afd813f055, type: 3}
       propertyPath: _spawnerDatas.Array.data[0]._weight
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8839511262883882457, guid: c6d4dda55975f1946af371afd813f055, type: 3}
-      propertyPath: _spawnerDatas.Array.data[1]._weight
       value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8839511262883882457, guid: c6d4dda55975f1946af371afd813f055, type: 3}
-      propertyPath: _spawnerDatas.Array.data[2]._weight
+      propertyPath: _spawnerDatas.Array.data[1]._weight
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882457, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: _spawnerDatas.Array.data[2]._weight
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8839511262883882457, guid: c6d4dda55975f1946af371afd813f055, type: 3}
       propertyPath: _spawnerDatas.Array.data[1]._prefabID
@@ -3546,6 +3554,116 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4950336793739518425, guid: 5e820626510a0ed4fb536d4f8fae1dea, type: 3}
   m_PrefabInstance: {fileID: 534766671}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &538213285
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1733409648}
+    m_Modifications:
+    - target: {fileID: 8839511262883882438, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: m_Name
+      value: FeiCuiLinHai-EnemyOneTimeSpawner (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882438, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882456, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882456, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -11.78
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882456, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.28477973
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882456, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 136.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882456, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882456, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882456, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882456, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882456, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882456, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882456, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882457, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: _spawnProbability
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882457, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: _spawnerDatas.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882457, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: _spawnerDatas.Array.data[0]._weight
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882457, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: _spawnerDatas.Array.data[1]._weight
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882457, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: _spawnerDatas.Array.data[2]._weight
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882457, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: _spawnerDatas.Array.data[1]._prefabID
+      value: 1001
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882457, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: _spawnerDatas.Array.data[2]._prefabID
+      value: 1002
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882457, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: _spawnerDatas.Array.data[1]._prefabPath
+      value: WhiteBaboon
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882457, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: _spawnerDatas.Array.data[2]._prefabPath
+      value: WhiteBaboon
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882457, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: _spawnerDatas.Array.data[1]._randomScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882457, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: _spawnerDatas.Array.data[2]._randomScale
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+--- !u!4 &538213286 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8839511262883882456, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+  m_PrefabInstance: {fileID: 538213285}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &582923706
 PrefabInstance:
@@ -6665,6 +6783,100 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4409693643127201532, guid: 1fb019c1094b9ef449b374eeda904ff3, type: 3}
   m_PrefabInstance: {fileID: 1219302577}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1226277395
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1462358194}
+    m_Modifications:
+    - target: {fileID: 418400909803905065, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: m_Name
+      value: FeiCuiLinHai-TreasureOneTimeSpawner (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905070, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: _alignToGround
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905070, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: _spawnProbability
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905070, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: _spawnerDatas.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905070, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: _spawnerDatas.Array.data[0]._weight
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905070, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: _spawnerDatas.Array.data[1]._weight
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905070, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: _spawnerDatas.Array.data[2]._weight
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905070, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: _spawnerDatas.Array.data[2]._prefabID
+      value: 1002
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905070, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: _spawnerDatas.Array.data[2]._prefabPath
+      value: FeiCuiLinHaiTreasure2
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905071, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905071, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 7.1800003
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905071, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 19.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905071, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 114.63
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905071, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905071, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905071, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905071, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905071, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905071, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905071, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+--- !u!4 &1226277396 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 418400909803905071, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+  m_PrefabInstance: {fileID: 1226277395}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1235532126
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8275,6 +8487,7 @@ Transform:
   - {fileID: 2054922637}
   - {fileID: 2139763110}
   - {fileID: 149762823}
+  - {fileID: 1226277396}
   m_Father: {fileID: 1052056065}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10156,6 +10369,7 @@ Transform:
   - {fileID: 1885346321}
   - {fileID: 1971035117}
   - {fileID: 230833908}
+  - {fileID: 538213286}
   m_Father: {fileID: 1052056065}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11592,6 +11806,10 @@ PrefabInstance:
     - target: {fileID: 8839511262883882456, guid: c6d4dda55975f1946af371afd813f055, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882457, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: _spawnProbability
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8839511262883882457, guid: c6d4dda55975f1946af371afd813f055, type: 3}
       propertyPath: _spawnerDatas.Array.size
@@ -13441,6 +13659,10 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 418400909803905070, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: _spawnProbability
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905070, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
       propertyPath: _spawnerDatas.Array.data[0]._weight
       value: 100
       objectReference: {fileID: 0}
@@ -13609,8 +13831,12 @@ PrefabInstance:
       value: FeiCuiLinHai-TreasureOneTimeSpawner (1)
       objectReference: {fileID: 0}
     - target: {fileID: 418400909803905070, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: _spawnProbability
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905070, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
       propertyPath: _spawnerDatas.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 418400909803905070, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
       propertyPath: _spawnerDatas.Array.data[0]._weight
@@ -13625,11 +13851,35 @@ PrefabInstance:
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 418400909803905070, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: _spawnerDatas.Array.data[3]._weight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905070, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: _spawnerDatas.Array.data[4]._weight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905070, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
       propertyPath: _spawnerDatas.Array.data[2]._prefabID
       value: 1002
       objectReference: {fileID: 0}
     - target: {fileID: 418400909803905070, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: _spawnerDatas.Array.data[3]._prefabID
+      value: 1003
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905070, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: _spawnerDatas.Array.data[4]._prefabID
+      value: 1003
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905070, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
       propertyPath: _spawnerDatas.Array.data[2]._prefabPath
+      value: FeiCuiLinHaiTreasure2
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905070, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: _spawnerDatas.Array.data[3]._prefabPath
+      value: FeiCuiLinHaiTreasure2
+      objectReference: {fileID: 0}
+    - target: {fileID: 418400909803905070, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
+      propertyPath: _spawnerDatas.Array.data[4]._prefabPath
       value: FeiCuiLinHaiTreasure2
       objectReference: {fileID: 0}
     - target: {fileID: 418400909803905071, guid: 3f8fdd8c4f1cdc345bcdebe7deaccac5, type: 3}
@@ -13856,6 +14106,10 @@ PrefabInstance:
     - target: {fileID: 8839511262883882456, guid: c6d4dda55975f1946af371afd813f055, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839511262883882457, guid: c6d4dda55975f1946af371afd813f055, type: 3}
+      propertyPath: _spawnProbability
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6d4dda55975f1946af371afd813f055, type: 3}

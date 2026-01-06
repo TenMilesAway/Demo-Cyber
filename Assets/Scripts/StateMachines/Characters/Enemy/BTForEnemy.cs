@@ -155,6 +155,7 @@ namespace Cyber
             }
 
             int randomWeight = UnityEngine.Random.Range(0, totalWeight);
+            HADebug.LogFormat("当前随机权重为{0}", randomWeight);
             int currentWeight = 0;
             for (int i = 0; i < _enemyData._dropItems.Count; i++)
             {

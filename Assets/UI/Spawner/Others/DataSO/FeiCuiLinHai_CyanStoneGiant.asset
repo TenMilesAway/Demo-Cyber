@@ -23,7 +23,7 @@ MonoBehaviour:
   _maxHP: 500
   _maxMP: 0
   _pAttack: 40
-  _pDefense: 30
+  _pDefense: 20
   _pArmorPenetration: 0
   _pDamageAvoidance: 20
   _ringDropRate: 10

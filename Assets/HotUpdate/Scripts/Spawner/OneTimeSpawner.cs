@@ -10,8 +10,9 @@ namespace HA
     {
         [Header("基础信息")]
         [SerializeField] private ESpawnType _spawnType = ESpawnType.Enemy;
-        [SerializeField] private List<SpawnerData> _spawnerDatas = new List<SpawnerData>();
         [SerializeField] private bool _spawnOnStart;
+        [SerializeField][Range(0, 100)] private int _spawnProbability;
+        [SerializeField] private List<SpawnerData> _spawnerDatas = new List<SpawnerData>();
 
         [Header("生成范围")]
         [SerializeField] private ESpawnAreaType _spawnAreaType = ESpawnAreaType.Circle;
@@ -21,9 +22,6 @@ namespace HA
         [SerializeField] private SpawnNumRange _spawnNumRange = new SpawnNumRange(1, 10);
         [SerializeField] private SpawnScaleRange _spawnScaleRange = new SpawnScaleRange(0.8f, 1.2f);
 
-        [Header("生成模式")]
-        private ESpawnMode _spawnMode = ESpawnMode.OneTime;
-
         [Header("调试")]
         [SerializeField] private Color _gizmoColor = new Color(0, 1, 0, 0.3f);
         [SerializeField] private bool _showGizmos = false;
@@ -32,6 +30,9 @@ namespace HA
         [SerializeField] private bool _alignToGround = true;
         [SerializeField] private float _groundCheckDistance = 10f;
         [SerializeField] private LayerMask _groundLayer;
+
+        [Header("生成模式")]
+        private ESpawnMode _spawnMode = ESpawnMode.OneTime;
 
         private List<GameObject> _spawnedObjects = new List<GameObject>();
         private int _totalWeight = 0;
@@ -54,12 +55,27 @@ namespace HA
 
         private void Start()
         {
+            if (!IsSpawnObject()) return;
+
             CalculateTotalWeight();
 
             if (_spawnOnStart)
             {
                 SpawnPrefabs();
             }
+        }
+
+        #region 主要方法
+        /// <summary>
+        /// 是否刷怪
+        /// </summary>
+        private bool IsSpawnObject()
+        {
+            int randomNum = UnityEngine.Random.Range(0, 100);
+
+            if (_spawnProbability > randomNum) return true;
+
+            return false;
         }
 
         /// <summary>
@@ -105,7 +121,9 @@ namespace HA
                     continue;
                 }
 
-                //if (_alignToGround) spawnPosition = AdjustPositionToGround(spawnPosition);
+                Vector3 spawnPosition = GetRandomSpawnPosition();
+
+                if (_alignToGround) spawnPosition = AdjustPositionToGround(spawnPosition);
 
                 UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.GetPath(data._prefabPath), GetInstanceID().ToString(), (GameObject entity) =>
                 {
@@ -116,14 +134,15 @@ namespace HA
                     _spawnedObjects.Add(entity);
 
                     entity.transform.SetParent(transform, true);
-                    entity.transform.position = GetRandomSpawnPosition();
+                    entity.transform.position = spawnPosition;
                 });
             }
         }
+        #endregion
 
         #region 辅助方法
         /// <summary>
-        /// 初始化刷怪路径
+        /// 初始化刷怪物体 Prefab 路径
         /// </summary>
         private string InitSpawnerDataPath(SpawnerData data)
         {
@@ -234,7 +253,7 @@ namespace HA
         }
 
         /// <summary>
-        /// 调整位置至地面 (没有实用)
+        /// 调整位置至地面
         /// </summary>
         private Vector3 AdjustPositionToGround(Vector3 position)
         {

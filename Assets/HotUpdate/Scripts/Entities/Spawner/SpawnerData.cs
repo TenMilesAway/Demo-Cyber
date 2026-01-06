@@ -10,8 +10,8 @@ namespace HA
     [System.Serializable]
     public class SpawnerData
     {
-        [HideInInspector] public string _prefabPath;
         public int _prefabID;
+        [HideInInspector] public string _prefabPath;
         public bool _randomRotation;
         public bool _randomScale;
         public int _weight;

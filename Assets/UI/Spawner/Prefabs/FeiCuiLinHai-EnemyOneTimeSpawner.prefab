@@ -45,13 +45,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnType: 0
+  _spawnOnStart: 1
+  _spawnProbability: 12
   _spawnerDatas:
   - _prefabPath: WhiteBaboon
     _prefabID: 1000
     _randomRotation: 0
     _randomScale: 1
     _weight: 100
-  _spawnOnStart: 1
   _spawnAreaType: 1
   _spawnRadius: 10
   _spawnNumRange:
