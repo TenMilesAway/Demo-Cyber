@@ -11,9 +11,7 @@ namespace HA
         public async void OnEnterAsync()
         {
             // --------- 初始化
-            PlayerDataManager.GetInstance().SetPlayerToPlace(new Vector3(17.0f, 0f, 0f));
-            // ---------
-
+            MapPointDataManager.GetInstance().SetPoint(GlobalDefine.FeiCuiLinHaiPoint1);
 
             // --------- 展示主界面 UI
             Task<PlayerInfo> task = PlayerDataManager.GetInstance().GetPlayerInfoAsync(1, 0.02f);
@@ -27,6 +25,7 @@ namespace HA
         public void OnLeave()
         {
             InteractiveDataManager.GetInstance().ClearInteractives();
+            UIManager.GetInstance().ClosePanel(GlobalDefine.MainPanel);
 
             SceneManager.UnloadSceneAsync("FirstLevel");
         }

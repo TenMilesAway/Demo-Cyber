@@ -1,3 +1,4 @@
+using Cyber;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,8 +9,13 @@ namespace HA
     public class MapPanel : UIBasePanel
     {
         [SerializeField] private Button _btnClose;
+
+        [Space(10)]
+        [SerializeField] private Button _btnSpawn;
         [SerializeField] private Button _btnFeiCuiLinHai;
-        
+
+        private Dictionary<string, Button> buttons = new Dictionary<string, Button>();
+
         public override string GetPanelName()
         {
             return GlobalDefine.MapPanel;
@@ -18,6 +24,9 @@ namespace HA
         protected override void InitHandle(OpenUIParam param)
         {
             base.InitHandle(param);
+
+            InitButtons();
+            InitButtonsState();
 
             AddListeners();
         }
@@ -32,16 +41,47 @@ namespace HA
         private void AddListeners()
         {
             _btnClose.onClick.AddListener(OnClickBtnClose);
+            _btnSpawn.onClick.AddListener(() => OnClickBtnNextMap(0));
             _btnFeiCuiLinHai.onClick.AddListener(() => OnClickBtnNextMap(1));
         }
 
         private void RemoveListeners()
         {
             _btnClose.onClick.RemoveAllListeners();
+            _btnSpawn.onClick.RemoveAllListeners();
             _btnFeiCuiLinHai.onClick.RemoveAllListeners();
         }
 
+        #region 主要方法：初始化按钮显示
+        /// <summary>
+        /// 初始化按钮列表
+        /// </summary>
+        private void InitButtons()
+        {
+            if (buttons.Count != 0) return;
+
+            buttons.Add(GlobalDefine.FsmStateSpawn, _btnSpawn);
+            buttons.Add(GlobalDefine.FsmStateForestMap, _btnFeiCuiLinHai);
+        }
+
+        /// <summary>
+        /// 初始化按钮显示
+        /// </summary>
+        private void InitButtonsState()
+        {
+            string currentState = GameManager.Fsm.GetCurrentFsmStateName();
+
+            foreach (KeyValuePair<string, Button> button in buttons)
+            {
+                InitButtonsState(button.Value, button.Key == currentState);
+            }
+        }
+        #endregion
+
         #region 监听方法：UI
+        /// <summary>
+        /// 关闭面板
+        /// </summary>
         private void OnClickBtnClose()
         {
             UIManager.GetInstance().ClosePanel(GlobalDefine.MapPanel);
@@ -50,8 +90,21 @@ namespace HA
             //GameManager.Event.Broadcast(GameEventType.DisablePlayerFlipInput);
         }
 
+        /// <summary>
+        /// 点击地图按钮响应
+        /// </summary>
         private void OnClickBtnNextMap(int level)
         {
+            if (GameManager.Fsm.GetCurrentFsmStateName() == GetFsmStateByLevel(level))
+            {
+                UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.ToastPanel, GetInstanceID().ToString(), (GameObject toast) =>
+                {
+                    ToastPanel component = toast.GetComponent<ToastPanel>();
+                    component?.Init(string.Format("猎兽者大人, 您当前已在该地图啦"), true);
+                });
+                return;
+            }
+
             LoadingPanelParam param = new LoadingPanelParam();
             param._name = GetSceneNameByLevel(level);
             if (param._name == null)
@@ -82,6 +135,10 @@ namespace HA
         {
             switch (level)
             {
+                case 0:
+                    {
+                        return "Spawn";
+                    }
                 case 1:
                     {
                         return "FirstLevel";
@@ -101,6 +158,10 @@ namespace HA
         {
             switch (level)
             {
+                case 0:
+                    {
+                        return GlobalDefine.FsmStateSpawn;
+                    }
                 case 1:
                     {
                         return GlobalDefine.FsmStateForestMap;
@@ -108,6 +169,23 @@ namespace HA
             }
 
             return null;
+        }
+        #endregion
+
+        #region 辅助方法：初始化按钮显示
+        /// <summary>
+        /// 初始化单个按钮的显示
+        /// </summary>
+        private void InitButtonsState(Button button, bool isShowCurrentPosition = false)
+        {
+            if (isShowCurrentPosition)
+            {
+                button.gameObject.transform.GetChild(2).gameObject.SetActive(true);
+            }
+            else
+            {
+                button.gameObject.transform.GetChild(2).gameObject.SetActive(false);
+            }
         }
         #endregion
     }

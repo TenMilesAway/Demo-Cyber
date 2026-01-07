@@ -287,6 +287,7 @@ namespace Cyber
             {
                 _agent.enabled = true;
                 _agent.Warp(transform.position);  // 强制设置到当前位置
+                BT.EnableBehavior();
                 Debug.Log($"NavMeshAgent已启用，位置设置为: {transform.position}");
             }
         }

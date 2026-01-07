@@ -64,6 +64,8 @@ namespace HA
         /// </summary>
         public bool GetPlayerMainCamera()
         {
+            if (_player == null) return false;
+
             if (_player.GetComponentInChildren<Player>().MainCameraTransform == null) return false;
             else return true;
         }
@@ -73,6 +75,8 @@ namespace HA
         /// </summary>
         public void SetPlayerMainCamera()
         {
+            if (_player == null) return;
+
             _player.GetComponentInChildren<Player>().MainCameraTransform = Camera.main.transform;
         }
 

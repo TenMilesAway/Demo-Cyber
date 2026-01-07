@@ -12,7 +12,7 @@ namespace HA
     public class FsmComponent : BaseComponent
     {
         private FsmStatemachine _statemachine = new FsmStatemachine();
-        private string _fsmStateName;
+        private string _currentFsmStateName;
 
         protected override void Awake()
         {
@@ -37,11 +37,12 @@ namespace HA
         public void StartFsmState(string stateName)
         {
             _statemachine.StartFsmState(stateName);
+            _currentFsmStateName = stateName;
         }
 
         public string GetCurrentFsmStateName()
         {
-            return _fsmStateName;
+            return _currentFsmStateName;
         }
         #endregion
 

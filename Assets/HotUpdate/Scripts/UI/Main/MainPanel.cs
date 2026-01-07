@@ -70,6 +70,7 @@ namespace HA
             // UI
             _btnBag.onClick.AddListener(OnClickBtnBag);
             _btnForge.onClick.AddListener(OnClickBtnForge);
+            _btnTransport.onClick.AddListener(OnClickBtnTransport);
         }
 
         private void RemoveListeners()
@@ -80,6 +81,7 @@ namespace HA
             // UI
             _btnBag.onClick.RemoveAllListeners();
             _btnForge.onClick.RemoveAllListeners();
+            _btnTransport.onClick.RemoveAllListeners();
         }
 
         #region 主要方法
@@ -93,6 +95,9 @@ namespace HA
         #endregion
 
         #region 监听方法：UI
+        /// <summary>
+        /// 打开背包界面
+        /// </summary>
         private void OnClickBtnBag()
         {
             AudioClipData data = new AudioClipData
@@ -112,6 +117,9 @@ namespace HA
             UIManager.GetInstance().ClosePanel(GlobalDefine.InteractivePanel);
         }
 
+        /// <summary>
+        /// 打开强化界面 (临时：添加物品至仓库)
+        /// </summary>
         private void OnClickBtnForge()
         {
             List<ItemInfo> infos = new List<ItemInfo>
@@ -122,6 +130,11 @@ namespace HA
             };
 
             InventoryDataManager.GetInstance().AddItemInfoToInventory(infos);
+        }
+
+        private void OnClickBtnTransport()
+        {
+            UIManager.GetInstance().OpenPanel(GlobalDefine.MapPanel);
         }
         #endregion
 
