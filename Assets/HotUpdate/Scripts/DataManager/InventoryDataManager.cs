@@ -1,6 +1,8 @@
+using Cyber;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -18,11 +20,11 @@ namespace HA
         private Image _nowDragItemCellImg;    // 当前拖动的格子图片信息
 
         private bool _isDraging;              // 是否拖动中
+        private int _leftItemInfosCount = 0;  // 剩余空格子数量
 
         public void Init()
         {
             GameManager.Event.AddListener<PlayerInfo>(GameEventType.UpdateInventoryItemList, UpdateInventoryItemList);
-
             GameManager.Event.AddListener<ItemCell>(GameEventType.EnterItemCell, EnterItemCell);
             GameManager.Event.AddListener<ItemCell>(GameEventType.ExitItemCell, ExitItemCell);
             GameManager.Event.AddListener<ItemCell>(GameEventType.ClickItemCell, ClickItemCell);
@@ -41,12 +43,104 @@ namespace HA
         {
             return _nowSelectItemCell;
         }
+
+        /// <summary>
+        /// 整理仓库
+        /// </summary>
+        /// <param name="type">
+        /// 1：按照 ID 从小到大
+        /// 2：按照 ID 从大到小
+        /// </param>
+        public void SortInventory(int type)
+        {
+            switch (type)
+            {
+                case 1:
+                    {
+                        SortInventoryByIDFromMinToMax();
+                    }
+                    break;
+                case 2:
+                    {
+                        SortInventoryByIDFromMaxToMin();
+                    }
+                    break;
+            }
+
+            // 刷新 UI 与数据
+            UpdateInventoryLeftItemInfosCount();
+            GameManager.Event.Broadcast(GameEventType.UpdateInventoryPanelUI);
+            GameManager.Event.Broadcast(GameEventType.ReqPlayerInventorySave);
+        }
+
+        /// <summary>
+        /// 添加物品至仓库
+        /// </summary>
+        public void AddItemInfoToInventory(List<ItemInfo> _needAddItemInfos)
+        {
+            int needAddCount = _needAddItemInfos.Count;
+
+            // 要添加物品超过仓库格子余量 (不包括同类物品)
+            if (needAddCount > _leftItemInfosCount)
+            {
+                UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.ToastPanel, GetInstance().ToString(), (GameObject toast) =>
+                {
+                    ToastPanel component = toast.GetComponent<ToastPanel>();
+                    component?.Init(string.Format("将获得的物体数量[{0}]大于仓库剩余余量[{1}]", needAddCount, _leftItemInfosCount), true);
+                });
+                return;
+            }
+
+            List<int> availableSlots = FindFirstNAvailableSlots(needAddCount);
+
+            if (availableSlots.Count < needAddCount)
+            {
+                UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.ToastPanel, GetInstance().ToString(), (GameObject toast) =>
+                {
+                    ToastPanel component = toast.GetComponent<ToastPanel>();
+                    component?.Init(string.Format("仓库未知错误[代号1]"), true);
+                });
+                return;
+            }
+
+            for (int i = 0; i < availableSlots.Count; i++)
+            {
+                _itemInfos[availableSlots[i]] = _needAddItemInfos[i];
+            }
+
+            // 刷新 UI 与数据
+            UpdateInventoryLeftItemInfosCount();
+            GameManager.Event.Broadcast(GameEventType.UpdateInventoryPanelUI);
+            GameManager.Event.Broadcast(GameEventType.ReqPlayerInventorySave);
+        }
         #endregion
 
         #region 监听方法：更新数据
+        /// <summary>
+        /// 更新 ItemInfos (这里是引用，更新一次其实就够了)
+        /// </summary>
+        /// <param name="info"></param>
         private void UpdateInventoryItemList(PlayerInfo info)
         {
             _itemInfos = info._allItems;
+
+            // 计算剩余空格子数量
+            UpdateInventoryLeftItemInfosCount();
+        }
+
+        /// <summary>
+        /// 计算剩余空格子数量
+        /// </summary>
+        private void UpdateInventoryLeftItemInfosCount()
+        {
+            _leftItemInfosCount = 0;
+            for (int i = 0; i < _itemInfos.Count; i++)
+            {
+                if (_itemInfos[i] == null || _itemInfos[i]._id == 0)
+                {
+                    _leftItemInfosCount++;
+                }
+            }
         }
         #endregion
 
@@ -254,6 +348,7 @@ namespace HA
                 };
             }
 
+            UpdateInventoryLeftItemInfosCount();
             GameManager.Event.Broadcast(GameEventType.UpdateInventoryPanelUI);
             GameManager.Event.Broadcast(GameEventType.ReqPlayerInventorySave);
         }
@@ -311,6 +406,128 @@ namespace HA
             }
 
             return result;
+        }
+        #endregion
+
+        #region 辅助方法：查找指定格子
+        /// <summary>
+        /// 查找前 n 个可用的格子
+        /// </summary>
+        private List<int> FindFirstNAvailableSlots(int n)
+        {
+            List<int> result = new List<int>();
+
+            for (int index = 0; index < _itemInfos.Count && result.Count < n; index++)
+            {
+                if (IsSlotAvailable(index))
+                {
+                    result.Add(index);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 判断当前索引格子是否无物品
+        /// </summary>
+        private bool IsSlotAvailable(int index)
+        {
+            ItemInfo item = _itemInfos[index];
+            return item == null || item._id == 0;
+        }
+
+        #endregion
+
+        #region 辅助方法：排序
+        /// <summary>
+        /// 按照 ID 从小到大排序
+        /// </summary>
+        private void SortInventoryByIDFromMinToMax()
+        {
+            // 先过滤掉 id = 0 的项
+            List<ItemInfo> filteredItems = _itemInfos.Where(item => item._id != 0).ToList();
+
+            // 分为两组：装备和非装备
+            List<ItemInfo> equipments = filteredItems.Where(item => ItemDataManager.GetInstance().GetData(item._id).type == 1).ToList();
+            List<ItemInfo> nonEquipments = filteredItems.Where(item => ItemDataManager.GetInstance().GetData(item._id).type != 1).ToList();
+
+            // 非装备排序合并
+            List<ItemInfo> mergedNonEquipments = nonEquipments
+                .GroupBy(item => item._id)
+                .Select(group => new ItemInfo
+                {
+                    _id = group.Key,
+                    _num = group.Sum(item => item._num)
+                })
+                .ToList();
+
+            List<ItemInfo> result = new List<ItemInfo>();
+            result.AddRange(mergedNonEquipments);
+            result.AddRange(equipments);
+
+            result = result
+                .OrderBy(item => item._id)
+                .Concat(_itemInfos.Where(item => item._id == 0))
+                .ToList();
+
+            int needToAdd = PlayerDataManager.GetInstance().GetPlayerInfo()._inventoryItemNum - result.Count;
+
+            if (needToAdd > 0)
+            {
+                for (int i = 0; i < needToAdd; i++)
+                {
+                    result.Add(new ItemInfo { _id = 0, _num = 0 });
+                }
+            }
+
+            _itemInfos.Clear();
+            _itemInfos.AddRange(result);
+        }
+
+        /// <summary>
+        /// 按照 ID 从大到小排序
+        /// </summary>
+        private void SortInventoryByIDFromMaxToMin()
+        {
+            // 先过滤掉 id = 0 的项
+            List<ItemInfo> filteredItems = _itemInfos.Where(item => item._id != 0).ToList();
+
+            // 分为两组：装备和非装备
+            List<ItemInfo> equipments = filteredItems.Where(item => ItemDataManager.GetInstance().GetData(item._id).type == 1).ToList();
+            List<ItemInfo> nonEquipments = filteredItems.Where(item => ItemDataManager.GetInstance().GetData(item._id).type != 1).ToList();
+
+            // 非装备排序合并
+            List<ItemInfo> mergedNonEquipments = nonEquipments
+                .GroupBy(item => item._id)
+                .Select(group => new ItemInfo
+                {
+                    _id = group.Key,
+                    _num = group.Sum(item => item._num)
+                })
+                .ToList();
+
+            List<ItemInfo> result = new List<ItemInfo>();
+            result.AddRange(mergedNonEquipments);
+            result.AddRange(equipments);
+
+            result = result
+                .OrderBy(item => item._id)
+                .Concat(_itemInfos.Where(item => item._id == 0))
+                .ToList();
+
+            int needToAdd = PlayerDataManager.GetInstance().GetPlayerInfo()._inventoryItemNum - result.Count;
+
+            if (needToAdd > 0)
+            {
+                for (int i = 0; i < needToAdd; i++)
+                {
+                    result.Add(new ItemInfo { _id = 0, _num = 0 });
+                }
+            }
+
+            _itemInfos.Clear();
+            _itemInfos.AddRange(result);
         }
         #endregion
     }

@@ -19,8 +19,6 @@ namespace HA
 
         public void Init()
         {
-            //NetManager.AddMsgListener(GameEventType.HAMsgPlayerInfoLoad.ToString(), RpsPlayerInfoLoad);         // 1响应：获得玩家所有信息
-            //NetManager.AddMsgListener(GameEventType.HAMsgPlayerInfoSave.ToString(), RpsPlayerInfoSave);         // 2响应：保存玩家所有信息
             NetManager.AddMsgListener(GameEventType.MsgPlayerBaseLoad.ToString(), RpsPlayerBaseLoad);           // 3响应：获得玩家基础信息
             NetManager.AddMsgListener(GameEventType.MsgPlayerBaseSave.ToString(), RpsPlayerBaseSave);           // 4响应：保存玩家基础信息
             NetManager.AddMsgListener(GameEventType.MsgPlayerStatsLoad.ToString(), RpsPlayerStatsLoad);         // 5响应：获得玩家状态信息
@@ -28,8 +26,6 @@ namespace HA
             NetManager.AddMsgListener(GameEventType.MsgPlayerInventoryLoad.ToString(), RpsPlayerInventoryLoad); // 7响应：获得玩家背包信息
             NetManager.AddMsgListener(GameEventType.MsgPlayerInventorySave.ToString(), RpsPlayerInventorySave); // 8响应：保存玩家背包信息
 
-            //GameManager.Event.AddListener(GameEventType.ReqPlayerInfoLoad, ReqPlayerInfoLoad);                  // 1请求：获得玩家所有信息
-            //GameManager.Event.AddListener(GameEventType.ReqPlayerInfoSave, ReqPlayerInfoSave);                  // 2请求：保存玩家所有信息
             GameManager.Event.AddListener(GameEventType.ReqPlayerBaseLoad, ReqPlayerBaseLoad);                  // 3请求：获得玩家基础信息
             GameManager.Event.AddListener(GameEventType.ReqPlayerBaseSave, ReqPlayerBaseSave);                  // 4请求：保存玩家基础信息
             GameManager.Event.AddListener(GameEventType.ReqPlayerStatsLoad, ReqPlayerStatsLoad);                // 5请求：获得玩家状态信息
@@ -38,7 +34,6 @@ namespace HA
             GameManager.Event.AddListener(GameEventType.ReqPlayerInventorySave, ReqPlayerInventorySave);        // 8请求：保存玩家背包信息
 
             // 请求玩家数据
-            //ReqPlayerInfoLoad();
             ReqPlayerBaseLoad();
             ReqPlayerStatsLoad();
             ReqPlayerInventoryLoad();
@@ -82,7 +77,7 @@ namespace HA
         }
 
         /// <summary>
-        /// 获取玩家信息
+        /// 获取玩家信息 (引用)
         /// </summary>
         public PlayerInfo GetPlayerInfo()
         {
@@ -103,18 +98,6 @@ namespace HA
         public PlayerInput GetPlayerInput()
         {
             return _input;
-        }
-
-        /// <summary>
-        /// 玩家获得经验值
-        /// </summary>
-        public void SendEXPToPlayer(int exp)
-        {
-            _playerInfo._currentEXP += exp;
-            RefreshLevel();
-            //ReqPlayerInfoSave();
-            ReqPlayerBaseSave();
-            ReqPlayerStatsSave();
         }
 
         /// <summary>
@@ -142,52 +125,23 @@ namespace HA
             HADebug.LogErrorFormat("玩家信息加载超时, 超过[{0}]秒", timeoutSeconds);
             return default;
         }
-        
+        #endregion
+
+        #region 主要方法：涉及数据刷新和上传
         /// <summary>
-        /// 刷新 Level 数据
+        /// 玩家获得经验值
         /// </summary>
-        private void RefreshLevel()
+        public void SendEXPToPlayer(int exp)
         {
-            int nowLevel = _playerInfo._level;
-            int nowMaxExp = LevelDataManager.GetInstance().GetData(nowLevel).exp;
+            _playerInfo._currentEXP += exp;
 
-            if (_playerInfo._currentEXP >= nowMaxExp)
-            {
-                _playerInfo._level += 1;
-                _playerInfo._currentEXP -= nowMaxExp;
-                _playerInfo._maxEXP = LevelDataManager.GetInstance().GetData(_playerInfo._level).exp;
-            }
-
-            GameManager.Event.Broadcast<PlayerInfo>(GameEventType.UpdateMainPanelUI, _playerInfo);
+            UpdateLevel();
+            ReqPlayerBaseSave();
+            ReqPlayerStatsSave();
         }
         #endregion
 
         #region 监听方法：发送请求
-        /// <summary>
-        /// 请求：获取玩家所有信息
-        /// </summary>
-        private void ReqPlayerInfoLoad()
-        {
-            HAMsgPlayerInfoLoad msg = new HAMsgPlayerInfoLoad();
-
-            msg.playerInfo = new PlayerInfo(false);
-            msg.playerInfo._id = GameManager.GlobalData.PlayerID;
-
-            NetManager.Send(msg);
-        }
-
-        /// <summary>
-        /// 请求：保存玩家所有信息
-        /// </summary>
-        private void ReqPlayerInfoSave()
-        {
-            HAMsgPlayerInfoUpload msg = new HAMsgPlayerInfoUpload();
-
-            msg.playerInfo = _playerInfo;
-
-            NetManager.Send(msg);
-        }
-
         /// <summary>
         /// 请求：获取玩家基础信息
         /// </summary>
@@ -298,46 +252,6 @@ namespace HA
 
         #region 监听方法：请求响应
         /// <summary>
-        /// 响应：获取玩家所有信息
-        /// </summary>
-        private void RpsPlayerInfoLoad(MsgBase msgBase)
-        {
-            HAMsgPlayerInfoLoad msg = (HAMsgPlayerInfoLoad)msgBase;
-
-            if (msg.result == 0)
-            {
-                HADebug.Log("[客户端] 角色信息获取成功!");
-                _playerInfo = msg.playerInfo;
-            }
-            else
-            {
-                HADebug.LogWarning("[客户端] 角色信息获取失败，生成默认数据并进行存储");
-                _playerInfo = new PlayerInfo(true);
-                ReqPlayerInfoSave();
-            }
-
-            // 分发数据至必须位置
-            GameManager.Event.Broadcast<PlayerInfo>(GameEventType.UpdateInventoryItemList, _playerInfo);
-        }
-
-        /// <summary>
-        /// 响应：保存玩家所有信息
-        /// </summary>
-        private void RpsPlayerInfoSave(MsgBase msgBase)
-        {
-            HAMsgPlayerInfoUpload msg = (HAMsgPlayerInfoUpload)msgBase;
-
-            if (msg.result == 0)
-            {
-                HADebug.Log("[客户端] 角色信息存储成功!");
-            }
-            else
-            {
-                HADebug.LogError("[客户端] 角色信息存储失败");
-            }
-        }
-
-        /// <summary>
         /// 响应：获取玩家基础信息
         /// </summary>
         private void RpsPlayerBaseLoad(MsgBase msgBase)
@@ -433,8 +347,7 @@ namespace HA
                 ReqPlayerInventorySave();
             }
 
-            // 分发数据至必须位置
-            GameManager.Event.Broadcast<PlayerInfo>(GameEventType.UpdateInventoryItemList, _playerInfo);
+            
         }
 
         /// <summary>
@@ -475,20 +388,55 @@ namespace HA
 
             return num;
         }
+        #endregion
+
+        #region 数据刷新
+        /// --------------------------
+        /// - 刷新方法：             -
+        /// - 1. 刷新当前数据        -
+        /// - 2. 刷新对应 UI         -
+        /// - 3. 刷新其余必要位置    -
+        /// --------------------------
+
+        /// <summary>
+        /// 刷新 Level 数据
+        /// </summary>
+        private void UpdateLevel()
+        {
+            // 刷新当前数据
+            int nowLevel = _playerInfo._level;
+            int nowMaxExp = LevelDataManager.GetInstance().GetData(nowLevel).exp;
+            if (_playerInfo._currentEXP >= nowMaxExp)
+            {
+                _playerInfo._level += 1;
+                _playerInfo._currentEXP -= nowMaxExp;
+                _playerInfo._maxEXP = LevelDataManager.GetInstance().GetData(_playerInfo._level).exp;
+            }
+
+            // 刷新对应 UI
+            GameManager.Event.Broadcast<PlayerInfo>(GameEventType.UpdateMainPanelUI, _playerInfo);
+
+            // 刷新其余必要位置
+        }
 
         /// <summary>
         /// 通过 PlayerBaseEntity 更新 _playerInfo
         /// </summary>
         private void UpdatePlayerInfoByPlayerBase(PlayerBaseEntity entity)
         {
+            // 刷新当前数据
             if (_playerInfo == null) _playerInfo = new PlayerInfo(false);
-
             _playerInfo._id = entity.id;
             _playerInfo._name = entity.name;
             _playerInfo._head = entity.head;
             _playerInfo._level = entity.level;
             _playerInfo._commonCurrency = entity.common_currency;
             _playerInfo._rareCurrency = entity.rare_currency;
+
+            // 刷新对应 UI
+            GameManager.Event.Broadcast<PlayerInfo>(GameEventType.UpdateMainPanelUI, _playerInfo);
+
+            // 刷新其余必要位置
         }
 
         /// <summary>
@@ -496,8 +444,8 @@ namespace HA
         /// </summary>
         private void UpdatePlayerInfoByPlayerStats(PlayerStatsEntity entity)
         {
+            // 刷新当前数据
             if (_playerInfo == null) _playerInfo = new PlayerInfo(false);
-
             _playerInfo._maxHP = entity.max_hp;
             _playerInfo._maxMP = entity.max_mp;
             _playerInfo._maxEXP = entity.max_exp;
@@ -512,6 +460,11 @@ namespace HA
             _playerInfo._pCriticalMultiplier = entity.critical_multiplier;
             _playerInfo._pSuckProbability = entity.suck_probability;
             _playerInfo._pSuckMultiplier = entity.suck_multiplier;
+
+            // 刷新对应 UI
+            GameManager.Event.Broadcast(GameEventType.UpdatePropertyPanelUI);
+
+            // 刷新其余必要位置
         }
 
         /// <summary>
@@ -519,12 +472,18 @@ namespace HA
         /// </summary>
         private void UpdatePlayerInfoByPlayerInventory(PlayerInventoryEntity entity)
         {
+            // 刷新当前数据
             if (_playerInfo == null) _playerInfo = new PlayerInfo(false);
-
             _playerInfo._allItems = entity.items;
             _playerInfo._nowEquips = entity.now_equips;
             _playerInfo._inventoryItemNum = entity.inventory_num;
             _playerInfo._safeboxNum = entity.safebox_num;
+
+            // 刷新对应 UI
+
+
+            // 刷新其余必要位置
+            GameManager.Event.Broadcast<PlayerInfo>(GameEventType.UpdateInventoryItemList, _playerInfo);
         }
         #endregion
     }

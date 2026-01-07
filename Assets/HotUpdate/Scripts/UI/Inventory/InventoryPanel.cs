@@ -15,6 +15,7 @@ namespace HA
     {
         [Header("上区域")]
         [SerializeField] private Button _btnClose;
+        [SerializeField] private Button _btnSort;
         [SerializeField] private Transform _itemContainer;
         [SerializeField] private Toggle _toggleItems;
         [SerializeField] private Toggle _togglePotions;
@@ -86,6 +87,7 @@ namespace HA
             _btnClose.onClick.AddListener(OnClickCloseBtn);     // 关闭面板
             _btnEquip.onClick.AddListener(OnClickEquipBtn);     // 装备物品
             _btnDiscard.onClick.AddListener(OnClickDiscardBtn); // 丢弃物品
+            _btnSort.onClick.AddListener(() => InventoryDataManager.GetInstance().SortInventory(1)); // 整理背包
         }
 
         private void RemoveListeners()
@@ -98,6 +100,7 @@ namespace HA
             _btnClose.onClick.RemoveAllListeners();
             _btnEquip.onClick.RemoveAllListeners();
             _btnDiscard.onClick.RemoveAllListeners();
+            _btnSort.onClick.RemoveAllListeners();
         }
 
         #region 主要方法

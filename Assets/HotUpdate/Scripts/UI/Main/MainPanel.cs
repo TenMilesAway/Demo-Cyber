@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -113,7 +114,14 @@ namespace HA
 
         private void OnClickBtnForge()
         {
-            
+            List<ItemInfo> infos = new List<ItemInfo>
+            {
+                new ItemInfo { _id = 1000, _num = 1 },
+                new ItemInfo { _id = 1001, _num = 2 },
+                new ItemInfo { _id = 1002, _num = 3 },
+            };
+
+            InventoryDataManager.GetInstance().AddItemInfoToInventory(infos);
         }
         #endregion
 

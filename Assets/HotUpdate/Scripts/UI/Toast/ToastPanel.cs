@@ -1,4 +1,5 @@
 using DG.Tweening;
+using HA;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,11 +14,18 @@ namespace Cyber
         [SerializeField] private Transform m_toastTrs;
 
         private Sequence quence;
+        private bool _isLoadByUOPF;
 
-        public void Init(string content)
+        public void Init(string content, bool isLoadByUOPF = false)
         {
             quence = DOTween.Sequence();
             txtToast.text = content;
+            _isLoadByUOPF = isLoadByUOPF;
+            if (_isLoadByUOPF)
+            {
+                transform.SetParent(HA.UIManager.GetInstance()._canvas.GetComponent<Transform>(), false);
+            }
+
             Show();
         }
 
@@ -43,7 +51,11 @@ namespace Cyber
                 m_toastTrs.GetComponent<Image>().color = new Color(1, 1, 1, 1);
                 txtToast.GetComponent<Text>().color = new Color(0.99f, 1, 0.55f, 1);
                 m_toastTrs.GetComponent<RectTransform>().localPosition = new Vector3(0, 100, 0);
-                Destroy(gameObject);
+                if (_isLoadByUOPF)
+                {
+                    UnityObjectPoolFactory.GetInstance().PutItem(GlobalDefine.ToastPanel, gameObject);
+                }
+                else Destroy(gameObject);
             });
         }
     }
