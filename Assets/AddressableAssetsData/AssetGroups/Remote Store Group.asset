@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Remote Store Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Remote Store Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: e5f30fa96009245418ffea579d9653fb
+  m_SerializeEntries:
+  - m_GUID: 932acec817258084e834098cadde990f
+    m_Address: Assets/UI/Store/Prefabs
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1317e1ee7605f8742852cd590528506b
+    m_Address: Assets/UI/Store/Others
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 94fbe3af03d32884cabddd37f51ddea8
+    m_Address: Assets/UI/Store/SpritesBig
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 54d9b487279d5014d8a766fe054867aa
+    m_Address: Assets/UI/Store/Store.spriteatlas
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: a21267dd150d19f4e9fc611b903aaf99, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 5b3c25ffd8b4526459332f99e7657f2b, type: 2}
+    - {fileID: 11400000, guid: 2a3dba12e350a9a47afb64bfc35f0599, type: 2}

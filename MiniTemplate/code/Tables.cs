@@ -17,6 +17,8 @@ public partial class Tables
     public TbTreasure TbTreasure {get; }
     public TbLevel TbLevel {get; }
     public TbEnemy TbEnemy {get; }
+    public TbConvertGroup TbConvertGroup {get; }
+    public TbConvert TbConvert {get; }
 
 
       public Tables(System.Func<string, JArray> loader)
@@ -25,6 +27,8 @@ public partial class Tables
         TbTreasure = new TbTreasure(loader("tbtreasure"));
         TbLevel = new TbLevel(loader("tblevel"));
         TbEnemy = new TbEnemy(loader("tbenemy"));
+        TbConvertGroup = new TbConvertGroup(loader("tbconvertgroup"));
+        TbConvert = new TbConvert(loader("tbconvert"));
         ResolveRef();
     }
     
@@ -34,6 +38,8 @@ public partial class Tables
         TbTreasure.ResolveRef(this);
         TbLevel.ResolveRef(this);
         TbEnemy.ResolveRef(this);
+        TbConvertGroup.ResolveRef(this);
+        TbConvert.ResolveRef(this);
     }
 }
 

@@ -13,6 +13,7 @@ namespace HA
     {
         [Header("右下: 功能按钮组")]
         [SerializeField] private Button _btnBag;
+        [SerializeField] private Button _btnStore;
         [SerializeField] private Button _btnForge;
         [SerializeField] private Button _btnSkill;
         [SerializeField] private Button _btnSettings;
@@ -71,6 +72,7 @@ namespace HA
             _btnBag.onClick.AddListener(OnClickBtnBag);
             _btnForge.onClick.AddListener(OnClickBtnForge);
             _btnTransport.onClick.AddListener(OnClickBtnTransport);
+            _btnStore.onClick.AddListener(OnClickBtnShop);
         }
 
         private void RemoveListeners()
@@ -82,6 +84,7 @@ namespace HA
             _btnBag.onClick.RemoveAllListeners();
             _btnForge.onClick.RemoveAllListeners();
             _btnTransport.onClick.RemoveAllListeners();
+            _btnStore.onClick.RemoveAllListeners();
         }
 
         #region 主要方法
@@ -135,6 +138,11 @@ namespace HA
         private void OnClickBtnTransport()
         {
             UIManager.GetInstance().OpenPanel(GlobalDefine.MapPanel);
+        }
+
+        private void OnClickBtnShop()
+        {
+            UIManager.GetInstance().OpenPanel(GlobalDefine.StorePanel);
         }
         #endregion
 

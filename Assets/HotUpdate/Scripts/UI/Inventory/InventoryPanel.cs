@@ -9,6 +9,7 @@ namespace HA
     {
         public bool isWithTreasurePanel;
         public bool isWithPropertyPanel;
+        public bool isWithConvertPanel;
     }
 
     public class InventoryPanel : UIBasePanel
@@ -39,6 +40,7 @@ namespace HA
         private List<ItemCell> _showList = new List<ItemCell>(); // 当前显示的所有 ItemCell
         private bool _isWithTreasurePanel;                       // 是否和宝藏面板一起开启
         private bool _isWithPropertyPanel;                       // 是否和属性面板一起开启
+        private bool _isWithConvertPanel;                        // 是否和兑换面板一起开启
 
         public override string GetPanelName()
         {
@@ -54,6 +56,7 @@ namespace HA
             _playerInfo = PlayerDataManager.GetInstance().GetPlayerInfo();
             _isWithTreasurePanel = inventoryParam.isWithTreasurePanel;
             _isWithPropertyPanel = inventoryParam.isWithPropertyPanel;
+            _isWithConvertPanel = inventoryParam.isWithConvertPanel;
 
             _groupSelelcted.SetActive(false);
             _groupNotSelected.SetActive(true);
@@ -191,10 +194,17 @@ namespace HA
                 UIManager.GetInstance().ClosePanel(GlobalDefine.TreasurePanel);
                 GameManager.Event.Broadcast(GameEventType.HasInteractiveObject);
             }
+            // 有属性窗口时
             else if (_isWithPropertyPanel)
             {
                 UIManager.GetInstance().ClosePanel(GlobalDefine.PropertyPanel);
                 UIManager.GetInstance().ClosePanel(GlobalDefine.EquipmentTipPanel);
+            }
+            // 有兑换窗口时
+            else if (_isWithConvertPanel)
+            {
+                UIManager.GetInstance().ClosePanel(GlobalDefine.ConvertPanel);
+                GameManager.Event.Broadcast(GameEventType.HasInteractiveObject);
             }
         }
 

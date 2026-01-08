@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "convertItem": "10000,1",
+    "name": "林海银匣",
+    "needItemList": "1001,5|1004,5|1007,5|2,1",
+    "parent": 5
+  },
+  {
+    "id": 2,
+    "convertItem": "10001,1",
+    "name": "林海金匣",
+    "needItemList": "1002,3|1005,3|1008,3|2,2",
+    "parent": 5
+  },
+  {
+    "id": 3,
+    "convertItem": "10002,1",
+    "name": "林海宝匣",
+    "needItemList": "1002,5|1005,5|1008,5|3,1",
+    "parent": 5
+  },
+  {
+    "id": 4,
+    "convertItem": "20000,1",
+    "name": "白狒狒灵环",
+    "needItemList": "2,5",
+    "parent": 5
+  }
+]

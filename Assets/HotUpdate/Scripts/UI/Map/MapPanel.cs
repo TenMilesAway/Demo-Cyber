@@ -85,9 +85,6 @@ namespace HA
         private void OnClickBtnClose()
         {
             UIManager.GetInstance().ClosePanel(GlobalDefine.MapPanel);
-
-            //GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
-            //GameManager.Event.Broadcast(GameEventType.DisablePlayerFlipInput);
         }
 
         /// <summary>
@@ -119,11 +116,9 @@ namespace HA
                 return;
             }
 
+            Camera.main.gameObject.SetActive(false);
             UIManager.GetInstance().OpenPanel(GlobalDefine.LoadingPanel, UILayer.Top, param);
             UIManager.GetInstance().ClosePanel(GetPanelName());
-
-            //GameManager.Event.Broadcast(GameEventType.EnablePlayerInput);
-            //GameManager.Event.Broadcast(GameEventType.DisablePlayerFlipInput);
         }
         #endregion
 

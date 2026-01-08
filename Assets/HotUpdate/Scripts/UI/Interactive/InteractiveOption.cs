@@ -54,6 +54,10 @@ namespace HA
                 {
                     _txtInteractiveOption.text = string.Format("前往<color=#28E1E5>{0}</color>", npcName);
                 }
+                else if (obj is HAOpenConvert)
+                {
+                    _txtInteractiveOption.text = string.Format("和<color=#28E1E5>{0}</color>交易", npcName);
+                }
             }
         }
         #endregion

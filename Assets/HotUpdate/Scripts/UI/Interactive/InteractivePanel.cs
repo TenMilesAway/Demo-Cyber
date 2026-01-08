@@ -181,6 +181,10 @@ namespace HA
                 {
                     (_interactives[_currentSelectIndex] as HAOpenMap).Interact();
                 }
+                else if (_interactives[_currentSelectIndex] is HAOpenConvert)
+                {
+                    (_interactives[_currentSelectIndex] as HAOpenConvert).Interact();
+                }
             }
 
             UIManager.GetInstance().ClosePanel(GetPanelName());
