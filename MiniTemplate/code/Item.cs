@@ -40,6 +40,7 @@ public sealed partial class Item : Luban.BeanBase
         Cm = (float)_obj.GetValue("cm");
         Sp = (float)_obj.GetValue("sp");
         Sm = (float)_obj.GetValue("sm");
+        Obtain = (string)_obj.GetValue("obtain");
     }
 
     public static Item DeserializeItem(JToken _buf)
@@ -124,9 +125,13 @@ public sealed partial class Item : Luban.BeanBase
     /// </summary>
     public readonly float Sp;
     /// <summary>
-    /// 暴击倍率
+    /// 吸血倍率
     /// </summary>
     public readonly float Sm;
+    /// <summary>
+    /// 使用后获得物品 (id, num, weight)
+    /// </summary>
+    public readonly string Obtain;
 
 
     public const int __ID__ = 2289459;
@@ -159,6 +164,7 @@ public sealed partial class Item : Luban.BeanBase
         + "cm:" + Cm + ","
         + "sp:" + Sp + ","
         + "sm:" + Sm + ","
+        + "obtain:" + Obtain + ","
         + "}";
     }
 }

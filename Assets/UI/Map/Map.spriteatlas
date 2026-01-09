@@ -32,13 +32,22 @@ SpriteAtlas:
       enableAlphaDilation: 0
     secondaryTextureSettings: {}
     variantMultiplier: 1
-    packables: []
+    packables:
+    - {fileID: 102900000, guid: 75435ebfd3165ea40a3bf3ca170d4215, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites: []
-  m_PackedSpriteNamesToIndex: []
+  m_PackedSprites:
+  - {fileID: 21300000, guid: a31267a701b7ce54eaba76d910066933, type: 3}
+  - {fileID: 21300000, guid: 52848eba697339e4795f5b48fbcad4b6, type: 3}
+  - {fileID: 21300000, guid: e4fee57bb37f11a43a2207277d7a105d, type: 3}
+  - {fileID: 21300000, guid: 2345429f766a56f45b13f097dc91d8da, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - IconSpawn
+  - BgMapInfo
+  - IconFeiCuiLinHai
+  - BgTitle
   m_RenderDataMap: {}
   m_Tag: Map
   m_IsVariant: 0

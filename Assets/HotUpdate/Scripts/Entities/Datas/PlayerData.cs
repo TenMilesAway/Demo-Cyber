@@ -65,26 +65,16 @@ namespace HA
             _inventoryItemNum   = 40;
             _safeboxNum         = 1;
 
-            _allItems = new List<ItemInfo> { new ItemInfo { _id = 1000, _num = 1 },
-                                             new ItemInfo { _id = 0, _num = 0 }, // 空物体
-                                             new ItemInfo { _id = 1001, _num = 1 },
-                                             new ItemInfo { _id = 0, _num = 0 }, // 空物体
-                                             new ItemInfo { _id = 1002, _num = 1 },
-                                             new ItemInfo { _id = 0, _num = 0 }, // 空物体
-                                             new ItemInfo { _id = 1003, _num = 1 },
-                                             new ItemInfo { _id = 0, _num = 0 }, // 空物体
-                                             new ItemInfo { _id = 1004, _num = 1 },
-                                             new ItemInfo { _id = 1005, _num = 1 },
-                                             new ItemInfo { _id = 1006, _num = 5 },
-                                             new ItemInfo { _id = 1007, _num = 10 },
-                                             new ItemInfo { _id = 1008, _num = 13 },
-                                             new ItemInfo { _id = 4000, _num = 1 },
-                                             new ItemInfo { _id = 5000, _num = 1 },
+            _allItems = new List<ItemInfo> { new ItemInfo { _id = 4000, _num = 1 },
+                                             new ItemInfo { _id = 5000, _num = 0 },
                                              new ItemInfo { _id = 6000, _num = 1 },
-                                             new ItemInfo { _id = 7000, _num = 1 },
+                                             new ItemInfo { _id = 7000, _num = 0 },
                                              new ItemInfo { _id = 8000, _num = 1 },
-                                             new ItemInfo { _id = 9000, _num = 1 },
-                                             new ItemInfo { _id = 3000, _num = 5 } };
+                                             new ItemInfo { _id = 9000, _num = 0 },
+                                             new ItemInfo { _id = 10000, _num = 10 },
+                                             new ItemInfo { _id = 10001, _num = 10 },
+                                             new ItemInfo { _id = 10002, _num = 10 },
+                                             };
 
             int leftItems = _inventoryItemNum - _allItems.Count;
             for (int i = 0; i < leftItems; i++)
@@ -173,26 +163,16 @@ namespace HA
 
             inventory_num = 40;
             safebox_num = 1;
-            items = new List<ItemInfo> { new ItemInfo { _id = 1000, _num = 1 },
-                                         new ItemInfo { _id = 1001, _num = 1 }, // 空物体
-                                         new ItemInfo { _id = 1002, _num = 1 },
-                                         new ItemInfo { _id = 0, _num = 0 }, // 空物体
-                                         new ItemInfo { _id = 0, _num = 0 },
-                                         new ItemInfo { _id = 0, _num = 0 }, // 空物体
-                                         new ItemInfo { _id = 1003, _num = 1 },
-                                         new ItemInfo { _id = 1004, _num = 1 }, // 空物体
-                                         new ItemInfo { _id = 1005, _num = 1 },
-                                         new ItemInfo { _id = 4000, _num = 1 },
-                                         new ItemInfo { _id = 1006, _num = 3 },
-                                         new ItemInfo { _id = 1007, _num = 2 },
-                                         new ItemInfo { _id = 1008, _num = 1 },
-                                         new ItemInfo { _id = 4000, _num = 1 },
+            items = new List<ItemInfo> { new ItemInfo { _id = 4000, _num = 1 },
                                          new ItemInfo { _id = 5000, _num = 1 },
                                          new ItemInfo { _id = 6000, _num = 1 },
                                          new ItemInfo { _id = 7000, _num = 1 },
                                          new ItemInfo { _id = 8000, _num = 1 },
                                          new ItemInfo { _id = 9000, _num = 1 },
-                                         new ItemInfo { _id = 3000, _num = 5 } };
+                                         new ItemInfo { _id = 1002, _num = 100 },
+                                         new ItemInfo { _id = 1005, _num = 100 },
+                                         new ItemInfo { _id = 1008, _num = 100 },
+                                         };
 
             int leftItems = inventory_num - items.Count;
             for (int i = 0; i < leftItems; i++)

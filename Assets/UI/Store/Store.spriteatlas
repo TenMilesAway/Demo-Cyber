@@ -32,13 +32,24 @@ SpriteAtlas:
       enableAlphaDilation: 0
     secondaryTextureSettings: {}
     variantMultiplier: 1
-    packables: []
+    packables:
+    - {fileID: 102900000, guid: c4b5dd2ab9669094c8c435dce58bc070, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites: []
-  m_PackedSpriteNamesToIndex: []
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 45f762d3490879b4591fe9873e78a1aa, type: 3}
+  - {fileID: 21300000, guid: 9c57a4646ff47a54cbd4250c7644300a, type: 3}
+  - {fileID: 21300000, guid: 17e26964bacea1642884c94d1145eada, type: 3}
+  - {fileID: 21300000, guid: 52b9de981fa70f948a7fe00b91777799, type: 3}
+  - {fileID: 21300000, guid: 87f4762b5ac9ed7459c725a48c7c432e, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - BgStoreGroup
+  - btnSwitch
+  - IconArrow
+  - BgStoreGroup2
+  - BgCell
   m_RenderDataMap: {}
   m_Tag: Store
   m_IsVariant: 0

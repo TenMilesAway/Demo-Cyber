@@ -89,6 +89,7 @@ namespace HA
             // UI
             _btnClose.onClick.AddListener(OnClickCloseBtn);     // 关闭面板
             _btnEquip.onClick.AddListener(OnClickEquipBtn);     // 装备物品
+            _btnUse.onClick.AddListener(OnClickUseBtn);         // 使用物品
             _btnDiscard.onClick.AddListener(OnClickDiscardBtn); // 丢弃物品
             _btnSort.onClick.AddListener(() => InventoryDataManager.GetInstance().SortInventory(1)); // 整理背包
         }
@@ -102,6 +103,7 @@ namespace HA
             // UI
             _btnClose.onClick.RemoveAllListeners();
             _btnEquip.onClick.RemoveAllListeners();
+            _btnUse.onClick.RemoveAllListeners();
             _btnDiscard.onClick.RemoveAllListeners();
             _btnSort.onClick.RemoveAllListeners();
         }
@@ -217,7 +219,9 @@ namespace HA
 
         private void OnClickUseBtn()
         {
-
+            ItemCell nowSelectItemCell = InventoryDataManager.GetInstance().GetNowSelectItemCell();
+            bool isSetSelectedItemDetailInfo = nowSelectItemCell.UseItem();
+            SetSelectedItemDetailInfo(isSetSelectedItemDetailInfo);
         }
 
         private void OnClickDiscardBtn()
@@ -267,7 +271,7 @@ namespace HA
         /// <summary>
         /// 是否显示选中组别
         /// </summary>
-        private void SetSelectedItemDetailInfo(bool isShowSelected = true)
+        public void SetSelectedItemDetailInfo(bool isShowSelected = true)
         {
             _groupSelelcted.SetActive(isShowSelected);
             _groupNotSelected.SetActive(!isShowSelected);

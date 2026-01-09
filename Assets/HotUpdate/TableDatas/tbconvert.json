@@ -3,28 +3,112 @@
     "id": 1,
     "convertItem": "10000,1",
     "name": "林海银匣",
-    "needItemList": "1001,5|1004,5|1007,5|2,1",
+    "needItemList": "1001,1|1004,1|1007,1",
     "parent": 5
   },
   {
     "id": 2,
     "convertItem": "10001,1",
     "name": "林海金匣",
-    "needItemList": "1002,3|1005,3|1008,3|2,2",
+    "needItemList": "1001,3|1004,3|1007,3",
     "parent": 5
   },
   {
     "id": 3,
     "convertItem": "10002,1",
     "name": "林海宝匣",
-    "needItemList": "1002,5|1005,5|1008,5|3,1",
+    "needItemList": "1002,1|1005,1|1008,1",
     "parent": 5
   },
   {
     "id": 4,
     "convertItem": "20000,1",
     "name": "白狒狒灵环",
+    "needItemList": "2,3",
+    "parent": 5
+  },
+  {
+    "id": 5,
+    "convertItem": "20001,1",
+    "name": "古石巨人灵环",
     "needItemList": "2,5",
     "parent": 5
+  },
+  {
+    "id": 6,
+    "convertItem": "20002,1",
+    "name": "青石巨人灵环",
+    "needItemList": "2,10|3,1",
+    "parent": 5
+  },
+  {
+    "id": 7,
+    "convertItem": "4001,1",
+    "name": "灵能铜剑",
+    "needItemList": "1009,5|2,3",
+    "parent": 6
+  },
+  {
+    "id": 8,
+    "convertItem": "5001,1",
+    "name": "灵能铜盔",
+    "needItemList": "1009,3|2,2",
+    "parent": 6
+  },
+  {
+    "id": 9,
+    "convertItem": "6001,1",
+    "name": "灵能铜甲",
+    "needItemList": "1009,3|2,2",
+    "parent": 6
+  },
+  {
+    "id": 10,
+    "convertItem": "8001,1",
+    "name": "灵能铜护腿",
+    "needItemList": "1009,3|2,2",
+    "parent": 6
+  },
+  {
+    "id": 11,
+    "convertItem": "9001,1",
+    "name": "灵能铜靴",
+    "needItemList": "1009,3|2,2",
+    "parent": 6
+  },
+  {
+    "id": 12,
+    "convertItem": "4002,1",
+    "name": "白银巨剑",
+    "needItemList": "1010,5|2,10|3,1",
+    "parent": 6
+  },
+  {
+    "id": 13,
+    "convertItem": "5002,1",
+    "name": "灵能银盔",
+    "needItemList": "1010,3|2,5|3,1",
+    "parent": 6
+  },
+  {
+    "id": 14,
+    "convertItem": "6002,1",
+    "name": "灵能银甲",
+    "needItemList": "1010,3|2,5|3,1",
+    "parent": 6
+  },
+  {
+    "id": 15,
+    "convertItem": "8002,1",
+    "name": "灵能银护腿",
+    "needItemList": "1010,3|2,5|3,1",
+    "parent": 6
+  },
+  {
+    "id": 16,
+    "convertItem": "9002,1",
+    "name": "灵能银靴",
+    "needItemList": "1010,3|2,5|3,1",
+    "parent": 6
   }
 ]

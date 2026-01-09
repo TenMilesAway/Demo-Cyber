@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -38,10 +39,17 @@ namespace HA
         /// <summary>
         /// 获得当前选择的 ItemCell
         /// </summary>
-        /// <returns></returns>
         public ItemCell GetNowSelectItemCell()
         {
             return _nowSelectItemCell;
+        }
+
+        /// <summary>
+        /// 获得当前剩余格子数量
+        /// </summary>
+        public int GetLeftItemInfosCount()
+        {
+            return _leftItemInfosCount;
         }
 
         /// <summary>
@@ -50,6 +58,7 @@ namespace HA
         /// <param name="type">
         /// 1：按照 ID 从小到大
         /// 2：按照 ID 从大到小
+        /// 3：将仓库中重复的物品堆叠到最前面的那个格子里
         /// </param>
         public void SortInventory(int type)
         {
@@ -65,6 +74,11 @@ namespace HA
                         SortInventoryByIDFromMaxToMin();
                     }
                     break;
+                case 3:
+                    {
+                        SortDuplicateStacks();
+                    }
+                    break;
             }
 
             // 刷新 UI 与数据
@@ -73,17 +87,20 @@ namespace HA
             GameManager.Event.Broadcast(GameEventType.ReqPlayerInventorySave);
         }
 
+        /// <summary>
+        /// 删除仓库中指定物品
+        /// </summary>
         public bool RemoveItemInfoFromInventory(List<ItemInfo> needRemoveItemInfos)
         {
             // 首先将仓库里的物体进行整理 (从小到大)
-            SortInventory(1);
+            SortInventory(3);
 
             if (needRemoveItemInfos == null || needRemoveItemInfos.Count == 0)
             {
                 UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.ToastPanel, GetInstance().ToString(), (GameObject toast) =>
                 {
                     ToastPanel component = toast.GetComponent<ToastPanel>();
-                    component?.Init(string.Format("兑换配置错误，请向猎兽者统领大人反馈"), true);
+                    component?.Init(string.Format("物品配置错误，请向猎兽者统领大人反馈"), true);
                 });
                 return false;
             }
@@ -132,6 +149,7 @@ namespace HA
             }
 
             // 刷新 UI 与数据
+            SortInventory(3);
             UpdateInventoryLeftItemInfosCount();
             GameManager.Event.Broadcast(GameEventType.UpdateInventoryPanelUI);
             GameManager.Event.Broadcast(GameEventType.ReqPlayerInventorySave);
@@ -171,13 +189,54 @@ namespace HA
 
             for (int i = 0; i < availableSlots.Count; i++)
             {
-                _itemInfos[availableSlots[i]] = needAddItemInfos[i];
+                // 注：不能使用引用，否则在别处改变数据后，原数据也会变化
+                _itemInfos[availableSlots[i]] = new ItemInfo { _id = needAddItemInfos[i]._id, _num = needAddItemInfos[i]._num };
             }
 
             // 刷新 UI 与数据
+            SortInventory(3);
             UpdateInventoryLeftItemInfosCount();
             GameManager.Event.Broadcast(GameEventType.UpdateInventoryPanelUI);
             GameManager.Event.Broadcast(GameEventType.ReqPlayerInventorySave);
+        }
+
+        /// <summary>
+        /// 使用指定物品
+        /// </summary>
+        /// <returns>
+        /// 若使用成功，则返回 true
+        /// </returns>
+        public bool UseItem(ItemCell cell)
+        {
+            if (_leftItemInfosCount == 0)
+            {
+                UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.ToastPanel, "InventoryDataManager", (toast) =>
+                {
+                    ToastPanel component = toast.GetComponent<ToastPanel>();
+                    component?.Init(string.Format("无法使用物品，请猎兽者大人至少留存 1 个空格哦~"), true);
+                });
+                return false;
+            }
+
+            if (cell.GetItemCellParent() == ItemCellParent.Inventory)
+            {
+                PlayerInfo playerInfo = PlayerDataManager.GetInstance().GetPlayerInfo();
+
+                TBItemData data = ItemDataManager.GetInstance().GetData(playerInfo._allItems[cell._idInParent]._id);
+
+                ItemInfo newItemInfo = ItemUtil.GetRandomItem(data.obtain);
+
+                playerInfo._allItems[cell._idInParent]._num -= 1;
+                List<ItemInfo> needAddItemInfos = new List<ItemInfo> { newItemInfo };
+                AddItemInfoToInventory(needAddItemInfos);
+
+                cell.UpdateItemCellInfo();
+                GameManager.Event.Broadcast(GameEventType.UpdateInventoryPanelUI);
+                GameManager.Event.Broadcast(GameEventType.ReqPlayerInventorySave);
+                if (playerInfo._allItems[cell._idInParent]._num > 0) cell.SelectItem();
+            }
+
+            return true;
         }
         #endregion
 
@@ -364,6 +423,14 @@ namespace HA
         /// </summary>
         private void SwapAndUpdateItemCell()
         {
+            if (_nowDragItemCell == null || _nowInItemCell == null) return;
+
+            if (ReferenceEquals(_nowDragItemCell, _nowInItemCell))
+            {
+                _nowDragItemCell.UpdateItemCellInfo();
+                return;
+            }
+
             // 如果两个物品 ID 相同，不是装备，则叠加
             if (_nowInItemCell._itemInfo != null && _nowDragItemCell._itemInfo._id == _nowInItemCell._itemInfo._id && 
                 _nowInItemCell._canBeStacked && _nowDragItemCell._canBeStacked)
@@ -594,6 +661,38 @@ namespace HA
 
             _itemInfos.Clear();
             _itemInfos.AddRange(result);
+        }
+
+        private void SortDuplicateStacks()
+        {
+            if (_itemInfos == null || _itemInfos.Count == 0) return;
+
+            // 遍历每个格子，向后查找相同 ID 的格子并将数量合并到当前格子，然后将后面的格子置空
+            for (int i = 0; i < _itemInfos.Count; i++)
+            {
+                ItemInfo baseItem = _itemInfos[i];
+                if (baseItem == null || baseItem._id == 0) continue;
+
+                // 判断该物品是否可堆叠
+                TBItemData baseData = ItemDataManager.GetInstance().GetData(baseItem._id);
+                if (baseData == null || baseData.type == 1) continue; // 装备不可堆叠
+
+                for (int j = i + 1; j < _itemInfos.Count; j++)
+                {
+                    ItemInfo other = _itemInfos[j];
+                    if (other == null || other._id == 0) continue;
+
+                    if (other._id == baseItem._id)
+                    {
+                        // 累加数量到前面的格子
+                        baseItem._num += other._num;
+                        _itemInfos[i] = baseItem;
+
+                        // 清空后面的格子
+                        _itemInfos[j] = new ItemInfo { _id = 0, _num = 0 };
+                    }
+                }
+            }
         }
         #endregion
     }

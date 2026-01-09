@@ -107,5 +107,10 @@ namespace HA
         /// 吸血倍率
         /// </summary>
         public float sm;
+
+        /// <summary>
+        /// 使用后可以获得的物品
+        /// </summary>
+        public string obtain;
     }
 }

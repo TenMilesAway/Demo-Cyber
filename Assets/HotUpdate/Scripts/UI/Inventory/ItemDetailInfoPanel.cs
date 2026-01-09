@@ -17,6 +17,7 @@ namespace HA
         [SerializeField] private Text _txtTypeContent;
         [SerializeField] private Text _txtSourceContent;
         [SerializeField] private Text _txtUsageContent;
+        [SerializeField] private Text _txtLevelContent;
         [SerializeField] private Text _txtDescContent;
         [SerializeField] private Text _txtPriceContent;
         [SerializeField] private Text _txtPriceSuffix;
@@ -53,9 +54,12 @@ namespace HA
                 _imgItemIcon.sprite = obj as Sprite;
             });
             _txtItem.text = data.name;
+            _txtItem.color = ItemUtil.GetColor(data.level);
             _txtTypeContent.text = InventoryDataManager.GetInstance().GetItemTypeString(data.type);
             _txtSourceContent.text = data.source;
             _txtUsageContent.text = data.usage;
+            _txtLevelContent.text = ItemUtil.GetName(data.level);
+            _txtLevelContent.color = ItemUtil.GetColor(data.level);
             _txtDescContent.text = data.desc;
             _txtPriceContent.text = data.price.ToString();
         }

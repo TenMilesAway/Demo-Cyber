@@ -3,6 +3,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -271,18 +272,34 @@ namespace HA
         }
 
         /// <summary>
+        /// 使用物品
+        /// </summary>
+        public bool UseItem()
+        {
+            // 因为使用后涉及其它格子的逻辑
+            // 因此该方法交给 InventoryDataManager 处理
+            bool isUseSuccess = InventoryDataManager.GetInstance().UseItem(this);
+
+            // 没有使用成功，不继续显示详细面板
+            if (!isUseSuccess) return false;
+
+            // 使用完物品时，不继续显示详细面板
+            if (_itemInfo._num == 0) return false;
+            else return true;
+        }
+
+        /// <summary>
         /// 丢弃物品
         /// </summary>
         public void DiscardItem()
         {
-            _itemInfo = new ItemInfo();
-
             if (_itemCellParent == ItemCellParent.Inventory)
             {
                 // 从 playerInfo 中删除这条
                 PlayerInfo playerInfo = PlayerDataManager.GetInstance().GetPlayerInfo();
                 playerInfo._allItems[_idInParent] = new ItemInfo { _id = 0, _num = 0 };
 
+                GameManager.Event.Broadcast(GameEventType.UpdateInventoryPanelUI);
                 GameManager.Event.Broadcast<PlayerInfo>(GameEventType.UpdateInventoryItemList, playerInfo);
                 GameManager.Event.Broadcast(GameEventType.ReqPlayerInventorySave);
             }
@@ -518,14 +535,21 @@ namespace HA
         /// </summary>
         public void UpdateItemCellInfo()
         {
-            if (_itemInfo == null || _itemInfo._id == 0)
+            // 若无物品或物品数量为 0，则视为“空格子”并进入空格子状态
+            if (_itemInfo == null || _itemInfo._id == 0 || _itemInfo._num == 0)
             {
-                _groupBag.SetActive(false);
+                PlayerDataManager.GetInstance().GetPlayerInfo()._allItems[_idInParent] = new ItemInfo { _id = 0, _num = 0 };
+                // 把格子表现为空格子（与 Init 中 IsInventoryButNoItemInfo 一致）
+                _groupBag.SetActive(true);
                 _groupTreasure.SetActive(false);
                 _imgBackSelected.enabled = false;
                 _imgItem.enabled = false;
                 _imgSearch.enabled = false;
                 _txtNum.enabled = false;
+
+                // 确保添加监听（AddListeners 内部做了去重保护）
+                AddListeners();
+
                 return;
             }
 

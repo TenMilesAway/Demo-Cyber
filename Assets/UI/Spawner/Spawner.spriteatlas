@@ -40,8 +40,10 @@ SpriteAtlas:
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 83fb37ce800eae04b8adfb73031514a0, type: 3}
+  - {fileID: 21300000, guid: 07db277f49a71ad439dfde6cd6f9db51, type: 3}
   m_PackedSpriteNamesToIndex:
   - IconWhiteBaboon
+  - AttackArea
   m_RenderDataMap: {}
   m_Tag: Spawner
   m_IsVariant: 0

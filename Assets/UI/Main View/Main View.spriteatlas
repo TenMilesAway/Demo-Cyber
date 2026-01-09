@@ -42,6 +42,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: e13f7400dfb49724e84459bf9bfd7b12, type: 3}
   - {fileID: 21300000, guid: d79a603071c6c6f46a4705c910123f62, type: 3}
   - {fileID: 21300000, guid: b1a2e170232ea3b47ab3a5e7d884ffe6, type: 3}
+  - {fileID: 21300000, guid: 9d3b12b0bbaeb4e43a0650e7aeaa383e, type: 3}
   - {fileID: 21300000, guid: 799edab07d3e8174882e50bc1ec78eaf, type: 3}
   - {fileID: 21300000, guid: 464ba541efd7375499cb55f96e65d07e, type: 3}
   - {fileID: 21300000, guid: 8702d4c19c508c048b656a5c80e58781, type: 3}
@@ -49,6 +50,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: b9f2f8030acf7c84787f9be024088158, type: 3}
   - {fileID: 21300000, guid: 59382d63cf869494e89fbef9b8412911, type: 3}
   - {fileID: 21300000, guid: 5e0b9bf4505e08746bd881a395ebb786, type: 3}
+  - {fileID: 21300000, guid: 8c8b6946302752c41bd3d9e3e1a1ff97, type: 3}
   - {fileID: 21300000, guid: a5c5e946f5adb6743be47441c21a9252, type: 3}
   - {fileID: 21300000, guid: 914679072865c9f43bbdb47ef4b7e94b, type: 3}
   - {fileID: 21300000, guid: 404198b7a81c27541bde901673483b30, type: 3}
@@ -56,6 +58,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 86029a78c318b404585d48cdeae02323, type: 3}
   - {fileID: 21300000, guid: 61f8c539ec1fcab4a909b46b5e6634e6, type: 3}
   - {fileID: 21300000, guid: 52c2b8a9cfeafa048ac974f541d201a5, type: 3}
+  - {fileID: 21300000, guid: 1adcf4aa8581edb4ab83b979c454180a, type: 3}
   - {fileID: 21300000, guid: c54a2aea922437848ac90beb456830bb, type: 3}
   - {fileID: 21300000, guid: 01d4f7fdc5267b34f84f8b8aa894c915, type: 3}
   - {fileID: 21300000, guid: 900bb90eb817935479a83babf7e436a2, type: 3}
@@ -64,6 +67,7 @@ SpriteAtlas:
   - IconCommonCurrency
   - IconBg
   - IconRareCurrency
+  - BgNormalCardLeft
   - IconHead
   - IconMap
   - BgInfoName
@@ -71,6 +75,7 @@ SpriteAtlas:
   - MPBar
   - PlayerFrame
   - IconBg2
+  - IconStore2
   - IconRing2
   - IconState
   - HPBar
@@ -78,6 +83,7 @@ SpriteAtlas:
   - IconBg3
   - IconActivityFindGold
   - EXPBar
+  - IconShop
   - IconRing
   - IconActivityBigTree
   - IconBag
