@@ -16,6 +16,7 @@ namespace HA
         [SerializeField] private Button _btnClose;
 
         private EquipCell _equipCell;
+        private int i = 0;
 
         public override string GetPanelName()
         {
@@ -31,6 +32,7 @@ namespace HA
             _equipCell = equipmentTipPanelParam._equipCell;
             transform.position = _equipCell.transform.position;
 
+            RemoveListeners();
             AddListeners();
         }
 
@@ -43,12 +45,16 @@ namespace HA
 
         private void AddListeners()
         {
+            i++;
+            HADebug.LogFormat("目前添加{0}次监听", i);
             _btnTakeOff.onClick.AddListener(OnClickBtnTakeOff);
             _btnClose.onClick.AddListener(OnClickBtnClose);
         }
 
-        private void RemoveListeners()
+        public void RemoveListeners()
         {
+            i--;
+            HADebug.LogFormat("目前添加{0}次监听", i);
             _btnTakeOff.onClick.RemoveAllListeners();
             _btnClose.onClick.RemoveAllListeners();
         }

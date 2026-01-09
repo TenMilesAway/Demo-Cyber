@@ -14,6 +14,7 @@ namespace HA
             // --------- 初始化
             if (!GameManager.GlobalData.IsInit)
             {
+                GameManager.GlobalData.IsInit = true;
                 GameObject playerPrefab = await GameManager.Resource.LoadResource<GameObject>(GlobalDefine.Player, "FsmState");
                 GameManager.GlobalData.Player = GameObject.Instantiate(playerPrefab);
 
@@ -27,7 +28,6 @@ namespace HA
                 InventoryDataManager.GetInstance().Init();         // 仓库数据管理
                 InteractiveDataManager.GetInstance().Init();       // 交互数据管理
                 GlobalDefine.GetPath("MainPanel");                 // 预热
-                GameManager.GlobalData.IsInit = true;
             }
 
             MapPointDataManager.GetInstance().SetPoint(GlobalDefine.SpawnPoint1);
