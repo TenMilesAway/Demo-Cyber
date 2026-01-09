@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 418400909803905071}
   - component: {fileID: 418400909803905070}
   m_Layer: 0
-  m_Name: FeiCuiLinHai-TreasureOneTimeSpawner (1)
+  m_Name: FeiCuiLinHai-TreasureOneTimeSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
