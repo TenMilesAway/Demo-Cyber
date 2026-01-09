@@ -72,6 +72,7 @@ namespace HA
         {
             _btnClose.onClick.RemoveAllListeners();
         }
+
         #region 监听方法：UI
         /// <summary>
         /// 点击关闭按钮

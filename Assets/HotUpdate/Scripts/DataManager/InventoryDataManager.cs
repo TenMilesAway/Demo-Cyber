@@ -73,12 +73,78 @@ namespace HA
             GameManager.Event.Broadcast(GameEventType.ReqPlayerInventorySave);
         }
 
+        public bool RemoveItemInfoFromInventory(List<ItemInfo> needRemoveItemInfos)
+        {
+            // 首先将仓库里的物体进行整理 (从小到大)
+            SortInventory(1);
+
+            if (needRemoveItemInfos == null || needRemoveItemInfos.Count == 0)
+            {
+                UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.ToastPanel, GetInstance().ToString(), (GameObject toast) =>
+                {
+                    ToastPanel component = toast.GetComponent<ToastPanel>();
+                    component?.Init(string.Format("兑换配置错误，请向猎兽者统领大人反馈"), true);
+                });
+                return false;
+            }
+
+            // 1) 校验：每个需移除的物品在仓库中的总数量是否满足
+            foreach (ItemInfo info in needRemoveItemInfos)
+            {
+                if (info == null || info._id == 0) continue;
+
+                int totalHave = _itemInfos
+                    .Where(item => item != null && item._id == info._id)
+                    .Sum(item => item._num);
+
+                if (totalHave < info._num)
+                {
+                    TBItemData data = ItemDataManager.GetInstance().GetData(info._id);
+
+                    // 提示数量不足并中断，不做任何删除
+                    UnityObjectPoolFactory.GetInstance().GetItemAsync<GameObject>(GlobalDefine.ToastPanel, GetInstance().ToString(), (GameObject toast) =>
+                    {
+                        ToastPanel component = toast.GetComponent<ToastPanel>();
+                        component?.Init(string.Format("物品[{0}]数量不足，拥有[{1}]，需要[{2}]", data.name, totalHave, info._num), true);
+                    });
+                    return false;
+                }
+            }
+
+            // 2) 校验通过，执行删除
+            foreach (ItemInfo info in needRemoveItemInfos)
+            {
+                if (info == null || info._id == 0) continue;
+
+                int needToRemoveNum = info._num;
+
+                int index = _itemInfos.FindIndex(item => item != null && item._id == info._id);
+                if (index != -1)
+                {
+                    _itemInfos[index]._num -= needToRemoveNum;
+
+                    // 如果删除完了
+                    if (_itemInfos[index]._num == 0)
+                    {
+                        _itemInfos[index] = new ItemInfo { _id = 0, _num = 0 };
+                    }
+                }
+            }
+
+            // 刷新 UI 与数据
+            UpdateInventoryLeftItemInfosCount();
+            GameManager.Event.Broadcast(GameEventType.UpdateInventoryPanelUI);
+            GameManager.Event.Broadcast(GameEventType.ReqPlayerInventorySave);
+
+            return true;
+        }
+
         /// <summary>
         /// 添加物品至仓库
         /// </summary>
-        public void AddItemInfoToInventory(List<ItemInfo> _needAddItemInfos)
+        public void AddItemInfoToInventory(List<ItemInfo> needAddItemInfos)
         {
-            int needAddCount = _needAddItemInfos.Count;
+            int needAddCount = needAddItemInfos.Count;
 
             // 要添加物品超过仓库格子余量 (不包括同类物品)
             if (needAddCount > _leftItemInfosCount)
@@ -105,7 +171,7 @@ namespace HA
 
             for (int i = 0; i < availableSlots.Count; i++)
             {
-                _itemInfos[availableSlots[i]] = _needAddItemInfos[i];
+                _itemInfos[availableSlots[i]] = needAddItemInfos[i];
             }
 
             // 刷新 UI 与数据

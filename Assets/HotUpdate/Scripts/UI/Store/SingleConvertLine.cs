@@ -82,7 +82,10 @@ namespace HA
         /// </summary>
         private void OnClickBtnConvert()
         {
-            // 查看仓库物品是否足够
+            // 删除物品
+            bool deleteSuccess = InventoryDataManager.GetInstance().RemoveItemInfoFromInventory(_needItemInfos);
+
+            if (!deleteSuccess) return;
 
             // 获得物品
             InventoryDataManager.GetInstance().AddItemInfoToInventory(_convertItems);
