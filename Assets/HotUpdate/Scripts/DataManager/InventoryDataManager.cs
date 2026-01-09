@@ -149,7 +149,6 @@ namespace HA
             }
 
             // 刷新 UI 与数据
-            SortInventory(3);
             UpdateInventoryLeftItemInfosCount();
             GameManager.Event.Broadcast(GameEventType.UpdateInventoryPanelUI);
             GameManager.Event.Broadcast(GameEventType.ReqPlayerInventorySave);
