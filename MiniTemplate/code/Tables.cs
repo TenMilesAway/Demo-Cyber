@@ -19,6 +19,7 @@ public partial class Tables
     public TbEnemy TbEnemy {get; }
     public TbConvertGroup TbConvertGroup {get; }
     public TbConvert TbConvert {get; }
+    public TbStore TbStore {get; }
 
 
       public Tables(System.Func<string, JArray> loader)
@@ -29,6 +30,7 @@ public partial class Tables
         TbEnemy = new TbEnemy(loader("tbenemy"));
         TbConvertGroup = new TbConvertGroup(loader("tbconvertgroup"));
         TbConvert = new TbConvert(loader("tbconvert"));
+        TbStore = new TbStore(loader("tbstore"));
         ResolveRef();
     }
     
@@ -40,6 +42,7 @@ public partial class Tables
         TbEnemy.ResolveRef(this);
         TbConvertGroup.ResolveRef(this);
         TbConvert.ResolveRef(this);
+        TbStore.ResolveRef(this);
     }
 }
 

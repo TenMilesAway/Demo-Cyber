@@ -392,6 +392,23 @@ namespace HA
 
             return num;
         }
+
+        /// <summary>
+        /// 检查当前货币是否足够
+        /// </summary>
+        public bool CheckCurrencyIsEnough(int cost, int type)
+        {
+            if (type == 0) // 普通货币
+            {
+                if (_playerInfo._commonCurrency >= cost) return true;
+                else return false;
+            }
+            else // 稀有货币
+            {
+                if (_playerInfo._rareCurrency >= cost) return true;
+                else return false;
+            }
+        }
         #endregion
 
         #region 数据刷新

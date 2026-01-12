@@ -24,6 +24,7 @@ namespace HA
                 EnemyDataManager.GetInstance().Init();             // Enemy 表
                 LevelDataManager.GetInstance().Init();             // Level 表
                 ConvertDataManager.GetInstance().Init();           // Convert 和 ConvertGroup 表
+                StoreDataManager.GetInstance().Init();             // Store 表
                 PlayerDataManager.GetInstance().Init();            // 玩家数据管理
                 InventoryDataManager.GetInstance().Init();         // 仓库数据管理
                 InteractiveDataManager.GetInstance().Init();       // 交互数据管理
@@ -41,6 +42,7 @@ namespace HA
             param.data = task.Result;
 
             UIManager.GetInstance().OpenPanel(GlobalDefine.MainPanel, UILayer.Mid, param);
+            // ---------
         }
 
         public void OnLeave()

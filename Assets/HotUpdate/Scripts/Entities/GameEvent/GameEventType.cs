@@ -16,6 +16,7 @@ public enum GameEventType
     ReqPlayerStatsSave,         // 请求：保存玩家状态信息
     ReqPlayerInventoryLoad,     // 请求：获得玩家背包信息
     ReqPlayerInventorySave,     // 请求：保存玩家背包信息
+    ReqStoreBuyItem,            // 请求：商店购买物品
     HAMsgPlayerInfoLoad,        // 响应：获得玩家所有信息
     HAMsgPlayerInfoSave,        // 响应：保存玩家所有信息
     MsgPlayerBaseLoad,          // 响应：获得玩家基础信息
@@ -24,7 +25,8 @@ public enum GameEventType
     MsgPlayerStatsSave,         // 响应：保存玩家状态信息
     MsgPlayerInventoryLoad,     // 响应：获得玩家背包信息
     MsgPlayerInventorySave,     // 响应：保存玩家背包信息
-    
+    HAMsgStoreBuyItem,          // 响应：商店购买物品
+
     /** 玩家输入 **/
     DisablePlayerInput,         // 禁用玩家所有输入
     EnablePlayerInput,          // 启用玩家所有输入

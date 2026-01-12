@@ -27,6 +27,7 @@ public sealed partial class GlobalDefine
     public const string DamagePanel = "Assets/UI/Common/Prefabs/DamagePanel.prefab";
     public const string DamageToast = "Assets/UI/Common/Prefabs/DamageToast.prefab";
     public const string StorePanel = "Assets/UI/Store/Prefabs/StorePanel.prefab";
+    public const string StoreItemCell = "Assets/UI/Store/Prefabs/StoreItemCell.prefab";
     public const string ConvertCell = "Assets/UI/Store/Prefabs/ConvertCell.prefab";
     public const string SingleConvertLine = "Assets/UI/Store/Prefabs/SingleConvertLine.prefab";
     public const string ConvertPanel = "Assets/UI/Store/Prefabs/ConvertPanel.prefab";
