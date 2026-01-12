@@ -27,7 +27,7 @@ MonoBehaviour:
   _pArmorPenetration: 0
   _pDamageAvoidance: 20
   _ringDropRate: 10
-  _ringID: 20000
+  _ringID: 20002
   _dropItems:
   - _treasureID: 1000
     _dropWeight: 10

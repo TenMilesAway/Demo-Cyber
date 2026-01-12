@@ -184,6 +184,12 @@ namespace HA
                 case AudioClipType.SFXClosePanel:
                     await PlayAudioClip(AudioDefine.SFXClosePanel);
                     break;
+                case AudioClipType.Spawn:
+                    await PlayAudioClip(AudioDefine.Spawn);
+                    break;
+                case AudioClipType.FirstLevel:
+                    await PlayAudioClip(AudioDefine.FirstLevel);
+                    break;
             }
         }
         #endregion

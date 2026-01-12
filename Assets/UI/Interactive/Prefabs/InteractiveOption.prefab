@@ -142,7 +142,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u548C<color=#28E1E5>\u8389\u8389</color>\u5BF9\u8BDD"
+  m_Text: 
 --- !u!114 &4838787987548501800
 MonoBehaviour:
   m_ObjectHideFlags: 0

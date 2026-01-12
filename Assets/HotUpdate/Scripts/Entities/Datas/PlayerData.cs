@@ -169,9 +169,6 @@ namespace HA
                                          new ItemInfo { _id = 7000, _num = 1 },
                                          new ItemInfo { _id = 8000, _num = 1 },
                                          new ItemInfo { _id = 9000, _num = 1 },
-                                         new ItemInfo { _id = 1002, _num = 100 },
-                                         new ItemInfo { _id = 1005, _num = 100 },
-                                         new ItemInfo { _id = 1008, _num = 100 },
                                          };
 
             int leftItems = inventory_num - items.Count;

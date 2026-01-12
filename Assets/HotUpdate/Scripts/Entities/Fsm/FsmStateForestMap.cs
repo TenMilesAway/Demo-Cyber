@@ -20,6 +20,14 @@ namespace HA
             param.data = task.Result;
 
             UIManager.GetInstance().OpenPanel(GlobalDefine.MainPanel, UILayer.Mid, param);
+
+            // --------- ≤•∑≈“Ù¿÷
+            AudioClipData data = new AudioClipData
+            {
+                _type = AudioClipType.FirstLevel,
+                _content = "÷˜≥«“Ù¿÷",
+            };
+            GameManager.Event.Broadcast<AudioClipData>(GameEventType.PlayAudio, data);
         }
 
         public void OnLeave()
@@ -28,6 +36,8 @@ namespace HA
             UIManager.GetInstance().ClosePanel(GlobalDefine.MainPanel);
 
             SceneManager.UnloadSceneAsync("FirstLevel");
+
+            GameManager.Audio.RecycleAudio(AudioDefine.FirstLevel);
         }
 
         public void OnUpdate()

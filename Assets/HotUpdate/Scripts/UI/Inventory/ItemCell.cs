@@ -538,7 +538,7 @@ namespace HA
             // 若无物品或物品数量为 0，则视为“空格子”并进入空格子状态
             if (_itemInfo == null || _itemInfo._id == 0 || _itemInfo._num == 0)
             {
-                PlayerDataManager.GetInstance().GetPlayerInfo()._allItems[_idInParent] = new ItemInfo { _id = 0, _num = 0 };
+                if (_itemCellParent == ItemCellParent.Inventory) PlayerDataManager.GetInstance().GetPlayerInfo()._allItems[_idInParent] = new ItemInfo { _id = 0, _num = 0 };
                 // 把格子表现为空格子（与 Init 中 IsInventoryButNoItemInfo 一致）
                 _groupBag.SetActive(true);
                 _groupTreasure.SetActive(false);
@@ -555,9 +555,10 @@ namespace HA
 
             _groupBag.SetActive(true);
             _imgItem.enabled = true;
-            if (_canBeStacked) _txtNum.enabled = true;
 
             TBItemData data = ItemDataManager.GetInstance().GetData(_itemInfo._id);
+            _canBeStacked = data.type != 1;
+            if (_canBeStacked) _txtNum.enabled = true;
             _itemType = InventoryDataManager.GetInstance().GetItemType(data.type);
             _imgItemPath = data.icon;
             _txtNum.text = _itemInfo._num.ToString();

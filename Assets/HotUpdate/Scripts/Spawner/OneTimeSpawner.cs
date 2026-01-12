@@ -257,8 +257,11 @@ namespace HA
         /// </summary>
         private Vector3 AdjustPositionToGround(Vector3 position)
         {
+            float upOffset = 1f;
+            Vector3 origin = position + Vector3.up * upOffset;
+
             RaycastHit hit;
-            if (Physics.Raycast(position + Vector3.up * 10f, Vector3.down, out hit, _groundCheckDistance, _groundLayer))
+            if (Physics.Raycast(origin, Vector3.down, out hit, _groundCheckDistance, _groundLayer))
             {
                 return hit.point;
             }

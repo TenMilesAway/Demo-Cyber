@@ -42,6 +42,14 @@ namespace HA
             param.data = task.Result;
 
             UIManager.GetInstance().OpenPanel(GlobalDefine.MainPanel, UILayer.Mid, param);
+
+            // --------- ≤•∑≈“Ù¿÷
+            AudioClipData data = new AudioClipData
+            {
+                _type = AudioClipType.Spawn,
+                _content = "÷˜≥«“Ù¿÷",
+            };
+            GameManager.Event.Broadcast<AudioClipData>(GameEventType.PlayAudio, data);
             // ---------
         }
 
@@ -51,6 +59,8 @@ namespace HA
             UIManager.GetInstance().ClosePanel(GlobalDefine.MainPanel);
 
             SceneManager.UnloadSceneAsync("Spawn");
+
+            GameManager.Audio.RecycleAudio(AudioDefine.Spawn);
         }
 
         public void OnUpdate()

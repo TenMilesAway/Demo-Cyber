@@ -25,6 +25,8 @@ namespace HA
     {
         SFXOpenPanel,
         SFXClosePanel,
+        Spawn,
+        FirstLevel,
     }
 
     public class AudioClipData
