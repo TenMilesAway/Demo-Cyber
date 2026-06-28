@@ -45,7 +45,7 @@ namespace HA
             LoadSettingStatus();
         }
 
-        #region 主要方法：初始加载
+        #region 主要方法: 初始加载
         /// <summary>
         /// 加载背景音乐音量
         /// </summary>
@@ -106,7 +106,7 @@ namespace HA
         }
         #endregion
 
-        #region 主要方法：播放
+        #region 主要方法: 播放
         public async Task<AudioSource> PlayAudioClip(string key, Transform parent = null)
         {
             if (_audioDic.TryGetValue(key, out AudioData data))
@@ -171,7 +171,7 @@ namespace HA
         }
         #endregion
 
-        #region 监听方法：播放
+        #region 监听方法: 播放
         public async void PlayAudioClip(AudioClipData _audioClipData)
         {
             if (!_isPlaySFX) return;
@@ -194,7 +194,7 @@ namespace HA
         }
         #endregion
 
-        #region 辅助方法：音量设置
+        #region 辅助方法: 音量设置
         /// <summary>
         /// 获得背景音乐的音量
         /// </summary>
@@ -231,7 +231,7 @@ namespace HA
         }
         #endregion
 
-        #region 辅助方法：回收音频
+        #region 辅助方法: 回收音频
         /// <summary>
         /// 回收指定 key 的音频
         /// </summary>

@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// 不能保证唯一性
+/// <summary>
+/// 继承 Mono 的单例类
+/// 适用: 需要使用 Unity 生命周期函数的类
+/// </summary>
 public class SingletonMono<T> : MonoBehaviour where T: MonoBehaviour
 {
     private static T instance;
+    private static object mutex = new object();
 
     public static T Instance
     {
@@ -17,7 +21,16 @@ public class SingletonMono<T> : MonoBehaviour where T: MonoBehaviour
 
     protected virtual void Awake()
     {
-        instance = this as T;
+        if (instance == null)
+        {
+            lock (mutex)
+            {
+                if (instance == null)
+                {
+                    instance = this as T;
+                }
+            }
+        }
     }
 	
 }
