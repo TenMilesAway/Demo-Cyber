@@ -27,20 +27,21 @@ public sealed partial class GlobalDefine
     public const string DamagePanel = "Assets/UI/Common/Prefabs/DamagePanel.prefab";
     public const string DamageToast = "Assets/UI/Common/Prefabs/DamageToast.prefab";
     public const string StorePanel = "Assets/UI/Store/Prefabs/StorePanel.prefab";
+    public const string GoldRushPanel = "Assets/UI/Activity/Prefabs/GoldRushPanel.prefab";
     public const string StoreItemCell = "Assets/UI/Store/Prefabs/StoreItemCell.prefab";
     public const string ConvertCell = "Assets/UI/Store/Prefabs/ConvertCell.prefab";
     public const string SingleConvertLine = "Assets/UI/Store/Prefabs/SingleConvertLine.prefab";
     public const string ConvertPanel = "Assets/UI/Store/Prefabs/ConvertPanel.prefab";
 
-    // Íæ¼Ò
+    // ï¿½ï¿½ï¿½
     public const string Player = "Assets/Prefabs/Player/True Player and Camera.prefab";
 
-    // µÐÈË
+    // ï¿½ï¿½ï¿½ï¿½
     public const string WhiteBaboon = "Assets/UI/Spawner/Prefabs/Enemy/WhiteBaboon.prefab";
     public const string StoneGiant = "Assets/UI/Spawner/Prefabs/Enemy/StoneGiant.prefab";
     public const string CyanStoneGiant = "Assets/UI/Spawner/Prefabs/Enemy/CyanStoneGiant.prefab";
 
-    // ±¦Ïä
+    // ï¿½ï¿½ï¿½ï¿½
     public const string FeiCuiLinHaiTreasure1 = "Assets/UI/Spawner/Prefabs/Treasure/PrettyTreasure_1.prefab";
     public const string FeiCuiLinHaiTreasure2 = "Assets/UI/Spawner/Prefabs/Treasure/PrettyTreasure_2.prefab";
     public const string FeiCuiLinHaiTreasure3 = "Assets/UI/Spawner/Prefabs/Treasure/PrettyTreasure_3.prefab";
@@ -71,7 +72,7 @@ public sealed partial class GlobalDefine
 
     public static string GetPath(string name)
     {
-        // ÕâÒ»²½ºÜºÄÊ±¼ä£¬¿¼ÂÇÔ¤ÈÈ
+        // ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Üºï¿½Ê±ï¿½ä£¬ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½
         InitializeCache();
 
         if (_pathCache.TryGetValue(name, out string path))
@@ -79,8 +80,7 @@ public sealed partial class GlobalDefine
             return path;
         }
 
-        HADebug.LogErrorFormat("Î´ÕÒµ½ {0} Ô¤ÖÆÌåµÄÂ·¾¶", name);
+        HADebug.LogErrorFormat("Î´ï¿½Òµï¿½ {0} Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½", name);
         return string.Empty;
     }
 }
-

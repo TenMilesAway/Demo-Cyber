@@ -11,18 +11,19 @@ namespace HA
 
     public class MainPanel : UIBasePanel
     {
-        [Header("ÓÒÏÂ: ¹¦ÄÜ°´Å¥×é")]
+        [Header("å³ä¸‹")]
         [SerializeField] private Button _btnBag;
         [SerializeField] private Button _btnStore;
+        [SerializeField] private Button _btnGoldRush;
         [SerializeField] private Button _btnForge;
         [SerializeField] private Button _btnSkill;
         [SerializeField] private Button _btnSettings;
 
-        [Header("ÓÒÉÏ: µØÍ¼ÇĞ»»°´Å¥×é")]
+        [Header("å³ä¸Š")]
         [SerializeField] private Button _btnTransport;
         [SerializeField] private Button _btnChallenge;
 
-        [Header("ĞèÒª¸üĞÂµÄĞÅÏ¢")]
+        [Header("å·¦ä¸Š")]
         [SerializeField] private Text _txtName;
         [SerializeField] private Text _txtCommonCurrency;
         [SerializeField] private Text _txtRareCurrency;
@@ -36,7 +37,7 @@ namespace HA
         [SerializeField] private Image _imgMPBar;
         [SerializeField] private Image _imgEXPBar;
 
-        private PlayerInfo _playerInfo; // ĞèÒªµÈ´ıÍæ¼ÒĞÅÏ¢¼ÓÔØÍê³Éºó²ÅÏÔÊ¾Ö÷Ãæ°å£¬ËùÒÔÍ¨¹ı param ´«µİ
+        private PlayerInfo _playerInfo;
 
         public override string GetPanelName()
         {
@@ -65,7 +66,6 @@ namespace HA
 
         private void AddListeners()
         {
-            // ÒµÎñ
             GameManager.Event.AddListener<PlayerInfo>(GameEventType.UpdateMainPanelUI, UpdateUI);
 
             // UI
@@ -73,11 +73,11 @@ namespace HA
             _btnForge.onClick.AddListener(OnClickBtnForge);
             _btnTransport.onClick.AddListener(OnClickBtnTransport);
             _btnStore.onClick.AddListener(OnClickBtnShop);
+            _btnGoldRush.onClick.AddListener(OnClickBtnGoldRush);
         }
 
         private void RemoveListeners()
         {
-            // ÒµÎñ
             GameManager.Event.RemoveListener<PlayerInfo>(GameEventType.UpdateMainPanelUI, UpdateUI);
 
             // UI
@@ -85,11 +85,12 @@ namespace HA
             _btnForge.onClick.RemoveAllListeners();
             _btnTransport.onClick.RemoveAllListeners();
             _btnStore.onClick.RemoveAllListeners();
+            _btnGoldRush.onClick.RemoveAllListeners();
         }
 
-        #region Ö÷Òª·½·¨
+        #region åˆå§‹åŒ–ç©å®¶ä¿¡æ¯
         /// <summary>
-        /// ³õÊ¼»¯Ö÷ÒªÃæ°åÍæ¼ÒĞÅÏ¢
+        /// åˆå§‹åŒ–ç©å®¶ä¿¡æ¯
         /// </summary>
         private void InitPlayerInfo(PlayerInfo info)
         {
@@ -97,16 +98,16 @@ namespace HA
         }
         #endregion
 
-        #region ¼àÌı·½·¨£ºUI
+        #region UI ç›‘å¬ 
         /// <summary>
-        /// ´ò¿ª±³°ü½çÃæ
+        /// ç‚¹å‡»èƒŒåŒ…æŒ‰é’®
         /// </summary>
         private void OnClickBtnBag()
         {
             AudioClipData data = new AudioClipData
             {
                 _type = AudioClipType.SFXOpenPanel,
-                _content = "´ò¿ª²Ö¿âÃæ°å",
+                _content = "æ‰“å¼€èƒŒåŒ…",
             };
             GameManager.Event.Broadcast<AudioClipData>(GameEventType.PlayAudio, data);
 
@@ -121,7 +122,7 @@ namespace HA
         }
 
         /// <summary>
-        /// ´ò¿ªÇ¿»¯½çÃæ (ÁÙÊ±£ºÌí¼ÓÎïÆ·ÖÁ²Ö¿â)
+        /// ç‚¹å‡»é”»é€ æŒ‰é’® (æš‚æ—¶æ·»åŠ æµ‹è¯•ç‰©å“åˆ°èƒŒåŒ…)
         /// </summary>
         private void OnClickBtnForge()
         {
@@ -144,11 +145,16 @@ namespace HA
         {
             UIManager.GetInstance().OpenPanel(GlobalDefine.StorePanel);
         }
+
+        private void OnClickBtnGoldRush()
+        {
+            UIManager.GetInstance().OpenPanel(GlobalDefine.GoldRushPanel);
+        }
         #endregion
 
-        #region ¼àÌı·½·¨£ºË¢ĞÂ UI
+        #region æ›´æ–°ç©å®¶ä¿¡æ¯ UI
         /// <summary>
-        /// Ë¢ĞÂÃæ°å UI
+        /// æ›´æ–°ç©å®¶ä¿¡æ¯ UI
         /// </summary>
         private void UpdateUI(PlayerInfo info)
         {
